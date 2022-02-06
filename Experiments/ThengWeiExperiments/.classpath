@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="BackendExperiment/tutorials-springboot_unit1_1_basicrequest/tutorials-springboot_unit1_1_basicrequest/tutorial/.mvn/wrapper"/>
+	<classpathentry kind="src" path="BackendExperiment/tutorials-springboot_unit1_1_basicrequest/tutorials-springboot_unit1_1_basicrequest/tutorial/src/main/java"/>
+	<classpathentry kind="src" path="BackendExperiment/tutorials-springboot_unit1_1_basicrequest/tutorials-springboot_unit1_1_basicrequest/tutorial/src/test/java"/>
+	<classpathentry kind="src" path="FrontendExperiment/app/build/generated/data_binding_base_class_source_out/debug/out"/>
+	<classpathentry kind="src" path="FrontendExperiment/app/build/generated/source/buildConfig/debug"/>
+	<classpathentry kind="src" path="FrontendExperiment/app/src/androidTest/java"/>
+	<classpathentry kind="src" path="FrontendExperiment/app/src/main/java"/>
+	<classpathentry kind="src" path="FrontendExperiment/app/src/test/java"/>
+	<classpathentry kind="lib" path="BackendExperiment/tutorials-springboot_unit1_1_basicrequest/tutorials-springboot_unit1_1_basicrequest/tutorial/bin/.mvn/wrapper/maven-wrapper.jar"/>
+	<classpathentry kind="lib" path="FrontendExperiment/app/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debug/R.jar"/>
+	<classpathentry kind="lib" path="FrontendExperiment/app/build/intermediates/merged_java_res/debug/base.jar"/>
+	<classpathentry kind="lib" path="FrontendExperiment/app/build/intermediates/project_dex_archive/debug/out/0b5054bf9c868c3d62b2d5b10f2ef16d3d54696b0e8b20dab62c0794c60bab48_0.jar"/>
+	<classpathentry kind="lib" path="FrontendExperiment/app/build/intermediates/project_dex_archive/debug/out/0b5054bf9c868c3d62b2d5b10f2ef16d3d54696b0e8b20dab62c0794c60bab48_1.jar"/>
+	<classpathentry kind="lib" path="FrontendExperiment/app/build/intermediates/project_dex_archive/debug/out/0b5054bf9c868c3d62b2d5b10f2ef16d3d54696b0e8b20dab62c0794c60bab48_2.jar"/>
+	<classpathentry kind="lib" path="FrontendExperiment/app/build/intermediates/project_dex_archive/debug/out/0b5054bf9c868c3d62b2d5b10f2ef16d3d54696b0e8b20dab62c0794c60bab48_3.jar"/>
+	<classpathentry kind="lib" path="FrontendExperiment/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="output" path="FrontendExperiment/app/build/intermediates/javac/debug/classes"/>
+</classpath>

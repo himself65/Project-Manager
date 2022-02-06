@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "C:\\Iowa Programming\\se309\\1_mc_3\\Experiments\\ThengWeiExperiments\\FrontendExperiment\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_main3.xml",
+        "source": "C:\\Iowa Programming\\se309\\1_mc_3\\Experiments\\ThengWeiExperiments\\FrontendExperiment\\app\\src\\main\\res\\layout\\activity_main3.xml"
+    },
+    {
+        "merged": "C:\\Iowa Programming\\se309\\1_mc_3\\Experiments\\ThengWeiExperiments\\FrontendExperiment\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_main.xml",
+        "source": "C:\\Iowa Programming\\se309\\1_mc_3\\Experiments\\ThengWeiExperiments\\FrontendExperiment\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Iowa Programming\\se309\\1_mc_3\\Experiments\\ThengWeiExperiments\\FrontendExperiment\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_notifications.xml",
+        "source": "C:\\Iowa Programming\\se309\\1_mc_3\\Experiments\\ThengWeiExperiments\\FrontendExperiment\\app\\src\\main\\res\\layout\\fragment_notifications.xml"
+    },
+    {
+        "merged": "C:\\Iowa Programming\\se309\\1_mc_3\\Experiments\\ThengWeiExperiments\\FrontendExperiment\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_home.xml",
+        "source": "C:\\Iowa Programming\\se309\\1_mc_3\\Experiments\\ThengWeiExperiments\\FrontendExperiment\\app\\src\\main\\res\\layout\\fragment_home.xml"
+    },
+    {
+        "merged": "C:\\Iowa Programming\\se309\\1_mc_3\\Experiments\\ThengWeiExperiments\\FrontendExperiment\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_dashboard.xml",
+        "source": "C:\\Iowa Programming\\se309\\1_mc_3\\Experiments\\ThengWeiExperiments\\FrontendExperiment\\app\\src\\main\\res\\layout\\fragment_dashboard.xml"
+    }
+]

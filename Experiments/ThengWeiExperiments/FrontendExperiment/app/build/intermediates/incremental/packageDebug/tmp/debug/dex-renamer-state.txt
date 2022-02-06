@@ -1,0 +1,19 @@
+#Sat Feb 05 20:45:20 CST 2022
+path.4=4/classes.dex
+path.3=3/classes.dex
+path.2=14/classes.dex
+path.1=0/classes.dex
+path.5=6/classes.dex
+path.0=classes.dex
+base.4=C\:\\Iowa Programming\\se309\\1_mc_3\\Experiments\\ThengWeiExperiments\\FrontendExperiment\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\4\\classes.dex
+base.3=C\:\\Iowa Programming\\se309\\1_mc_3\\Experiments\\ThengWeiExperiments\\FrontendExperiment\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\3\\classes.dex
+base.2=C\:\\Iowa Programming\\se309\\1_mc_3\\Experiments\\ThengWeiExperiments\\FrontendExperiment\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\14\\classes.dex
+base.1=C\:\\Iowa Programming\\se309\\1_mc_3\\Experiments\\ThengWeiExperiments\\FrontendExperiment\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.0=C\:\\Iowa Programming\\se309\\1_mc_3\\Experiments\\ThengWeiExperiments\\FrontendExperiment\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+renamed.3=classes4.dex
+renamed.2=classes3.dex
+renamed.1=classes2.dex
+renamed.0=classes.dex
+renamed.5=classes6.dex
+renamed.4=classes5.dex
+base.5=C\:\\Iowa Programming\\se309\\1_mc_3\\Experiments\\ThengWeiExperiments\\FrontendExperiment\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\6\\classes.dex
