@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.frontendexperiment">
+    package="com.coms3091mc3.alexexperiment">
 
     <application
         android:allowBackup="true"
@@ -8,14 +8,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FrontendExperiment">
+        android:theme="@style/Theme.AlexExperiment">
         <activity
             android:name=".MainActivity"
-            android:exported="false"
-            android:label="@string/title_activity_main3" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AlexExperiment.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
