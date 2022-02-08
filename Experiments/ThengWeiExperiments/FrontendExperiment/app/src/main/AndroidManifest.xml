@@ -10,11 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FrontendExperiment">
         <activity
-            android:name=".MainActivity3"
+            android:name=".MainActivity"
             android:exported="false"
             android:label="@string/title_activity_main3" />
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

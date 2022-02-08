@@ -2,7 +2,6 @@ package com.example.frontendexperiment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.example.frontendexperiment.ui.home.HomeViewModel;
