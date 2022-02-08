@@ -2,11 +2,14 @@ package com.example.frontendexperiment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
+import com.example.frontendexperiment.ui.home.HomeViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -22,6 +25,12 @@ public class MainActivity3 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Intent intent = getIntent();
+        Bundle b = intent.getExtras();
+        if(b != null){
+            Utility.welcomeText = "Welcome, " + ((String)b.get("username"));
+        }
+
         binding = ActivityMain3Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -34,15 +43,6 @@ public class MainActivity3 extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main3);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-
-        Intent intent = getIntent();
-        TextView welcomeText = findViewById(R.id.welcomeText);
-        Bundle b = intent.getExtras();
-        if(b != null){
-            welcomeText.setText("Welcome, " + (String)b.get("username"));
-        }
-
-
     }
 
 }

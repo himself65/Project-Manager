@@ -25,7 +25,9 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
 
         final TextView textView = binding.textHome;
+        final TextView welcomeText = binding.welcomeText;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        homeViewModel.getWelcomeText().observe(getViewLifecycleOwner(), welcomeText::setText);
         return root;
     }
 
