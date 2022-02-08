@@ -1,45 +1,40 @@
 package com.example.frontendexperiment;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.util.Log;
+import android.widget.EditText;
+import android.widget.Toast;
+import android.view.View;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import com.example.frontendexperiment.databinding.ActivityMain3Binding;
 
 public class MainActivity extends AppCompatActivity {
-
-    private ActivityMain3Binding binding;
+    EditText username;
+    EditText password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        binding = ActivityMain3Binding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        username = (EditText)findViewById(R.id.name);
+        password = (EditText)findViewById(R.id.password);
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main3);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
+    }
 
-        Intent intent = getIntent();
-        TextView welcomeText = findViewById(R.id.welcomeText);
-        Bundle b = intent.getExtras();
-        if (b != null) {
-            welcomeText.setText("Welcome, " + (String) b.get("username"));
+    public void login(View v) {
+        if (username.getText().toString().equals(Utility.username) && password.getText().toString().equals(Utility.password)) { //correct username/password
+            Toast.makeText(getApplicationContext(), "Correct Credentials", Toast.LENGTH_SHORT).show();
+            Intent page2 = new Intent(this, MainActivity3.class);
+            page2.putExtra("username", (username.getText().toString()));
+            page2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(page2);
+//            finish();
+        }
+        else { //wrong username/password
+            Toast.makeText(getApplicationContext(), "Wrong Credentials!", Toast.LENGTH_SHORT).show();
         }
     }
 

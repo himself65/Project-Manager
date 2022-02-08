@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,6 +28,7 @@ public class HomeFragment extends Fragment {
 
         final TextView textView = binding.textHome;
         final TextView welcomeText = binding.welcomeText;
+
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         homeViewModel.getWelcomeText().observe(getViewLifecycleOwner(), welcomeText::setText);
         return root;
