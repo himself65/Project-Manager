@@ -2,12 +2,11 @@ package com.coms3091mc3.alexexperiment;
 
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -19,17 +18,22 @@ import com.coms3091mc3.alexexperiment.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class MainActivity extends AppCompatActivity
+        implements UserDialogFragment.NoticeDialogListener
+{
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
-    private ItemViewModel itemViewModel;
+    private TaskCardModel itemViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        itemViewModel = new ViewModelProvider(this).get(ItemViewModel.class);
+        itemViewModel = new ViewModelProvider(this).get(TaskCardModel.class);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -43,9 +47,8 @@ public class MainActivity extends AppCompatActivity {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                itemViewModel.addItem(new Item("Hello"));
-                Snackbar.make(view, "Add one item", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                UserDialogFragment userDialogFragment = new UserDialogFragment();
+                userDialogFragment.show(getSupportFragmentManager(), "TaskCardCreateDialog");
             }
         });
     }
@@ -77,5 +80,16 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onDialogPositiveClick(TaskCard card) {
+        Logger.getLogger("Dialog").log(Level.INFO, card.getTitle());
+        itemViewModel.addTaskCard(card);
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+
     }
 }
