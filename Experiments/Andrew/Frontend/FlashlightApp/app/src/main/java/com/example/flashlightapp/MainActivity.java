@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                         String cameraId= cameraManager.getCameraIdList()[0];
                         cameraManager.setTorchMode(cameraId, true);
                         flashlightState = true;
-                        imageButton.setImageResource(R.drawable.Flashlight_ON); //changes the Flashlight Image to ON
+                        imageButton.setImageResource(R.drawable.flashlight_on); //changes the Flashlight Image to ON
                     }
                     catch (CameraAccessException e) {}
                 } else {
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                         String cameraId= cameraManager.getCameraIdList()[0];
                         cameraManager.setTorchMode(cameraId, false);
                         flashlightState = false;
-                        imageButton.setImageResource(R.drawable.Flashlight_OFF); //changes the Flashlight Image to OFF
+                        imageButton.setImageResource(R.drawable.flashlight_off); //changes the Flashlight Image to OFF
                     }
                     catch (CameraAccessException e) {}
                 }
