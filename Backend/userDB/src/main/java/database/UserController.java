@@ -19,7 +19,8 @@ public class UserController {
 	
 	@GetMapping("/user/{id}")
 	User getUserName(@PathVariable Integer id) {
-		return db.findById(id);	
+//		return db.findById(id);	
+		return db.findById(id).get();	
 	}
 	
 	@RequestMapping("/user")
