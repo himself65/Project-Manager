@@ -1,6 +1,9 @@
 package com.splask.project;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @Entity
@@ -8,7 +11,8 @@ class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-            Integer projectID;
+    Integer projectID;
+
     @Column
     String projectName;
 
@@ -16,10 +20,10 @@ class Project {
     String team;
 
     @Column
-    String projectDeadline;
+    String deadline;
 
     @Column
-    String dateCompleted;
+    String completedBy;
 
     @Column
     String creator;
@@ -30,6 +34,20 @@ class Project {
     @Column
     String tasks;
 
+    @Column
+    Date dateCreated;
+
+    Project() {
+    }
+
+    public Project(String projectName,String team, String deadline)
+    {
+        this.projectName = projectName;
+        this.team = team;
+        dateCreated = new Date();
+
+    }
+
     public Integer getProjectID() {
         return projectID;
     }
@@ -39,14 +57,14 @@ class Project {
         return projectName;
     }
 
-    public String getProjectDeadline()
+    public String getDeadline()
     {
-        return projectDeadline;
+        return deadline;
     }
 
-    public String getDateCompleted()
+    public String getCompletedBy()
     {
-        return dateCompleted;
+        return completedBy;
     }
 
     public String getTeam()
@@ -68,4 +86,12 @@ class Project {
     {
         return tasks;
     }
+    /*
+    public String getDateCreated()
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+        return sdf.format(dateCreated);
+    }
+
+     */
 }

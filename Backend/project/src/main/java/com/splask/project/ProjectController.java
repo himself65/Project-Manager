@@ -22,4 +22,11 @@ public class ProjectController {
     @RequestMapping("/projects")
     List<Project> hello(){return db.findAll();}
 
+
+    @PostMapping("/project")
+    Project createProject(@RequestBody Project q) {
+        db.save(q);
+        return q;
+    }
+
 }
