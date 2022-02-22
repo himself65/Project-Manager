@@ -6,4 +6,8 @@ public class Const {
 //    public static final String URL_STRING_REQ = "https://api.androidhive.info/volley/string_response.html";
 //    public static final String URL_IMAGE = "https://api.androidhive.info/volley/volley-image.jpg";
      public static final String MOCK_SERVER = "https://bd9f22ed-10c9-4c41-a415-b951634333f6.mock.pstmn.io";
+     public static String username = "username";
+     public static void setUsername(String name){
+          username = name;
+     }
 }

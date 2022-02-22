@@ -2,6 +2,8 @@ package com.coms3091mc3.projectmanager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,45 +30,60 @@ public class LoginActivity extends AppCompatActivity {
     String tag_login_req = "login_req";
     String url;
     EditText username, password;
-    Button btnLogin;
+    Button btnLogin, btnRegister;
+    ProgressBar pBar;
+    Uri.Builder uri = new Uri.Builder();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         btnLogin = findViewById(R.id.btnLogin);
-        ProgressBar pBar = findViewById(R.id.progressBar);
+        btnRegister = findViewById(R.id.btnRegister);
+        pBar = findViewById(R.id.progressBar);
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
+    }
 
-        btnLogin.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                pBar.setVisibility(View.VISIBLE);
-                url = Const.MOCK_SERVER;
-                url+="/login";
+    public void submit(View v){
+        pBar.setVisibility(View.VISIBLE);
+        uri = Uri.parse(Const.MOCK_SERVER + "/" + v.getTag().toString()).buildUpon();
+        uri.appendQueryParameter("username",username.getText().toString());
+        uri.appendQueryParameter("password",password.getText().toString());
+//        url = Const.MOCK_SERVER;
+//        url+="/login";
 //                url = "https://api.androidhive.info/volley/string_response.html";
-                loginRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                            Log.d("login_debug", response.toString());
-
-                            pBar.setVisibility(View.INVISIBLE);
-                            Toast.makeText(getApplicationContext(),response.toString(), Toast.LENGTH_LONG).show();
-                    }
-                },new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyLog.d("login_debug_error","Error: "+ error.toString());
-                        // hide the progress dialog
-                        pBar.setVisibility(View.INVISIBLE);
-                    }
-                }) {
-                    @Override
-                    public Response<String> parseNetworkResponse(NetworkResponse response) {
-                        int mStatusCode = response.statusCode;
-                        Log.d("login_debug_status",String.valueOf(mStatusCode));
-                        return super.parseNetworkResponse(response);
-                    };
-                    //for POST method
+        loginRequest = new StringRequest(Request.Method.GET, uri.build().toString(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("login_debug", response.toString());
+                btnLogin.setClickable(false);
+                btnRegister.setClickable(false);
+                Toast.makeText(getApplicationContext(),response.toString(), Toast.LENGTH_LONG).show();
+                if(username.getText().toString().equals("login") && password.getText().toString().equals("test")
+                        && v.getTag().toString().equals("login")){ //login if action was login with correct credentials
+                    Intent intentHome = new Intent(LoginActivity.this, MainActivity.class);
+                    Const.setUsername(username.getText().toString());
+                    pBar.setVisibility(View.INVISIBLE);
+                    startActivity(intentHome);
+                    finish();
+                }
+            }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("login_debug_error","Error: "+ error.toString());
+                // hide the progress dialog
+                pBar.setVisibility(View.INVISIBLE);
+            }
+        }) {
+            @Override
+            public Response<String> parseNetworkResponse(NetworkResponse response) {
+                int mStatusCode = response.statusCode;
+                Log.d("login_debug_status",String.valueOf(mStatusCode));
+                return super.parseNetworkResponse(response);
+            };
+            //for POST method
 //                    @Override
 //                    protected Map<String,String> getParams(){
 //                        Map<String,String> params = new HashMap<String, String>();
@@ -74,9 +91,8 @@ public class LoginActivity extends AppCompatActivity {
 //                        params.put("password",password.getText().toString());
 //                        return params;
 //                    };
-                };
-                AppController.getInstance().addToRequestQueue(loginRequest, tag_login_req);
-            }
-        });
+        };
+        AppController.getInstance().addToRequestQueue(loginRequest, tag_login_req);
+
     }
 }
