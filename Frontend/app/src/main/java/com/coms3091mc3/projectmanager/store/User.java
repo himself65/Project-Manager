@@ -1,13 +1,10 @@
 package com.coms3091mc3.projectmanager.store;
 
+import androidx.databinding.ObservableField;
+
 public class User {
-    private final String username;
-
-    public User() {
-        this.username = "UNKNOWN";
-    }
-
-    public String getUsername() {
-        return username;
+    public final ObservableField<String> name;
+    public User(String name) {
+        this.name = new ObservableField<>(name);
     }
 }
