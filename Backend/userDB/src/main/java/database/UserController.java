@@ -26,7 +26,7 @@ public class UserController {
 	}
 	
 //	to get all the Users details from the database
-	@RequestMapping("/user")
+	@RequestMapping("/users")
 	List<User> getAllUsers() {
 		return db.findAll();
 	}

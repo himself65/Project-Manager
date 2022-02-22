@@ -6,6 +6,7 @@ import javax.persistence.*;
 //@Table
 public class User {
 	
+//	Primary key
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer userId;
@@ -17,7 +18,7 @@ public class User {
 	String userPassword;
 	
 	@Column
-	String dateAndTime;
+	String  dateAndTime;
 	
 	@Column
 	String author;
