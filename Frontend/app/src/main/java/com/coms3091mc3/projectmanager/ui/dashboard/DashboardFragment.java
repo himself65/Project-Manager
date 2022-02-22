@@ -7,9 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableArrayList;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,27 +15,28 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.coms3091mc3.projectmanager.AppController;
 import com.coms3091mc3.projectmanager.BuildConfig;
-import com.coms3091mc3.projectmanager.MyItemRecyclerViewAdapter;
-import com.coms3091mc3.projectmanager.R;
 import com.coms3091mc3.projectmanager.data.Project;
 import com.coms3091mc3.projectmanager.databinding.FragmentDashboardBinding;
-import com.coms3091mc3.projectmanager.store.ProjectStore;
-import com.coms3091mc3.projectmanager.store.UserStore;
+import com.coms3091mc3.projectmanager.store.DashboardDataModal;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.internal.LinkedTreeMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class DashboardFragment extends Fragment {
     private FragmentDashboardBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        RecyclerView gridView = view.findViewById(R.id.dashboard_grid_view);
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         Context context = getContext();
         if (context != null) {
@@ -48,12 +47,14 @@ public class DashboardFragment extends Fragment {
                     response -> {
                         try {
                             JSONArray projects = response.getJSONArray("projects");
-                            for (int i = 0; i < projects.length(); ++i) {
-                                Object object = projects.get(i);
-                                Gson gson = new Gson();
-                                Project project = gson.fromJson(response.toString(), Project.class);
-                                ObservableArrayList<Project> array = binding.getProjectStore().projects;
-                                array.add(project);
+                            for (int i = 0; i < projects.length(); i++) {
+                                JSONObject object = (JSONObject) projects.get(i);
+                                Project project = new Project(
+                                        object.getInt("id"),
+                                        object.getString("name"),
+                                        object.getString("created_date")
+                                );
+                                binding.getModal().projectsAdapter.add(project.getName());
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -63,10 +64,7 @@ public class DashboardFragment extends Fragment {
 
             AppController.getInstance().addToRequestQueue(request);
         }
-        ProjectStore projectStore = new ProjectStore();
-        gridView.setAdapter(new MyItemRecyclerViewAdapter(projectStore.projects));
-        binding.setUser(new UserStore());
-        binding.setProjectStore(projectStore);
+        binding.setModal(new DashboardDataModal(context));
         return binding.getRoot();
     }
 
