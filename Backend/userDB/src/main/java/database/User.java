@@ -2,6 +2,8 @@ package database;
 
 import javax.persistence.*;
 
+@Entity
+//@Table
 public class User {
 	
 	@Id
