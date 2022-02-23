@@ -29,9 +29,6 @@ class Project {
     String creator;
 
     @Column
-    Integer projectProgression;
-
-    @Column
     String tasks;
 
     @Column
@@ -40,10 +37,9 @@ class Project {
     Project() {
     }
 
-    public Project(String projectName,String team, String deadline)
+    public Project(String projectName)
     {
         this.projectName = projectName;
-        this.team = team;
         dateCreated = new Date();
 
     }
@@ -56,6 +52,7 @@ class Project {
     {
         return projectName;
     }
+
 
     public String getDeadline()
     {
@@ -75,11 +72,6 @@ class Project {
     public String getCreator()
     {
         return creator;
-    }
-
-    public Integer getProjectProgression()
-    {
-        return projectProgression;
     }
 
     public String getTasks()
