@@ -2,8 +2,7 @@ package com.splask.project;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 
 @Entity
@@ -32,28 +31,32 @@ class Project {
     String tasks;
 
     @Column
-    Date dateCreated;
+    LocalDateTime dateCreated;
+
 
     Project() {
-    }
-
-    public Project(String projectName)
-    {
-        this.projectName = projectName;
-        dateCreated = new Date();
-
+        dateCreated = LocalDateTime.now();
     }
 
     public Integer getProjectID() {
         return projectID;
     }
 
+
     public String getProjectName()
     {
         return projectName;
     }
 
+    public void setProjectName(String newName)
+    {
+        projectName = newName;
+    }
 
+    public void setDeadline()
+    {
+
+    }
     public String getDeadline()
     {
         return deadline;
@@ -78,12 +81,11 @@ class Project {
     {
         return tasks;
     }
-    /*
-    public String getDateCreated()
+
+    public LocalDateTime getDateCreated()
     {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-        return sdf.format(dateCreated);
+        return dateCreated;
     }
 
-     */
+
 }
