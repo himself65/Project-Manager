@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.coms3091mc3.projectmanager.AppController;
 import com.coms3091mc3.projectmanager.BuildConfig;
+import com.coms3091mc3.projectmanager.R;
 import com.coms3091mc3.projectmanager.data.Project;
 import com.coms3091mc3.projectmanager.databinding.FragmentDashboardBinding;
 import com.coms3091mc3.projectmanager.store.DashboardDataModal;
@@ -65,7 +67,15 @@ public class DashboardFragment extends Fragment {
             AppController.getInstance().addToRequestQueue(request);
         }
         binding.setModal(new DashboardDataModal(context));
-        return binding.getRoot();
+        View view = binding.getRoot();
+        Button button = view.findViewById(R.id.add_project);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Logger.getLogger("button").log(Level.INFO, "clicked!");
+            }
+        });
+        return view;
     }
 
     @Override
