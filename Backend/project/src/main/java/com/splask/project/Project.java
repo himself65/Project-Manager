@@ -35,21 +35,25 @@ class Project {
 
 
     Project() {
+
         dateCreated = LocalDateTime.now();
     }
 
     public Integer getProjectID() {
+
         return projectID;
     }
 
 
     public String getProjectName()
     {
+
         return projectName;
     }
 
     public void setProjectName(String newName)
     {
+
         projectName = newName;
     }
 
