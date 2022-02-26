@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
 //        url = Const.MOCK_SERVER;
 //        url+="/login";
 //                url = "https://api.androidhive.info/volley/string_response.html";
-        loginRequest = new StringRequest(Request.Method.GET, uri.build().toString(), new Response.Listener<String>() {
+        loginRequest = new StringRequest(Request.Method.POST, uri.build().toString(), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("login_debug", response.toString());
@@ -68,6 +68,13 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intentHome);
                     finish();
                 }
+                else if(v.getTag().toString().equals("register")){
+
+                    pBar.setVisibility(View.INVISIBLE);
+                }
+                pBar.setVisibility(View.INVISIBLE);
+                btnLogin.setClickable(true);
+                btnRegister.setClickable(true);
             }
         },new Response.ErrorListener() {
             @Override
@@ -84,13 +91,13 @@ public class LoginActivity extends AppCompatActivity {
                 return super.parseNetworkResponse(response);
             };
             //for POST method
-//                    @Override
-//                    protected Map<String,String> getParams(){
-//                        Map<String,String> params = new HashMap<String, String>();
-//                        params.put("username",username.getText().toString());
-//                        params.put("password",password.getText().toString());
-//                        return params;
-//                    };
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("username",username.getText().toString());
+                params.put("password",password.getText().toString());
+                return params;
+            };
         };
         AppController.getInstance().addToRequestQueue(loginRequest, tag_login_req);
 

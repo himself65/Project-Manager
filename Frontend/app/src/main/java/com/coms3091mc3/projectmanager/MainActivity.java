@@ -30,6 +30,9 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.coms3091mc3.projectmanager.databinding.ActivityMainBinding;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
@@ -116,13 +119,13 @@ public class MainActivity extends AppCompatActivity {
                 return super.parseNetworkResponse(response);
             };
             //for POST method
-//                    @Override
-//                    protected Map<String,String> getParams(){
-//                        Map<String,String> params = new HashMap<String, String>();
-//                        params.put("username",username.getText().toString());
-//                        params.put("password",password.getText().toString());
-//                        return params;
-//                    };
+//            @Override
+//            protected Map<String,String> getParams(){
+//                Map<String,String> params = new HashMap<String, String>();
+//                params.put("username",username.getText().toString());
+//                params.put("password",password.getText().toString());
+//                return params;
+//            };
         };
         AppController.getInstance().addToRequestQueue(loginRequest, "logout_request");
     }
