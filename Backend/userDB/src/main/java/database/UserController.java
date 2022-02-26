@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+//import myProject.Person;
+
+
 
 @RestController 
 public class UserController {
@@ -37,14 +40,15 @@ public class UserController {
 		db.save(u);
 		return u;
 	}
+	
 
-////	to delete user detail from the database
-//	@DeleteMapping("/user/{id}")
-//	User deleteUser(@PathVariable Integer id) {
-//		db.delete(id);
-//		return "deleted user: " + id;
-//	}
+//	to delete user detail from the database
+	@DeleteMapping("/user/{id}")
+	String deleteUser(@PathVariable Integer id) {
+		db.deleteById(id);
+		return "deleted user: " + id;
+	}
 	
-	
+
 	
 }
