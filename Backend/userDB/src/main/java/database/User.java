@@ -9,7 +9,9 @@ import javax.persistence.*;
 @Table (name = "User")
 public class User {
 	
-//	Primary key
+/*
+ * 	Primary key
+ */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer userId;
@@ -26,6 +28,7 @@ public class User {
 	@Column
 	String author;
 	
+	@Column
 	Boolean loggedIn;
 	
 //	public user(@NotBlank String userName, @NotBlank String userPassword) {
