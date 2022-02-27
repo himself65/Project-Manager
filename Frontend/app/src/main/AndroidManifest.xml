@@ -3,7 +3,7 @@
     package="com.coms3091mc3.projectmanager">
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:name="com.coms3091mc3.projectmanager.app.AppController"
+        android:name="com.coms3091mc3.projectmanager.AppController"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
