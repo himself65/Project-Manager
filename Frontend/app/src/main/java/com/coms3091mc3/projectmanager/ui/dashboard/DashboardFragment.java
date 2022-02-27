@@ -25,6 +25,7 @@ import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.data.Project;
 import com.coms3091mc3.projectmanager.databinding.FragmentDashboardBinding;
 import com.coms3091mc3.projectmanager.store.DashboardDataModal;
+import com.coms3091mc3.projectmanager.utils.Const;
 import com.coms3091mc3.projectmanager.view.AddProjectDialogFragment;
 
 import org.json.JSONArray;
@@ -54,7 +55,7 @@ public class DashboardFragment extends Fragment {
         Context context = getContext();
         if (context != null) {
             RequestQueue queue = Volley.newRequestQueue(context);
-            String url = BuildConfig.apiUrl + "/projects";
+            String url = Const.MOCK_SERVER + "/projects";
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                     response -> {
