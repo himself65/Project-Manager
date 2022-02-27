@@ -32,9 +32,9 @@ public class User {
 	Boolean loggedIn;
 	
 //	public user(@NotBlank String userName, @NotBlank String userPassword) {
-	public void user(String userName, String userPassword) {
-		this.username = userName;
-		this.password = userPassword;
+	public void user(String username, String password) {
+		this.username = username;
+		this.password = password;
 		this.loggedIn = false;
 	}
 
