@@ -3,7 +3,7 @@ package database;
 import javax.persistence.*;
 
 @Entity
-//@Table
+@Table (name = "User")
 public class User {
 	
 //	Primary key
