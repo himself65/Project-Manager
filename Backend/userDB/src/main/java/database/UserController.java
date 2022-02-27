@@ -22,15 +22,15 @@ public class UserController {
 	UserDB userRepository;
 
 //	to get User details by ID from the database
+//	@GetMapping("/user/{id}")  //("/user/{id}") is the endpoint 
+//	User getUserName(@PathVariable Long id) {
+//		return userRepository.findById(id).get();	
+//	}
+	
 	@GetMapping("/user/{id}")  //("/user/{id}") is the endpoint 
-	User getUserName(@PathVariable Long id) {
+	User getUserName(@PathVariable Integer id) {
 		return userRepository.findById(id).get();	
 	}
-	
-//	@GetMapping("/user/{id}")  //("/user/{id}") is the endpoint 
-//	User getUserName(@PathVariable Integer id) {
-//		return db.findById(id).get();	
-//	}
 	
 //	to get all the Users details from the database
 	@RequestMapping("/users")
@@ -65,51 +65,51 @@ public class UserController {
 	/*
 	 * Log in call 
 	 */
-    @PostMapping("/users/login")
-    public Status loginUser(@RequestBody User user) {
-        List<User> users = userRepository.findAll();
-
-        for (User other : users) {
-            if (other.equals(user)) {
-                user.setLoggedIn(true);
-                userRepository.save(user);
-                return Status.SUCCESS;
-            }
-        }
-
-        return Status.FAILURE;
-    }
-
-    /* 
-     * Log out call 
-     */
-    @PostMapping("/users/logout")
-    public Status logUserOut(@RequestBody User user) {
-        List<User> users = userRepository.findAll();
-
-        for (User other : users) {
-            if (other.equals(user)) {
-                user.setLoggedIn(false);
-                userRepository.save(user);
-                return Status.SUCCESS;
-            }
-        }
-
-        return Status.FAILURE;
-    }
-
+//    @PostMapping("/users/login")
+//    public Status loginUser(@RequestBody User user) {
+//        List<User> users = userRepository.findAll();
+//
+//        for (User other : users) {
+//            if (other.equals(user)) {
+//                user.setLoggedIn(true);
+//                userRepository.save(user);
+//                return Status.SUCCESS;
+//            }
+//        }
+//
+//        return Status.FAILURE;
+//    }
+//
+//    /* 
+//     * Log out call 
+//     */
+//    @PostMapping("/users/logout")
+//    public Status logUserOut(@RequestBody User user) {
+//        List<User> users = userRepository.findAll();
+//
+//        for (User other : users) {
+//            if (other.equals(user)) {
+//                user.setLoggedIn(false);
+//                userRepository.save(user);
+//                return Status.SUCCESS;
+//            }
+//        }
+//
+//        return Status.FAILURE;
+//    }
+//
 //	to delete user detail from the database
+//	@DeleteMapping("/user/{id}")
+//	String deleteUser(@PathVariable Long id) {
+//		userRepository.deleteById(id);
+//		return "deleted user: " + id;
+//	}
+	
 	@DeleteMapping("/user/{id}")
-	String deleteUser(@PathVariable Long id) {
+	String deleteUser(@PathVariable Integer id) {
 		userRepository.deleteById(id);
 		return "deleted user: " + id;
 	}
-	
-//	@DeleteMapping("/user/{id}")
-//	String deleteUser(@PathVariable Integer id) {
-//		db.deleteById(id);
-//		return "deleted user: " + id;
-//	}
 
 //	Delete ALL users
     @DeleteMapping("/users/all")
