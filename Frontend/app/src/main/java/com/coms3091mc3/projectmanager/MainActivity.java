@@ -38,7 +38,6 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    Button btnDropdownMenu;
     Uri.Builder uri = new Uri.Builder();
 
     @Override
@@ -58,10 +57,6 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = navHostFragment.getNavController();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-
-
-        btnDropdownMenu = findViewById(R.id.btnMenu);
-        btnDropdownMenu.setText(Const.username);
     }
 
     public void dropdownMenu(View v) {
