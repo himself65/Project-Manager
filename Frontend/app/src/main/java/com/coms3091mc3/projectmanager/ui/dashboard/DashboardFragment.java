@@ -1,6 +1,5 @@
 package com.coms3091mc3.projectmanager.ui.dashboard;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,18 +14,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentOnAttachListener;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.coms3091mc3.projectmanager.AppController;
 import com.coms3091mc3.projectmanager.BuildConfig;
 import com.coms3091mc3.projectmanager.R;
+import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.data.Project;
 import com.coms3091mc3.projectmanager.databinding.FragmentDashboardBinding;
 import com.coms3091mc3.projectmanager.store.DashboardDataModal;
+import com.coms3091mc3.projectmanager.utils.Const;
 import com.coms3091mc3.projectmanager.view.AddProjectDialogFragment;
 
 import org.json.JSONArray;
@@ -56,7 +55,7 @@ public class DashboardFragment extends Fragment {
         Context context = getContext();
         if (context != null) {
             RequestQueue queue = Volley.newRequestQueue(context);
-            String url = BuildConfig.apiUrl + "/projects";
+            String url = Const.MOCK_SERVER + "/projects";
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                     response -> {
