@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import database.User;
 
-
-
 @RestController 
 public class UserController {
 	
@@ -39,7 +37,7 @@ public class UserController {
 	@RequestMapping("/user")
 	List<User> getAllUsers() {
 		List<User> users = userRepository.findAll();
-		System.out.println("\n\n\n\n" + users + "\n\n\n\n");
+//		System.out.println("\n\n\n\n" + users + "\n\n\n\n");
 		return users;
 	}
 	
@@ -53,6 +51,7 @@ public class UserController {
 		List<User> users = userRepository.findAll();
 
         System.out.println("New user: " + newUser.toString());
+        
         String userId = newUser.username + "309";
 
         for (User user : users) {
@@ -62,7 +61,7 @@ public class UserController {
             }
         }
         newUser.setLoggedIn(true);
-        newUser.setUserId(userId);
+//        newUser.setUserId(userId);
         System.out.println("Registered user: " + newUser.toString());
 
         userRepository.save(newUser);
@@ -77,7 +76,7 @@ public class UserController {
         List<User> users = userRepository.findAll();
         
         System.out.println("User list");
-    	System.out.println("\n" + users + "\n\n\n");
+    	System.out.println("\n\n" + users + "\n\n\n");
     	
     	System.out.println(user.username);
     	System.out.println();
@@ -91,32 +90,7 @@ public class UserController {
         }
         
         return Status.FAILURE;
-
-//    	
-//      for (User other : users) {
-//          if (other.username.equals(user.username) && other.password.equals(user.password)) {
-//              user.setLoggedIn(true);
-//              userRepository.save(user);
-//              return Status.SUCCESS;
-//          }
-//      }
-//        
-//        return Status.FAILURE;
     }
-	
-	
-	
-//    @PostMapping(
-//            value = "/postbody",
-//            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-//            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-//        public ResponseEntity<User> postBody(@RequestBody User user) {
-//            User persistedPerson = userRepository.save(user);
-//            return ResponseEntity
-//                .created(URI
-//                         .create(String.format("/persons/%s", user.getUserName())))
-//                .body(persistedPerson);
-//        }
 
     /* 
      * Log out call 
