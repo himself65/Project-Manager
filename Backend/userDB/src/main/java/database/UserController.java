@@ -51,19 +51,15 @@ public class UserController {
 		List<User> users = userRepository.findAll();
 
         System.out.println("New user: " + newUser.toString());
-        
-        String userId = newUser.username + "309";
-
         for (User user : users) {
             if (user.username.equals(newUser.username)) {
                 System.out.println("User Already exists!");
                 return Status.USER_ALREADY_EXISTS;
             }
         }
-        newUser.setLoggedIn(true);
-//        newUser.setUserId(userId);
+//        newUser.setLoggedIn(true);
         System.out.println("Registered user: " + newUser.toString());
-
+        
         userRepository.save(newUser);
         return Status.SUCCESS;
     }
