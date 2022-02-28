@@ -36,7 +36,7 @@ public class UserController {
 /*
  * 	to get all the Users details from the database
  */
-	@RequestMapping("/users")
+	@RequestMapping("/user")
 	List<User> getAllUsers() {
 		List<User> users = userRepository.findAll();
 		System.out.println("\n\n\n\n" + users + "\n\n\n\n");
@@ -47,7 +47,7 @@ public class UserController {
  * Registers user to the database and checks if there is an
  * existing user registered with the same parameters 
  */
-	@PostMapping("/user/register")
+	@PostMapping("/register")
 	public Status registerUser(@RequestBody User newUser) {
 		
 		List<User> users = userRepository.findAll();
@@ -72,7 +72,7 @@ public class UserController {
 	/*
 	 * Log in call 
 	 */
-    @PostMapping("/users/login")
+    @PostMapping("/user/login")
     public Status loginUser(@RequestBody User user) {
         List<User> users = userRepository.findAll();
         
@@ -121,7 +121,7 @@ public class UserController {
     /* 
      * Log out call 
      */
-    @PostMapping("/users/logout")
+    @PostMapping("/user/logout")
     public Status logUserOut(@RequestBody User user) {
         List<User> users = userRepository.findAll();
 
@@ -146,7 +146,7 @@ public class UserController {
 	}
 
 //	Delete ALL users
-    @DeleteMapping("/users/all")
+    @DeleteMapping("/user/all")
     public Status deleteUsers() {
     	userRepository.deleteAll();
         return Status.SUCCESS;

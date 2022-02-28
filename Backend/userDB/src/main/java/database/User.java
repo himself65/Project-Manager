@@ -51,7 +51,7 @@ public class User {
 	
 	public String getUserPassword() {return password;}
 
-	public void setUserPassword(String userPassword) {this.password = userPassword;}
+	public void setUserPassword(String password) {this.password = password;}
 	
 	public String getDateAndTime() {return dateAndTime;}
 	
