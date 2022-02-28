@@ -3,6 +3,8 @@ package database;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+//import com.sun.org.apache.xerces.internal.util.URI;
 
 import database.User;
 
@@ -24,11 +28,6 @@ public class UserController {
 	/*
 	 * to get User details by ID from the database
 	 */
-//	@GetMapping("/user/{id}")  //("/user/{id}") is the endpoint 
-//	User getUserName(@PathVariable Long id) {
-//		return userRepository.findById(id).get();	
-//	}
-	
 	@GetMapping("/user/{id}")  //("/user/{id}") is the endpoint 
 	User getUserName(@PathVariable Integer id) {
 		return userRepository.findById(id).get();	
@@ -76,16 +75,48 @@ public class UserController {
     @PostMapping("/users/login")
     public Status loginUser(@RequestBody User user) {
         List<User> users = userRepository.findAll();
+        
+        System.out.println("User list");
+    	System.out.println("\n" + users + "\n\n\n");
+    	
+    	System.out.println(user.username);
+    	System.out.println();
+
         for (User other : users) {
-            if (other.username.equals(user.username) && other.password.equals(user.password)) {
+            if (other.equals(user)) {
                 user.setLoggedIn(true);
                 userRepository.save(user);
                 return Status.SUCCESS;
             }
         }
-
+        
         return Status.FAILURE;
+
+//    	
+//      for (User other : users) {
+//          if (other.username.equals(user.username) && other.password.equals(user.password)) {
+//              user.setLoggedIn(true);
+//              userRepository.save(user);
+//              return Status.SUCCESS;
+//          }
+//      }
+//        
+//        return Status.FAILURE;
     }
+	
+	
+	
+//    @PostMapping(
+//            value = "/postbody",
+//            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+//            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+//        public ResponseEntity<User> postBody(@RequestBody User user) {
+//            User persistedPerson = userRepository.save(user);
+//            return ResponseEntity
+//                .created(URI
+//                         .create(String.format("/persons/%s", user.getUserName())))
+//                .body(persistedPerson);
+//        }
 
     /* 
      * Log out call 
@@ -108,12 +139,6 @@ public class UserController {
 	/*
 	 * to delete user detail from the database
 	 */
-//	@DeleteMapping("/user/{id}")
-//	String deleteUser(@PathVariable Long id) {
-//		userRepository.deleteById(id);
-//		return "deleted user: " + id;
-//	}
-	
 	@DeleteMapping("/user/{id}")
 	String deleteUser(@PathVariable Integer id) {
 		userRepository.deleteById(id);
