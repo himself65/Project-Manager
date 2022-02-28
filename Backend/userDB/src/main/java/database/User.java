@@ -14,8 +14,8 @@ public class User {
  */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	Integer userId;
-	String userId;
+	Integer id;
+//	String id;
 	
 	@Column 
 	String username;
@@ -24,7 +24,10 @@ public class User {
 	String password;
 	
 	@Column
-	String  dateAndTime;
+	String  date;
+	
+	@Column
+	String  time;
 	
 	@Column
 	String author;
@@ -39,23 +42,25 @@ public class User {
 		this.loggedIn = false;
 	}
 
-//	public Integer getUserId() {return userId;}
-	public String getUserId() {return userId;}
+	public Integer getUserId() {return id;}
 	
-//	public void setUserId(int userId) {this.userId = userId;}
-	public void setUserId(String userId) {this.userId = userId;}
+	public void setUserId(int id) {this.id = id;}
 	
-	public String getUserName() {return username;}
+	public String getUsername() {return username;}
 	
-	public void setUserName(String userName) {this.username = userName;}
+	public void setUsername(String username) {this.username = username;}
 	
 	public String getUserPassword() {return password;}
 
-	public void setUserPassword(String userPassword) {this.password = userPassword;}
+	public void setUserPassword(String password) {this.password = password;}
 	
-	public String getDateAndTime() {return dateAndTime;}
+	public String getDate() {return date;}
 	
-	public void setDateAndTime(String dateAndTime) {this.dateAndTime = dateAndTime;}
+	public void setDate(String date) {this.date = date;}
+	
+	public String getTime() {return time;}
+	
+	public void setTime(String time) {this.time = time;}	
 	
 	public String getAuthor() {return author;}
 	
@@ -83,7 +88,7 @@ public class User {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(userId, username, password, 
+        return Objects.hash(id, username, password, 
                             loggedIn);
     }
 
@@ -93,7 +98,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "user_id=" + userId +
+                "user_id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", loggedIn=" + loggedIn +
