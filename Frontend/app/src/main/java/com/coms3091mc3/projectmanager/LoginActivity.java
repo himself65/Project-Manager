@@ -65,21 +65,29 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d("login_debug", response.toString());
                         btnLogin.setClickable(false);
                         btnRegister.setClickable(false);
-                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
-                        if (username.getText().toString().equals("login") && password.getText().toString().equals("test")
-                                && v.getTag().toString().equals("login")) { //login if action was login with correct credentials
-                            Intent intentHome = new Intent(LoginActivity.this, MainActivity.class);
-                            Const.setUsername(username.getText().toString());
-                            pBar.setVisibility(View.INVISIBLE);
-                            startActivity(intentHome);
-                            finish();
-                        } else if (v.getTag().toString().equals("register")) {
-                            Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
-                            pBar.setVisibility(View.INVISIBLE);
+                        try{
+                            Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                            if(response.getInt("status") == 200 && v.getTag().toString().equals("login")) { //Login Success
+                                Intent intentHome = new Intent(LoginActivity.this, MainActivity.class);
+                                Const.setUsername(username.getText().toString());
+                                pBar.setVisibility(View.INVISIBLE);
+                                startActivity(intentHome);
+                                finish();
+                            }
+                            if(response.getInt("status") == 200 && v.getTag().toString().equals("register")){
+                                Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                                pBar.setVisibility(View.INVISIBLE);
+                            }
                         }
-                        pBar.setVisibility(View.INVISIBLE);
-                        btnLogin.setClickable(true);
-                        btnRegister.setClickable(true);
+                        catch(Exception e){
+                            Log.d("login_debug",e.getMessage());
+//                            e.printStackTrace();
+                        }
+                        finally{
+                            pBar.setVisibility(View.INVISIBLE);
+                            btnLogin.setClickable(false);
+                            btnRegister.setClickable(false);
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
