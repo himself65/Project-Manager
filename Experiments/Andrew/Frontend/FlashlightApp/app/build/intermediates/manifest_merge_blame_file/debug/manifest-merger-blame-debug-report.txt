@@ -1,0 +1,61 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.flashlightapp"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+8-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml
+9        android:targetSdkVersion="32" />
+9-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.CAMERA" >
+11-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml:5:5-82
+11-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml:5:22-62
+12    </uses-permission>
+13
+14    <application
+14-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml:7:5-23:19
+15        android:allowBackup="true"
+15-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml:8:9-35
+16        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+16-->[androidx.core:core:1.5.0] /Users/andrewjcf/.gradle/caches/transforms-3/3d009a9472caec2ed4a541e9b7d8caa3/transformed/core-1.5.0/AndroidManifest.xml:24:18-86
+17        android:debuggable="true"
+18        android:icon="@mipmap/ic_launcher"
+18-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml:9:9-43
+19        android:label="@string/app_name"
+19-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml:10:9-41
+20        android:roundIcon="@mipmap/ic_launcher_round"
+20-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml:11:9-54
+21        android:supportsRtl="true"
+21-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml:12:9-35
+22        android:testOnly="true"
+23        android:theme="@style/Theme.FlashlightApp" >
+23-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml:13:9-51
+24        <activity
+24-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml:14:9-22:20
+25            android:name="com.example.flashlightapp.MainActivity"
+25-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml:15:13-41
+26            android:exported="true" >
+26-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml:16:13-36
+27            <intent-filter>
+27-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml:17:13-21:29
+28                <action android:name="android.intent.action.MAIN" />
+28-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml:18:17-69
+28-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml:18:25-66
+29
+30                <category android:name="android.intent.category.LAUNCHER" />
+30-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml:20:17-77
+30-->/Users/andrewjcf/1_mc_3/Experiments/Andrew/FlashlightApp/app/src/main/AndroidManifest.xml:20:27-74
+31            </intent-filter>
+32        </activity>
+33        <activity
+33-->[com.karumi:dexter:6.2.3] /Users/andrewjcf/.gradle/caches/transforms-3/0d86deeee37dc3cf478936e9c9fc6f38/transformed/dexter-6.2.3/AndroidManifest.xml:27:9-29:72
+34            android:name="com.karumi.dexter.DexterActivity"
+34-->[com.karumi:dexter:6.2.3] /Users/andrewjcf/.gradle/caches/transforms-3/0d86deeee37dc3cf478936e9c9fc6f38/transformed/dexter-6.2.3/AndroidManifest.xml:28:13-60
+35            android:theme="@style/Dexter.Internal.Theme.Transparent" />
+35-->[com.karumi:dexter:6.2.3] /Users/andrewjcf/.gradle/caches/transforms-3/0d86deeee37dc3cf478936e9c9fc6f38/transformed/dexter-6.2.3/AndroidManifest.xml:29:13-69
+36    </application>
+37
+38</manifest>
