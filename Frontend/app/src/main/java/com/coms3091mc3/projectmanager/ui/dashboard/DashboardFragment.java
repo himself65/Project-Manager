@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.coms3091mc3.projectmanager.BuildConfig;
@@ -55,18 +56,17 @@ public class DashboardFragment extends Fragment {
         Context context = getContext();
         if (context != null) {
             RequestQueue queue = Volley.newRequestQueue(context);
-            String url = Const.MOCK_SERVER + "/projects";
+            String url = Const.API_SERVER + "/projects";
 
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                    response -> {
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                    projects -> {
                         try {
-                            JSONArray projects = response.getJSONArray("projects");
                             for (int i = 0; i < projects.length(); i++) {
                                 JSONObject object = (JSONObject) projects.get(i);
                                 Project project = new Project(
-                                        object.getInt("id"),
-                                        object.getString("name"),
-                                        object.getString("created_date")
+                                        object.getInt("projectID"),
+                                        object.getString("projectName"),
+                                        object.getString("dateCreated")
                                 );
                                 binding.getModal().projectsAdapter.add(project.getName());
                             }
