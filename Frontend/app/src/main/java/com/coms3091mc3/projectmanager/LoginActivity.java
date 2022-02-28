@@ -74,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(intentHome);
                             finish();
                         } else if (v.getTag().toString().equals("register")) {
+                            Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
                             pBar.setVisibility(View.INVISIBLE);
                         }
                         pBar.setVisibility(View.INVISIBLE);
@@ -84,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("login_debug_error", "Error: " + error.toString());
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                 // hide the progress dialog
                 pBar.setVisibility(View.INVISIBLE);
             }
