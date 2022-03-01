@@ -19,6 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.coms3091mc3.projectmanager.BuildConfig;
 import com.coms3091mc3.projectmanager.R;
@@ -33,6 +34,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -55,7 +58,6 @@ public class DashboardFragment extends Fragment {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         Context context = getContext();
         if (context != null) {
-            RequestQueue queue = Volley.newRequestQueue(context);
             String url = Const.API_SERVER + "/project";
 
             JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
@@ -87,8 +89,18 @@ public class DashboardFragment extends Fragment {
                 FragmentManager fragmentManager = getChildFragmentManager();
                 AddProjectDialogFragment fragment = new AddProjectDialogFragment(new AddProjectDialogFragment.AddProjectDialogListener() {
                     @Override
-                    public void onDialogPositiveClick(DialogFragment dialog) {
-                        Logger.getLogger(getContext().toString()).info("TEST");
+                    public void onDialogPositiveClick(String projectName) {
+                        String url = Const.API_SERVER + "/project";
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("projectName", projectName);
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
+                                new JSONObject(params),
+                                response -> {
+                                    Logger.getLogger("json").log(Level.INFO, response.toString());
+                                    binding.getModal().projectsAdapter.add(projectName);
+                                },
+                                error -> Logger.getLogger("json").log(Level.INFO, error.toString()));
+                        AppController.getInstance().addToRequestQueue(request);
                     }
                 });
                 fragment.show(fragmentManager, "hello");

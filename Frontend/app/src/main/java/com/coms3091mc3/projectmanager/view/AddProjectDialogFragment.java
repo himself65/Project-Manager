@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +23,7 @@ import java.util.logging.Logger;
 
 public class AddProjectDialogFragment extends DialogFragment {
     public interface AddProjectDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
+        public void onDialogPositiveClick(String projectName);
     }
 
     AddProjectDialogListener listener;
@@ -42,11 +43,13 @@ public class AddProjectDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        builder.setView(inflater.inflate(R.layout.fragment_add_project, null))
+        View view = inflater.inflate(R.layout.fragment_add_project, null);
+        builder.setView(view)
                 .setPositiveButton("New", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        listener.onDialogPositiveClick(AddProjectDialogFragment.this);
+                        EditText text = view.findViewById(R.id.edit_username);
+                        listener.onDialogPositiveClick(text.getText().toString());
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
