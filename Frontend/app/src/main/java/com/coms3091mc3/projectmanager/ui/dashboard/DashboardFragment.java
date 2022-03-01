@@ -56,7 +56,7 @@ public class DashboardFragment extends Fragment {
         Context context = getContext();
         if (context != null) {
             RequestQueue queue = Volley.newRequestQueue(context);
-            String url = Const.API_SERVER + "/projects";
+            String url = Const.API_SERVER + "/project";
 
             JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                     projects -> {

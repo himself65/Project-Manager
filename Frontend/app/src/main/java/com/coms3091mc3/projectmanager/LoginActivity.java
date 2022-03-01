@@ -85,8 +85,8 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         finally{
                             pBar.setVisibility(View.INVISIBLE);
-                            btnLogin.setClickable(false);
-                            btnRegister.setClickable(false);
+                            btnLogin.setClickable(true);
+                            btnRegister.setClickable(true);
                         }
                     }
                 }, new Response.ErrorListener() {
