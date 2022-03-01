@@ -77,7 +77,7 @@ public class UserController {
         System.out.println("Registered user: " + newUser.toString());
         
         userRepository.save(newUser);
-        responseBody.put("status", "200");
+        responseBody.put("status", 200);
         responseBody.put("message", "Account successfully created!");
         
         return responseBody;
@@ -88,8 +88,9 @@ public class UserController {
 	 * Log in call 
 	 */
     @PostMapping("/login")
-    public Status loginUser(@RequestBody User user) {
+    public JSONObject loginUser(@RequestBody User user) {
         List<User> users = userRepository.findAll();
+        JSONObject responseBody = new JSONObject();
         
         System.out.println("User list");
     	System.out.println("\n\n" + users + "\n\n\n");
@@ -101,45 +102,61 @@ public class UserController {
             if (other.equals(user)) {
                 user.setLoggedIn(true);
                 userRepository.save(user);
-                return Status.SUCCESS;
+
+                responseBody.put("status", 200);
+                responseBody.put("message", "Login Successful");
+                return responseBody;
             }
         }
-        
-        return Status.FAILURE;
+        responseBody.put("status", 400);
+        responseBody.put("message", "Login Failed");
+        return responseBody;
     }
 
     /* 
      * Log out call 
      */
     @PostMapping("/logout")
-    public Status logUserOut(@RequestBody User user) {
+    public JSONObject logUserOut(@RequestBody User user) {
+        JSONObject responseBody = new JSONObject();
+
         List<User> users = userRepository.findAll();
 
         for (User other : users) {
             if (other.username.equals(user.username)) {
                 user.setLoggedIn(false);
                 userRepository.save(user);
-                return Status.SUCCESS;
+                responseBody.put("status", 200);
+                responseBody.put("message", "User Successfully logged out");
+                return responseBody;
             }
         }
-
-        return Status.FAILURE;
+        responseBody.put("status", 400);
+        responseBody.put("message", "Failure to Logout");
+        return responseBody;
     }
 
 	/*
 	 * to delete user detail from the database
 	 */
 	@DeleteMapping("/user/{id}")
-	String deleteUser(@PathVariable Integer id) {
+	JSONObject deleteUser(@PathVariable Integer id) {
+        JSONObject responseBody = new JSONObject();
 		userRepository.deleteById(id);
-		return "deleted user: " + id;
+        responseBody.put("status", 200);
+        responseBody.put("message", "Successfully deleted user");
+		return responseBody;
 	}
 
 //	Delete ALL users
     @DeleteMapping("/user/all")
-    public Status deleteUsers() {
+    public JSONObject deleteUsers() {
+        JSONObject responseBody = new JSONObject();
     	userRepository.deleteAll();
-        return Status.SUCCESS;
+
+        responseBody.put("status", 200);
+        responseBody.put("message", "Successfully deleted all users");
+        return responseBody;
     }
 
 	
