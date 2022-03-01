@@ -24,9 +24,17 @@ public class ProjectController {
 
 
     @PostMapping("/project")
-    Project createProject(@RequestBody Project q) {
+    Status createProject(@RequestBody Project q) {
+        List<Project> projects = db.findAll();
+
+        for (Project p : projects) {
+            if (p.projectName.equals(q.projectName))
+            {
+                return Status.PROJECT_ALREADY_EXISTS;
+            }
+        }
         db.save(q);
-        return q;
+        return Status.SUCCESS;
     }
 
 }
