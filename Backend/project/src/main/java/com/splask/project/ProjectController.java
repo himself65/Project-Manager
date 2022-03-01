@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 public class ProjectController {
 
-    @Autowired
+
     projectDB db;
 
     @GetMapping("/project/{id}")

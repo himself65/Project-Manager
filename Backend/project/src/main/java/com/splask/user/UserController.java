@@ -18,7 +18,7 @@ import net.minidev.json.JSONObject;
 @RestController 
 public class UserController {
 	
-	@Autowired
+
 	UserDB userRepository;
 
 	/*
