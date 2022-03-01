@@ -9,6 +9,7 @@ public enum Status {
 	
     SUCCESS,
     USER_ALREADY_EXISTS,
-    FAILURE
+    FAILURE,
+    PASSWORD_SHORT,
 
 }

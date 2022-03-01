@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 //import com.sun.org.apache.xerces.internal.util.URI;
 
 import database.User;
-
-
+import net.minidev.json.JSONObject;
 
 @RestController 
 public class UserController {
@@ -36,10 +35,10 @@ public class UserController {
 /*
  * 	to get all the Users details from the database
  */
-	@RequestMapping("/users")
+	@RequestMapping("/user")
 	List<User> getAllUsers() {
 		List<User> users = userRepository.findAll();
-		System.out.println("\n\n\n\n" + users + "\n\n\n\n");
+//		System.out.println("\n\n\n\n" + users + "\n\n\n\n");
 		return users;
 	}
 	
@@ -47,37 +46,53 @@ public class UserController {
  * Registers user to the database and checks if there is an
  * existing user registered with the same parameters 
  */
-	@PostMapping("/user/register")
-	public Status registerUser(@RequestBody User newUser) {
+	@PostMapping("/register")
+	public JSONObject registerUser(@RequestBody User newUser) {
 		
+		JSONObject responseBody = new JSONObject();
 		List<User> users = userRepository.findAll();
 
         System.out.println("New user: " + newUser.toString());
+        
         String userId = newUser.username + "309";
 
         for (User user : users) {
             if (user.username.equals(newUser.username)) {
                 System.out.println("User Already exists!");
-                return Status.USER_ALREADY_EXISTS;
+                responseBody.put("status", 400);
+                responseBody.put("message", "User Already Exists!");
+                return responseBody;
+//                return Status.USER_ALREADY_EXISTS;
             }
         }
-        newUser.setLoggedIn(true);
-        newUser.setUserId(userId);
+        
+        if(newUser.password.length() < 3) {
+            responseBody.put("status", 400);
+            responseBody.put("message", "Password Too Short!");
+            return responseBody;
+//        	return Status.PASSWORD_SHORT;
+        }
+//        newUser.setLoggedIn(true);
+//        newUser.setUserId(userId);
         System.out.println("Registered user: " + newUser.toString());
-
+        
         userRepository.save(newUser);
-        return Status.SUCCESS;
+        responseBody.put("status", "200");
+        responseBody.put("message", "Account successfully created!");
+        
+        return responseBody;
+//        return Status.SUCCESS;
     }
 	
 	/*
 	 * Log in call 
 	 */
-    @PostMapping("/users/login")
+    @PostMapping("/login")
     public Status loginUser(@RequestBody User user) {
         List<User> users = userRepository.findAll();
         
         System.out.println("User list");
-    	System.out.println("\n" + users + "\n\n\n");
+    	System.out.println("\n\n" + users + "\n\n\n");
     	
     	System.out.println(user.username);
     	System.out.println();
@@ -91,37 +106,12 @@ public class UserController {
         }
         
         return Status.FAILURE;
-
-//    	
-//      for (User other : users) {
-//          if (other.username.equals(user.username) && other.password.equals(user.password)) {
-//              user.setLoggedIn(true);
-//              userRepository.save(user);
-//              return Status.SUCCESS;
-//          }
-//      }
-//        
-//        return Status.FAILURE;
     }
-	
-	
-	
-//    @PostMapping(
-//            value = "/postbody",
-//            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-//            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-//        public ResponseEntity<User> postBody(@RequestBody User user) {
-//            User persistedPerson = userRepository.save(user);
-//            return ResponseEntity
-//                .created(URI
-//                         .create(String.format("/persons/%s", user.getUserName())))
-//                .body(persistedPerson);
-//        }
 
     /* 
      * Log out call 
      */
-    @PostMapping("/users/logout")
+    @PostMapping("/logout")
     public Status logUserOut(@RequestBody User user) {
         List<User> users = userRepository.findAll();
 
@@ -146,7 +136,7 @@ public class UserController {
 	}
 
 //	Delete ALL users
-    @DeleteMapping("/users/all")
+    @DeleteMapping("/user/all")
     public Status deleteUsers() {
     	userRepository.deleteAll();
         return Status.SUCCESS;
