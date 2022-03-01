@@ -3,6 +3,7 @@
     package="com.coms3091mc3.projectmanager">
     <uses-permission android:name="android.permission.INTERNET" />
     <application
+        android:usesCleartextTraffic="true"
         android:name="com.coms3091mc3.projectmanager.app.AppController"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 //import com.sun.org.apache.xerces.internal.util.URI;
 
 import database.User;
+import net.minidev.json.JSONObject;
 
 @RestController 
 public class UserController {
@@ -46,28 +47,47 @@ public class UserController {
  * existing user registered with the same parameters 
  */
 	@PostMapping("/register")
-	public Status registerUser(@RequestBody User newUser) {
+	public JSONObject registerUser(@RequestBody User newUser) {
 		
+		JSONObject responseBody = new JSONObject();
 		List<User> users = userRepository.findAll();
 
         System.out.println("New user: " + newUser.toString());
+        
+        String userId = newUser.username + "309";
+
         for (User user : users) {
             if (user.username.equals(newUser.username)) {
                 System.out.println("User Already exists!");
-                return Status.USER_ALREADY_EXISTS;
+                responseBody.put("status", 400);
+                responseBody.put("message", "User Already Exists!");
+                return responseBody;
+//                return Status.USER_ALREADY_EXISTS;
             }
         }
+        
+        if(newUser.password.length() < 3) {
+            responseBody.put("status", 400);
+            responseBody.put("message", "Password Too Short!");
+            return responseBody;
+//        	return Status.PASSWORD_SHORT;
+        }
 //        newUser.setLoggedIn(true);
+//        newUser.setUserId(userId);
         System.out.println("Registered user: " + newUser.toString());
         
         userRepository.save(newUser);
-        return Status.SUCCESS;
+        responseBody.put("status", "200");
+        responseBody.put("message", "Account successfully created!");
+        
+        return responseBody;
+//        return Status.SUCCESS;
     }
 	
 	/*
 	 * Log in call 
 	 */
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public Status loginUser(@RequestBody User user) {
         List<User> users = userRepository.findAll();
         
@@ -91,7 +111,7 @@ public class UserController {
     /* 
      * Log out call 
      */
-    @PostMapping("/user/logout")
+    @PostMapping("/logout")
     public Status logUserOut(@RequestBody User user) {
         List<User> users = userRepository.findAll();
 
