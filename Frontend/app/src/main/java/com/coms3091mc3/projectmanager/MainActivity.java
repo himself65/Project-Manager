@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -16,6 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.utils.Const;
@@ -31,6 +33,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.coms3091mc3.projectmanager.databinding.ActivityMainBinding;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -85,47 +89,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logout(MenuItem item){
-        uri = Uri.parse(Const.MOCK_SERVER + "/logout").buildUpon();
-        uri.appendQueryParameter("username",Const.username);
-//        url = Const.MOCK_SERVER;
-//        url+="/login";
-//                url = "https://api.androidhive.info/volley/string_response.html";
-        StringRequest loginRequest;
-        loginRequest = new StringRequest(Request.Method.GET, uri.build().toString(), new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("login_debug", response.toString());
-
-//                        pBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(getApplicationContext(),response.toString(), Toast.LENGTH_LONG).show();
-                Intent intentLogout = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intentLogout);
-                finish();
-            }
-        },new Response.ErrorListener() {
+//        uri = Uri.parse(Const.MOCK_SERVER + "/logout").buildUpon();
+        uri = Uri.parse(Const.API_SERVER + "/logout").buildUpon();
+        ProgressBar pBar = findViewById(R.id.progressBar);
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("username", Const.username);
+        JsonObjectRequest logoutRequest;
+        logoutRequest = new JsonObjectRequest(Request.Method.POST, uri.build().toString(),
+                new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getInt("status") == 200) { //Logout Success
+                            Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                            Intent intentLogout = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(intentLogout);
+                            finish();
+                        }
+                    } catch (Exception e) {
+                        Log.d("logout_debug", e.getMessage());
+//                            e.printStackTrace();
+                    } finally {
+                        pBar.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("login_debug_error","Error: "+ error.toString());
+                VolleyLog.d("logout_debug", "Error: " + error.toString());
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                 // hide the progress dialog
-//                        pBar.setVisibility(View.INVISIBLE);
+                pBar.setVisibility(View.INVISIBLE);
             }
-        }) {
-            @Override
-            public Response<String> parseNetworkResponse(NetworkResponse response) {
-                int mStatusCode = response.statusCode;
-                Log.d("login_debug_status",String.valueOf(mStatusCode));
-                return super.parseNetworkResponse(response);
-            };
-            //for POST method
-//            @Override
-//            protected Map<String,String> getParams(){
-//                Map<String,String> params = new HashMap<String, String>();
-//                params.put("username",username.getText().toString());
-//                params.put("password",password.getText().toString());
-//                return params;
-//            };
-        };
-        AppController.getInstance().addToRequestQueue(loginRequest, "logout_request");
+        });
+        AppController.getInstance().addToRequestQueue(logoutRequest, "logout_request");
     }
 
 

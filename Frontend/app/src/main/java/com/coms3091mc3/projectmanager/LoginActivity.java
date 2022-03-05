@@ -49,12 +49,11 @@ public class LoginActivity extends AppCompatActivity {
 
     public void submit(View v) {
         pBar.setVisibility(View.VISIBLE);
+        //        uri = Uri.parse(Const.MOCK_SERVER + v.getTag().toString()).buildUpon();
         uri = Uri.parse(Const.API_SERVER + "/" + v.getTag().toString()).buildUpon();
         uri.appendQueryParameter("username", username.getText().toString());
         uri.appendQueryParameter("password", password.getText().toString());
-//        url = Const.MOCK_SERVER;
-//        url+="/login";
-//                url = "https://api.androidhive.info/volley/string_response.html";
+
         Map<String, String> params = new HashMap<String, String>();
         params.put("username", username.getText().toString());
         params.put("userPassword", password.getText().toString());
@@ -74,8 +73,8 @@ public class LoginActivity extends AppCompatActivity {
                                 startActivity(intentHome);
                                 finish();
                             }
-                            if(response.getInt("status") == 200 && v.getTag().toString().equals("register")){
-                                Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                            if(response.getInt("status") == 200 && v.getTag().toString().equals("register")){ //Register Success
+                                Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_SHORT).show();
                                 pBar.setVisibility(View.INVISIBLE);
                             }
                         }
