@@ -1,5 +1,6 @@
 package com.coms3091mc3.projectmanager.ui.home;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -28,10 +30,13 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
 
         final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         Button btnDropdownMenu;
         btnDropdownMenu = root.findViewById(R.id.btnMenu);
-        btnDropdownMenu.setText(Const.username);
+//        btnDropdownMenu.setText(Const.username);
+
+
+
         return root;
     }
 
