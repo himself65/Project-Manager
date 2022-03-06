@@ -17,6 +17,6 @@ public class DashboardDataModal {
     public DashboardDataModal(Context context) {
         this.context = context;
         this.name = new ObservableField<>("UNKNOWN");
-        this.projectsAdapter = new ArrayAdapter<>(context, R.layout.fragment_item, R.id.content);
+        this.projectsAdapter = new ArrayAdapter<>(context, R.layout.fragment_item, R.id.projectName);
     }
 }
