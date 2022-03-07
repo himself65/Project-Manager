@@ -1,7 +1,6 @@
 package com.splask.team;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,17 +13,17 @@ public class TeamController {
     teamDB db;
 
 
-    @GetMapping("/project/{id}")
+    @GetMapping("/team/{id}")
     Team getTeam(@PathVariable Integer id)
     {
         return db.findById(id).orElseThrow(RuntimeException::new);
     }
 
-    @RequestMapping("/projects")
-    List<Team> hello(){return db.findAll();}
+    @RequestMapping("/team")
+    List<Team> getAllTeams(){return db.findAll();}
 
 
-    @PostMapping("/project")
+    @PostMapping("/team")
     Team createTeam(@RequestBody Team t) {
         db.save(t);
         return t;
