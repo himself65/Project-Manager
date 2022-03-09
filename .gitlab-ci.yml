@@ -5,10 +5,10 @@ stages:
 maven-build:
   stage: maventry
   tags:
-    -springboot_tag
+    - springboot_tag
   script:
-    -cd Backend
-    -mvn package
+    - cd Backend
+    - mvn package
 
 android-build:
   image: javiersantos/android-ci:latest
