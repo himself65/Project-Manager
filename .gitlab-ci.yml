@@ -1,25 +1,25 @@
 stages:
-  - mavenbuild
-  - androidbuild
+  - maventry
+  - androidtry
   
 maven-build:
-    stage: mavenbuild
+    stage: maventry
     tags:
       - springboot_tag
     script:
-      - cd Backend/Splask
+      - cd Backend
       - mvn package 
 
 
 android-build:    
     image: javiersantos/android-ci:latest
-    stage: androidbuild     
+    stage: androidtry   
     tags:        
         - android_tag
 
     before_script:        
         - export GRADLE_USER_HOME='pwd'/.gradle
-        - chmod +x ./Frontend/app/gradlew  
+        - chmod +x ./Frontend/gradlew  
     script:        
-        - cd Frontend/app/
+        - cd Frontend
         - ./gradlew assemble 
