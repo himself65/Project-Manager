@@ -8,7 +8,10 @@ maven-build:
       - springboot_tag
     script:
       - cd Backend/Splask
-      - mvn package -b
+      - mvn package -B
+    artifacts:
+      paths:
+        - Backend/Splask/target/*.jar
 
 
 android-build:    
