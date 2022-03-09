@@ -7,7 +7,7 @@ maven-build:
   tags:
     - springboot_tag
   script:
-    - cd Backend/Splask - B
+    - cd Backend/Splask 
     - mvn package
 
 android-build:
