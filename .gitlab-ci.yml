@@ -1,0 +1,25 @@
+stages:
+  - mavenbuild
+  - androidbuild
+  
+maven-build:
+    stage: mavenbuild
+    tags:
+      - springboot_tag
+    script:
+      - cd Backend/Splask
+      - mvn package 
+
+
+android-build:    
+    image: javiersantos/android-ci:latest
+    stage: androidbuild     
+    tags:        
+        - android_tag
+
+    before_script:        
+        - export GRADLE_USER_HOME='pwd'/.gradle
+        - chmod +x ./Frontend/app/gradlew  
+    script:        
+        - cd Frontend/app/
+        - ./gradlew assemble 
