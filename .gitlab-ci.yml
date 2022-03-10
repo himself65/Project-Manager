@@ -11,13 +11,13 @@ maven-build:
     - mvn package
 
 android-build:
-  image: alpine:latest
+  image: gjandres/android-ci:latest
   stage: androidtry
   tags:
     - android_tag
   before_script:
-    - export GRADLE_USER_HOME-'pwd'/.gradle
+    - export GRADLE_USER_HOME='pwd'/.gradle
     - chmod +x ./Frontend/gradlew
   script:
-    - cd Frontend/app
+    - cd Frontend
     - ./gradlew assemble
