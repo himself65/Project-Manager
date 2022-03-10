@@ -16,7 +16,7 @@ android-build:
   tags:
     - android_tag
   before_script:
-    - export GRADLE_USER_HOME='pwd'/.gradle
+    - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./Frontend/gradlew
   script:
     - cd Frontend
