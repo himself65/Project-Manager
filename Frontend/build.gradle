@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:7.1.1
+        classpath "com.android.tools.build:2.3.0
     }
 }
 
