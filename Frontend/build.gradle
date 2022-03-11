@@ -1,6 +1,9 @@
 buildscript {
+    repositories {
+        mavenCentral()
+    }
     dependencies {
-        classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:7.1.1"
+        classpath "com.android.tools.build:7.1.1
     }
 }
 
