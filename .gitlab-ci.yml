@@ -11,7 +11,7 @@ maven-build:
     - mvn package
 
 android-build:
-  image: gjandres/android-ci
+  image: javiersantos/android-ci:latest
   stage: androidtry
   tags:
     - android_tag
