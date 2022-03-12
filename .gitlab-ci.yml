@@ -1,14 +1,25 @@
 stages:
-  - maventry
+  - mavenbuild
+  - maventest
   - androidtry
 
 maven-build:
-  stage: maventry
+  stage: mavenbuild
   tags:
     - springboot_tag
   script:
     - cd Backend/Splask 
     - mvn package
+maven-test:
+  stage: maventest
+  tags:
+    -springboot_tag
+  script: 
+    - cd Backend/Splask
+    - mvn test
+  artifacts:
+    paths:
+      - Backend/target/*.jar
 
 android-build:
   image: gjandres/android-ci:latest
