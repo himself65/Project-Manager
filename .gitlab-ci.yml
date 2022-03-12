@@ -1,7 +1,8 @@
 stages:
   - mavenbuild
   - maventest
-  - androidtry
+  - androidbuild
+  - androidtest
 
 maven-build:
   stage: mavenbuild
@@ -23,13 +24,27 @@ maven-test:
 
 android-build:
   image: gjandres/android-ci:latest
-  stage: androidtry
+  stage: androidbuild
   tags:
     - android_tag
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./Frontend/gradlew
-    - touch local.properties
   script:
     - cd Frontend
-    - ./gradlew assemble
+    - ./gradlew build
+  artifacts:
+    paths:
+      - Android_test/app/build/outputs/
+
+android_test:
+  image: gjandres/android-ci:latest
+  stage: androidtest
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod +x ./Frontend/gradlew
+  tags:
+    - android_tag
+  script:
+    - cd Frondtend
+    - ./gradlew test
