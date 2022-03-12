@@ -13,7 +13,7 @@ maven-build:
 maven-test:
   stage: maventest
   tags:
-    -springboot_tag
+    - springboot_tag
   script: 
     - cd Backend/Splask
     - mvn test
