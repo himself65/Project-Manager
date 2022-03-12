@@ -32,6 +32,10 @@ android {
         dataBinding true
     }
 }
+Properties properties = new Properties()
+properties.load(project.rootProject.file("local.properties").newDataInputStream())
+def sdkDir = properties.getProperty("sdk.dir")
+def ndkDir = properties.getProperty("ndk.dir")
 
 dependencies {
 
