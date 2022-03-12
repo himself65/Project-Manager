@@ -29,6 +29,7 @@ android-build:
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./Frontend/gradlew
+    - touch local.properties
   script:
     - cd Frontend
     - ./gradlew assemble
