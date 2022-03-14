@@ -14,7 +14,7 @@ public class User {
  */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Integer id;
+	Integer userID;
 //	String id;
 	
 	@Column 
@@ -42,9 +42,9 @@ public class User {
 		this.loggedIn = false;
 	}
 
-	public Integer getUserId() {return id;}
+	public Integer getUserId() {return userID;}
 	
-	public void setUserId(int id) {this.id = id;}
+	public void setUserId(int id) {this.userID = id;}
 	
 	public String getUsername() {return username;}
 	
@@ -88,7 +88,7 @@ public class User {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, 
+        return Objects.hash(userID, username, password,
                             loggedIn);
     }
 
@@ -98,7 +98,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "user_id=" + id +
+                "user_id=" + userID +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", loggedIn=" + loggedIn +

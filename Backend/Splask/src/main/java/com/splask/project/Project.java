@@ -1,11 +1,15 @@
 package com.splask.project;
 
+import com.splask.team.Team;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
+public
 class Project {
 
     @Id
@@ -15,16 +19,22 @@ class Project {
     @Column
     String projectName;
 
-    @Column
-    String team;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "teamID")
+    List<Team> teams;
 
     @Column
     String deadline;
 
     @Column
-    String completedBy;
+    Boolean status;
 
-    @Column
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "teamID")
+    List<Team> completedBy;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "userID")
     String creator;
 
     @Column
@@ -37,6 +47,7 @@ class Project {
     Project() {
 
         dateCreated = LocalDateTime.now();
+        teams = new ArrayList<>();
     }
 
     public Integer getProjectID() {
@@ -66,14 +77,28 @@ class Project {
         return deadline;
     }
 
-    public String getCompletedBy()
+    public boolean getStatus() {return status;}
+
+    public void setComplete() {
+        status = true;
+        setCompletedBy();
+    }
+
+    public List<Team> getCompletedBy()
     {
         return completedBy;
     }
 
-    public String getTeam()
+    public void setCompletedBy() {
+        if (status)
+        {
+            completedBy = teams;
+        }
+    }
+
+    public List<Team> getTeam()
     {
-        return team;
+        return teams;
     }
 
     public String getCreator()

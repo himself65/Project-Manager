@@ -1,9 +1,12 @@
 package com.splask.team;
 
+import com.splask.project.Project;
+
 import javax.persistence.*;
 
 
 @Entity
+public
 class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +22,10 @@ class Team {
     String teamUsers;
 
     @Column
-    String teamProjects;
+    Project teamProjects;
 
 
-    public Integer getProjectID() {
+    public Integer getTeamID() {
         return teamID;
     }
 
@@ -38,7 +41,7 @@ class Team {
         return teamUsers;
     }
 
-    public String getTeamProjects() {
+    public Project getTeamProjects() {
 
         return teamProjects;
     }
