@@ -31,7 +31,7 @@ class Project {
     Boolean status;
 
     @Column
-    List<Team> completedBy;
+    String completedBy;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userID")
@@ -81,21 +81,22 @@ class Project {
 
     public void setComplete() {
         status = true;
-        setCompletedBy();
+        //setCompletedBy();
     }
 
-    public List<Team> getCompletedBy()
+    public String getCompletedBy()
     {
         return completedBy;
     }
 
-    public void setCompletedBy() {
+    /* public void setCompletedBy() {
+
         if (status)
         {
-            completedBy = teams;
+            completedBy = t;
         }
     }
-
+*/
     public List<Team> getTeam()
     {
         return teams;

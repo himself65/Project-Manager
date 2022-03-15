@@ -22,7 +22,7 @@ class Team {
     String teamUsers;
 
     @Column
-    Project teamProjects;
+    String teamProjects;
 
 
     public Integer getTeamID() {
@@ -41,7 +41,7 @@ class Team {
         return teamUsers;
     }
 
-    public Project getTeamProjects() {
+    public String getTeamProjects() {
 
         return teamProjects;
     }
