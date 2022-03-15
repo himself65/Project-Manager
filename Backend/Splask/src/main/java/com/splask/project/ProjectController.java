@@ -1,5 +1,7 @@
 package com.splask.project;
 
+import com.splask.team.teamDB;
+import com.splask.user.UserDB;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -7,28 +9,35 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+
 @RestController
 public class ProjectController {
 
     @Autowired
-    projectDB db;
+    projectDB pDB;
+
+    @Autowired
+    teamDB tDB;
+
+    @Autowired
+    UserDB uDB;
 
     @GetMapping("/project/{id}")
     public Project getProject(@PathVariable Integer id)
     {
-        return db.findById(id).
+        return pDB.findById(id).
                 orElseThrow(RuntimeException::new);
     }
 // returns all Projects from database
     @RequestMapping("/project")
-    List<Project> hello(){return db.findAll();}
+    List<Project> hello(){return pDB.findAll();}
 
 // creates new project
     @PostMapping("/project")
     public JSONObject createProject(@RequestBody Project q) {
         JSONObject responseBody = new JSONObject();
 
-        List<Project> projects = db.findAll();
+        List<Project> projects = pDB.findAll();
 
         for (Project p : projects) {
             if (p.projectName.equals(q.projectName))
@@ -39,10 +48,10 @@ public class ProjectController {
             }
         }
 
-        db.save(q);
+        pDB.save(q);
         responseBody.put("status", 200);
         responseBody.put("message", "Project successfully created!");
-        db.save(q);
+        pDB.save(q);
         return responseBody;
     }
 // deletes project by id
@@ -50,7 +59,7 @@ public class ProjectController {
     JSONObject deleteProject(@PathVariable Integer id)
     {
         JSONObject responseBody = new JSONObject();
-        db.deleteById(id);
+        pDB.deleteById(id);
         responseBody.put("status", 200);
         responseBody.put("message", "Successfully Removed Project");
 

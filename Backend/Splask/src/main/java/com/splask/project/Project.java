@@ -1,6 +1,7 @@
 package com.splask.project;
 
 import com.splask.team.Team;
+import com.splask.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -29,13 +30,12 @@ class Project {
     @Column
     Boolean status;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "teamID")
+    @Column
     List<Team> completedBy;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userID")
-    String creator;
+    User creator;
 
     @Column
     String tasks;
@@ -101,7 +101,7 @@ class Project {
         return teams;
     }
 
-    public String getCreator()
+    public User getCreator()
     {
         return creator;
     }

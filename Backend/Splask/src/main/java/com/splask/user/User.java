@@ -1,5 +1,8 @@
 package com.splask.user;
 
+import com.splask.project.Project;
+import net.minidev.json.annotate.JsonIgnore;
+
 import java.util.Objects;
 import javax.persistence.*;
 //import javax.validation.constraints.NotBlank;
@@ -29,8 +32,9 @@ public class User {
 	@Column
 	String  time;
 	
-	@Column
-	String author;
+	@OneToOne
+	@JsonIgnore
+	Project projectsCreated;
 	
 	@Column
 	Boolean loggedIn;
@@ -62,9 +66,9 @@ public class User {
 	
 	public void setTime(String time) {this.time = time;}	
 	
-	public String getAuthor() {return author;}
+	public Project getAuthor() {return projectsCreated;}
 	
-	public void setAuthor(String author) {this.author = author;}
+	public void setAuthor(Project author) {this.projectsCreated = author;}
 	
     public boolean isLoggedIn() {return loggedIn;}
 
