@@ -70,7 +70,7 @@ public class DashboardFragment extends Fragment {
                                         object.getString("projectName"),
                                         object.getString("dateCreated")
                                 );
-                                binding.getModal().projectsAdapter.add(project.getName());
+                                binding.getModal().projectsAdapter.add(project);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -89,15 +89,15 @@ public class DashboardFragment extends Fragment {
                 FragmentManager fragmentManager = getChildFragmentManager();
                 AddProjectDialogFragment fragment = new AddProjectDialogFragment(new AddProjectDialogFragment.AddProjectDialogListener() {
                     @Override
-                    public void onDialogPositiveClick(String projectName) {
+                    public void onDialogPositiveClick(Project project) {
                         String url = Const.API_SERVER + "/project";
                         Map<String, String> params = new HashMap<String, String>();
-                        params.put("projectName", projectName);
+                        params.put("projectName", project.getName());
                         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
                                 new JSONObject(params),
                                 response -> {
                                     Logger.getLogger("json").log(Level.INFO, response.toString());
-                                    binding.getModal().projectsAdapter.add(projectName);
+                                    binding.getModal().projectsAdapter.add(project);
                                 },
                                 error -> Logger.getLogger("json").log(Level.INFO, error.toString()));
                         AppController.getInstance().addToRequestQueue(request);

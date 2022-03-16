@@ -2,28 +2,25 @@ package com.coms3091mc3.projectmanager.view;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import com.coms3091mc3.projectmanager.R;
+import com.coms3091mc3.projectmanager.data.Project;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Date;
 
 public class AddProjectDialogFragment extends DialogFragment {
     public interface AddProjectDialogListener {
-        public void onDialogPositiveClick(String projectName);
+        public void onDialogPositiveClick(Project projectName);
     }
 
     AddProjectDialogListener listener;
@@ -48,8 +45,10 @@ public class AddProjectDialogFragment extends DialogFragment {
                 .setPositiveButton("New", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        EditText text = view.findViewById(R.id.edit_username);
-                        listener.onDialogPositiveClick(text.getText().toString());
+                        EditText text = view.findViewById(R.id.edit_projectName);
+                        Date date = new Date();
+                        Project project = new Project(0, text.getText().toString(), date.toString());
+                        listener.onDialogPositiveClick(project);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
