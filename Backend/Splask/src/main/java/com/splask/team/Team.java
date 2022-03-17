@@ -1,6 +1,7 @@
 package com.splask.team;
 
 import com.splask.project.Project;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -21,8 +22,10 @@ class Team {
     @Column
     String teamUsers;
 
-    @Column
-    String teamProjects;
+    @ManyToOne
+    @JoinColumn(name = "projectID")
+    @JsonIgnore
+    Project teamProjects;
 
 
     public Integer getTeamID() {
@@ -41,7 +44,7 @@ class Team {
         return teamUsers;
     }
 
-    public String getTeamProjects() {
+    public Project getTeamProjects() {
 
         return teamProjects;
     }

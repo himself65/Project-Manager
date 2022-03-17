@@ -20,8 +20,7 @@ class Project {
     @Column
     String projectName;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "teamID")
+    @OneToMany
     List<Team> teams;
 
     @Column
