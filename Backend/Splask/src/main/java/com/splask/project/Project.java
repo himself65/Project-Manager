@@ -5,6 +5,7 @@ import com.splask.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,9 +112,11 @@ class Project {
         return tasks;
     }
 
-    public LocalDateTime getDateCreated()
+    public String getDateCreated()
     {
-        return dateCreated;
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        return dateCreated.format(format);
     }
 
 
