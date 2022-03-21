@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.regex.*;
 
-//import com.sun.org.apache.xerces.internal.util.URI;
+import javax.validation.Valid;
 
 import database.User;
 import net.minidev.json.JSONObject;
@@ -49,7 +49,7 @@ public class UserController {
  * existing user registered with the same parameters 
  */
 	@PostMapping("/register")
-	public JSONObject registerUser(@RequestBody User newUser) {
+	public JSONObject registerUser(@Valid @RequestBody User newUser) {
 		
 		JSONObject responseBody = new JSONObject();
 		List<User> users = userRepository.findAll();
@@ -145,7 +145,7 @@ public class UserController {
 	 * Log in call 
 	 */
     @PostMapping("/login")
-    public JSONObject loginUser(@RequestBody User user) {
+    public JSONObject loginUser(@Valid @RequestBody User user) {
         List<User> users = userRepository.findAll();
         JSONObject responseBody = new JSONObject();
 

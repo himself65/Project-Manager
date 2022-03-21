@@ -22,11 +22,11 @@ public class User {
 	Integer id;
 	
     @NotNull
-    @Column(name = "username",nullable = false)
+    @Column(name = "username")
 	String username;
 	
     @NotNull
-    @Column(name = "password",nullable = false)
+    @Column(name = "password")
 	String password;
 	
 	@JsonFormat(pattern = "yyyy-MM-dd", shape = Shape.STRING) 
@@ -34,7 +34,7 @@ public class User {
 //	String  date_time;
 	
     @NotNull
-    @Column(name = "author", nullable = false)
+    @Column(name = "author")
 	String author;
 	
     @NotNull
