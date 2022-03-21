@@ -1,2 +1,4 @@
-/.metadata/
-*/.lst
+.metadata
+.lst
+.project
+.idea

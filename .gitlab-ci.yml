@@ -1,0 +1,50 @@
+stages:
+  - mavenbuild
+  - maventest
+  - androidbuild
+  - androidtest
+
+maven-build:
+  stage: mavenbuild
+  tags:
+    - springboot_tag
+  script:
+    - cd Backend/Splask 
+    - mvn package
+maven-test:
+  stage: maventest
+  tags:
+    - springboot_tag
+  script: 
+    - cd Backend/Splask
+    - mvn test
+  artifacts:
+    paths:
+      - Backend/target/*.jar
+
+android-build:
+  image: gjandres/android-ci:latest
+  stage: androidbuild
+  tags:
+    - android_tag
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod +x ./Frontend/gradlew
+  script:
+    - cd Frontend
+    - ./gradlew build
+  artifacts:
+    paths:
+      - Android_test/app/build/outputs/
+
+android_test:
+  image: gjandres/android-ci:latest
+  stage: androidtest
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod +x ./Frontend/gradlew
+  tags:
+    - android_tag
+  script:
+    - cd Frondtend
+    - ./gradlew test

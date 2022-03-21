@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 //import com.sun.org.apache.xerces.internal.util.URI;
 
 import database.User;
+import net.minidev.json.JSONObject;
 
 @RestController 
 public class UserController {
@@ -46,30 +47,50 @@ public class UserController {
  * existing user registered with the same parameters 
  */
 	@PostMapping("/register")
-	public Status registerUser(@RequestBody User newUser) {
+	public JSONObject registerUser(@RequestBody User newUser) {
 		
+		JSONObject responseBody = new JSONObject();
 		List<User> users = userRepository.findAll();
 
         System.out.println("New user: " + newUser.toString());
+        
+        String userId = newUser.username + "309";
+
         for (User user : users) {
             if (user.username.equals(newUser.username)) {
                 System.out.println("User Already exists!");
-                return Status.USER_ALREADY_EXISTS;
+                responseBody.put("status", 400);
+                responseBody.put("message", "User Already Exists!");
+                return responseBody;
+//                return Status.USER_ALREADY_EXISTS;
             }
         }
+        
+        if(newUser.password.length() < 3) {
+            responseBody.put("status", 400);
+            responseBody.put("message", "Password Too Short!");
+            return responseBody;
+//        	return Status.PASSWORD_SHORT;
+        }
 //        newUser.setLoggedIn(true);
+//        newUser.setUserId(userId);
         System.out.println("Registered user: " + newUser.toString());
         
         userRepository.save(newUser);
-        return Status.SUCCESS;
+        responseBody.put("status", 200);
+        responseBody.put("message", "Account successfully created!");
+        
+        return responseBody;
+//        return Status.SUCCESS;
     }
 	
 	/*
 	 * Log in call 
 	 */
-    @PostMapping("/user/login")
-    public Status loginUser(@RequestBody User user) {
+    @PostMapping("/login")
+    public JSONObject loginUser(@RequestBody User user) {
         List<User> users = userRepository.findAll();
+        JSONObject responseBody = new JSONObject();
         
         System.out.println("User list");
     	System.out.println("\n\n" + users + "\n\n\n");
@@ -81,45 +102,61 @@ public class UserController {
             if (other.equals(user)) {
                 user.setLoggedIn(true);
                 userRepository.save(user);
-                return Status.SUCCESS;
+
+                responseBody.put("status", 200);
+                responseBody.put("message", "Login Successful");
+                return responseBody;
             }
         }
-        
-        return Status.FAILURE;
+        responseBody.put("status", 400);
+        responseBody.put("message", "Login Failed");
+        return responseBody;
     }
 
     /* 
      * Log out call 
      */
-    @PostMapping("/user/logout")
-    public Status logUserOut(@RequestBody User user) {
+    @PostMapping("/logout")
+    public JSONObject logUserOut(@RequestBody User user) {
+        JSONObject responseBody = new JSONObject();
+
         List<User> users = userRepository.findAll();
 
         for (User other : users) {
             if (other.username.equals(user.username)) {
                 user.setLoggedIn(false);
                 userRepository.save(user);
-                return Status.SUCCESS;
+                responseBody.put("status", 200);
+                responseBody.put("message", "User Successfully logged out");
+                return responseBody;
             }
         }
-
-        return Status.FAILURE;
+        responseBody.put("status", 400);
+        responseBody.put("message", "Failure to Logout");
+        return responseBody;
     }
 
 	/*
 	 * to delete user detail from the database
 	 */
 	@DeleteMapping("/user/{id}")
-	String deleteUser(@PathVariable Integer id) {
+	JSONObject deleteUser(@PathVariable Integer id) {
+        JSONObject responseBody = new JSONObject();
 		userRepository.deleteById(id);
-		return "deleted user: " + id;
+        responseBody.put("status", 200);
+        responseBody.put("message", "Successfully deleted user");
+		return responseBody;
 	}
 
 //	Delete ALL users
     @DeleteMapping("/user/all")
-    public Status deleteUsers() {
+    public JSONObject deleteUsers() {
+        JSONObject responseBody = new JSONObject();
     	userRepository.deleteAll();
-        return Status.SUCCESS;
+
+        responseBody.put("status", 200);
+        responseBody.put("message", "Successfully deleted all users");
+        return responseBody;
     }
 
 	
