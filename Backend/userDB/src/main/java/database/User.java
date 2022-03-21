@@ -2,6 +2,10 @@ package database;
 
 import java.util.Objects;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import com.sun.istack.NotNull;
 //import javax.validation.constraints.NotBlank;
 
 
@@ -14,25 +18,27 @@ public class User {
  */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
 	Integer id;
-//	String id;
 	
-	@Column 
+    @NotNull
+    @Column(name = "username",nullable = false)
 	String username;
 	
-	@Column
+    @NotNull
+    @Column(name = "password",nullable = false)
 	String password;
 	
-	@Column
-	String  date;
+	@JsonFormat(pattern = "yyyy-MM-dd", shape = Shape.STRING) 
+//	@Column(name = "date_time")
+//	String  date_time;
 	
-	@Column
-	String  time;
-	
-	@Column
+    @NotNull
+    @Column(name = "author", nullable = false)
 	String author;
 	
-	@Column
+    @NotNull
+    @Column(name = "loggedIn")
 	Boolean loggedIn;
 	
 //	public user(@NotBlank String userName, @NotBlank String userPassword) {
@@ -54,13 +60,13 @@ public class User {
 
 	public void setUserPassword(String password) {this.password = password;}
 	
-	public String getDate() {return date;}
-	
-	public void setDate(String date) {this.date = date;}
-	
-	public String getTime() {return time;}
-	
-	public void setTime(String time) {this.time = time;}	
+//	public String getDate() {return date;}
+//	
+//	public void setDate(String date) {this.date = date;}
+//	
+//	public String getTime() {return time;}
+//	
+//	public void setTime(String time) {this.time = time;}	
 	
 	public String getAuthor() {return author;}
 	
