@@ -43,7 +43,7 @@ public class User {
 	
 //	public user(@NotBlank String userName, @NotBlank String userPassword) {
 	public void user(String username, String password) {
-		this.username = username;
+		this.username = password;
 		this.password = password;
 		this.loggedIn = false;
 	}

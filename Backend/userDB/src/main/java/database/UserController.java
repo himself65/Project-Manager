@@ -128,8 +128,6 @@ public class UserController {
         for (User other : users) {
             if (other.equals(user)) {
                 user.setLoggedIn(true);
-//                userRepository.save(user);
-
                 responseBody.put("status", 200);
                 responseBody.put("message", "Login Successful");
                 return responseBody;
@@ -152,7 +150,6 @@ public class UserController {
         for (User other : users) {
             if (other.username.equals(user.username)) {
                 user.setLoggedIn(false);
-//                userRepository.save(user);
                 responseBody.put("status", 200);
                 responseBody.put("message", "User Successfully logged out");
                 return responseBody;
