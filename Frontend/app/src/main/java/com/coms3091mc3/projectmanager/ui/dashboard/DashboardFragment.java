@@ -7,13 +7,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,6 +32,7 @@ import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.data.Project;
 import com.coms3091mc3.projectmanager.databinding.FragmentDashboardBinding;
 import com.coms3091mc3.projectmanager.store.DashboardDataModal;
+import com.coms3091mc3.projectmanager.ui.project.ProjectFragment;
 import com.coms3091mc3.projectmanager.utils.Const;
 import com.coms3091mc3.projectmanager.view.AddProjectDialogFragment;
 
@@ -83,6 +89,14 @@ public class DashboardFragment extends Fragment {
         binding.setModal(new DashboardDataModal(context));
         View view = binding.getRoot();
         Button button = view.findViewById(R.id.add_project);
+        GridView gridView = view.findViewById(R.id.dashboard_grid_layout);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Navigation.findNavController(view)
+                        .navigate(R.id.action_navigation_dashboard_to_navigation_project);
+            }
+        });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
