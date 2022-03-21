@@ -73,73 +73,49 @@ public class UserController {
             return responseBody;
         }
         /*
-         * Check for password containing upper, lower, special
-         * and numeric character
+         * Check that the password contains an upper, lower, 
+         * & a numeric value  and that the password is not null
          */
-        if((newUser.password) != null) {  
-        	
-        	isAllPresent(newUser.password);
-        	
+        if((newUser.password != null) && (checkString(newUser.password) == true)) {  
+        	        	
             System.out.println("Registered user: " + newUser.toString());
             
             userRepository.save(newUser);
             responseBody.put("status", 200);
             responseBody.put("message", "Account Successfully Created!");        	
         	
+        } else {
+        	responseBody.put("status", 400);
+            responseBody.put("message", "Please enter a valid password. -*It must contain a capital,lowerCase letter and a digit number *-");   
         }
-        
-//        System.out.println("Registered user: " + newUser.toString());
-//        
-//        userRepository.save(newUser);
-//        responseBody.put("status", 200);
-//        responseBody.put("message", "Account Successfully Created!");
         
         return responseBody;
     }
 	
-    // Function that checks if a string
-    // contains uppercase, lowercase
-    // special character & numeric value
-    public static JSONObject
-    isAllPresent(String str){
-    	
-		JSONObject responseBody = new JSONObject();
-
-        // ReGex to check if a string
-        // contains uppercase, lowercase
-        // special character & numeric value
-        String regex = "^(?=.*[0-9])"
-                + "(?=.*[a-z])(?=.*[A-Z])"
-                + "(?=.*[@#$%^&+=])"
-                + "(?=\\S+$).{3,}$";
- 
-        // Compile the ReGex
-        Pattern p = Pattern.compile(regex);
- 
-        // If the string is empty then print No
-        if (str == null) {
-            responseBody.put("status", 400);
-            responseBody.put("message", "Please enter a valid password");
-
-            return responseBody;
-        }
- 
-        // Find match between given string& regular expression
-        Matcher m = p.matcher(str);
-        if (m.matches()) {
-        	responseBody.put("status", 200);
-            responseBody.put("message", "Valid password");
-
-        } else {
-        	
-        	responseBody.put("status", 400);
-            responseBody.put("message", "Please enter a valid password");
-            }
-
-        return responseBody;
-
-    }
-    
+	/*
+	 * Checks if the password contains a upper, lower case letter & a numeric value
+	 */
+	private static boolean checkString(String str) {
+	    char ch;
+	    boolean capitalFlag = false;
+	    boolean lowerCaseFlag = false;
+	    boolean numberFlag = false;
+	    for(int i=0;i < str.length();i++) {
+	        ch = str.charAt(i);
+	        if( Character.isDigit(ch)) {
+	            numberFlag = true;
+	        }
+	        else if (Character.isUpperCase(ch)) {
+	            capitalFlag = true;
+	        } else if (Character.isLowerCase(ch)) {
+	            lowerCaseFlag = true;
+	        }
+	        if(numberFlag && capitalFlag && lowerCaseFlag)
+	            return true;
+	    }
+	    return false;
+	}
+	
 	
 	/*
 	 * Log in call 
