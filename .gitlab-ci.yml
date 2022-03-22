@@ -23,7 +23,7 @@ maven-test:
       - Backend/target/*.jar
 
 autoDeploy:
-  stage: autoDeploy
+  stage: autodeploy
   tags:
     - springboot_tag
   script:
