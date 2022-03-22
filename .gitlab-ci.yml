@@ -46,5 +46,5 @@ android_test:
   tags:
     - android_tag
   script:
-    - cd Frondtend/app
+    - cd Frontend
     - ./gradlew test
