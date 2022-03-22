@@ -28,23 +28,21 @@ android-build:
   tags:
     - android_tag
   before_script:
-    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - export GRADLE_USER_HOME=`pwd`/Frontend/.gradle
     - chmod +x ./Frontend/gradlew
   script:
-    - cd Frontend
-    - ./gradlew build
+    - cd Frontend && ./gradlew build --stacktrace
   artifacts:
     paths:
-      - Android_test/app/build/outputs/
+      - Frontend/app/build/outputs/
 
 android_test:
   image: gjandres/android-ci:latest
   stage: androidtest
   before_script:
-    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - export GRADLE_USER_HOME=`pwd`/Frontend/.gradle
     - chmod +x ./Frontend/gradlew
   tags:
     - android_tag
   script:
-    - cd Frondtend
-    - ./gradlew test
+    - cd Frontend && ./gradlew test
