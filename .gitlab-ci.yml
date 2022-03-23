@@ -1,18 +1,43 @@
 stages:
-  - maventry
-  - androidtry
+  - mavenbuild
+  - maventest
+  - autodeploy
+  - androidbuild
+  - androidtest
+  
 
 maven-build:
-  stage: maventry
+  stage: mavenbuild
   tags:
     - springboot_tag
   script:
     - cd Backend/Splask 
     - mvn package
+maven-test:
+  stage: maventest
+  tags:
+    - springboot_tag
+  script: 
+    - cd Backend/Splask
+    - mvn test
+  artifacts:
+    paths:
+      - Backend/target/*.jar
+
+autoDeploy:
+  stage: autodeploy
+  tags:
+    - springboot_tag
+  script:
+    - cd Backend/Splask
+    - mvn package
+    - sudo mv target/*.jar /target/web-demo.jar
+    - sudo systemctl stop system-web-demo
+    - sudo systemctl start system-web-demo
 
 android-build:
   image: gjandres/android-ci:latest
-  stage: androidtry
+  stage: androidbuild
   tags:
     - android_tag
   before_script:
@@ -20,4 +45,19 @@ android-build:
     - chmod +x ./Frontend/gradlew
   script:
     - cd Frontend
-    - ./gradlew assemble
+    - ./gradlew build
+  artifacts:
+    paths:
+      - Android_test/app/build/outputs/
+
+android_test:
+  image: gjandres/android-ci:latest
+  stage: androidtest
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod +x ./Frontend/gradlew
+  tags:
+    - android_tag
+  script:
+    - cd Frontend
+    - ./gradlew test
