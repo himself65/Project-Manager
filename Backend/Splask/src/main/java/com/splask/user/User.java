@@ -1,5 +1,8 @@
 package com.splask.user;
 
+import com.splask.project.Project;
+import net.minidev.json.annotate.JsonIgnore;
+
 import java.util.Objects;
 import javax.persistence.*;
 //import javax.validation.constraints.NotBlank;
@@ -14,7 +17,7 @@ public class User {
  */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Integer id;
+	Integer userID;
 //	String id;
 	
 	@Column 
@@ -29,8 +32,9 @@ public class User {
 	@Column
 	String  time;
 	
-	@Column
-	String author;
+	@OneToOne
+	@JsonIgnore
+	Project projectsCreated;
 	
 	@Column
 	Boolean loggedIn;
@@ -42,9 +46,9 @@ public class User {
 		this.loggedIn = false;
 	}
 
-	public Integer getUserId() {return id;}
+	public Integer getUserId() {return userID;}
 	
-	public void setUserId(int id) {this.id = id;}
+	public void setUserId(int id) {this.userID = id;}
 	
 	public String getUsername() {return username;}
 	
@@ -62,9 +66,9 @@ public class User {
 	
 	public void setTime(String time) {this.time = time;}	
 	
-	public String getAuthor() {return author;}
+	public Project getAuthor() {return projectsCreated;}
 	
-	public void setAuthor(String author) {this.author = author;}
+	public void setAuthor(Project author) {this.projectsCreated = author;}
 	
     public boolean isLoggedIn() {return loggedIn;}
 
@@ -88,7 +92,7 @@ public class User {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, 
+        return Objects.hash(userID, username, password,
                             loggedIn);
     }
 
@@ -98,7 +102,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "user_id=" + id +
+                "user_id=" + userID +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", loggedIn=" + loggedIn +

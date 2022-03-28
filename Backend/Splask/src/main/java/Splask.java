@@ -3,6 +3,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 
+
 @SpringBootApplication(scanBasePackages = {"com.splask"})
 public class Splask {
 
