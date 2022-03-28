@@ -1,5 +1,6 @@
 package database;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.*;
 
@@ -40,6 +41,10 @@ public class User {
     @NotNull
     @Column(name = "loggedIn")
 	Boolean loggedIn;
+    
+    @NotNull
+    @Column(name = "localDateTime")
+    LocalDateTime dateCreated;
 	
 //	public user(@NotBlank String userName, @NotBlank String userPassword) {
 	public void user(String username, String password) {
@@ -60,14 +65,8 @@ public class User {
 
 	public void setUserPassword(String password) {this.password = password;}
 	
-//	public String getDate() {return date;}
-//	
-//	public void setDate(String date) {this.date = date;}
-//	
-//	public String getTime() {return time;}
-//	
-//	public void setTime(String time) {this.time = time;}	
-	
+    public LocalDateTime getDateCreated() {return dateCreated;}
+
 	public String getAuthor() {return author;}
 	
 	public void setAuthor(String author) {this.author = author;}
