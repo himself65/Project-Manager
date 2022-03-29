@@ -18,7 +18,9 @@
         tools:layout="@layout/fragment_dashboard" >
         <action
             android:id="@+id/action_navigation_dashboard_to_navigation_project"
-            app:destination="@id/navigation_project" />
+            app:destination="@id/navigation_project">
+            <argument android:name="projectID" app:argType="integer"/>
+        </action>
     </fragment>
 
     <fragment

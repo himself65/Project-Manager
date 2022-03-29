@@ -93,8 +93,9 @@ public class DashboardFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Navigation.findNavController(view)
-                        .navigate(R.id.action_navigation_dashboard_to_navigation_project);
+                Project project = binding.getModal().projectsAdapter.getItem(i);
+                DashboardFragmentDirections.ActionNavigationDashboardToNavigationProject action = DashboardFragmentDirections.actionNavigationDashboardToNavigationProject(project.getId());
+                Navigation.findNavController(view).navigate(action);
             }
         });
         button.setOnClickListener(new View.OnClickListener() {

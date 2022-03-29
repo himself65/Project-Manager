@@ -17,7 +17,8 @@ public class ProjectFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        int id = (Integer) getArguments().get("projectID");
+        // todo: fetch project from server
         return inflater.inflate(R.layout.fragment_project, container, false);
     }
 }
