@@ -1,11 +1,17 @@
 package com.splask.project;
 
+import com.splask.team.Team;
+import com.splask.user.User;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
-
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
+public
 class Project {
 
     @Id
@@ -15,17 +21,21 @@ class Project {
     @Column
     String projectName;
 
-    @Column
-    String team;
+    @OneToMany
+    List<Team> teams;
 
     @Column
     String deadline;
 
     @Column
-    String completedBy;
+    Boolean status;
 
     @Column
-    String creator;
+    String completedBy;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "userID")
+    User creator;
 
     @Column
     String tasks;
@@ -37,6 +47,7 @@ class Project {
     Project() {
 
         dateCreated = LocalDateTime.now();
+        teams = new ArrayList<>();
     }
 
     public Integer getProjectID() {
@@ -66,17 +77,32 @@ class Project {
         return deadline;
     }
 
+    public boolean getStatus() {return status;}
+
+    public void setComplete() {
+        status = true;
+        //setCompletedBy();
+    }
+
     public String getCompletedBy()
     {
         return completedBy;
     }
 
-    public String getTeam()
+    /* public void setCompletedBy() {
+
+        if (status)
+        {
+            completedBy = t;
+        }
+    }
+*/
+    public List<Team> getTeam()
     {
-        return team;
+        return teams;
     }
 
-    public String getCreator()
+    public User getCreator()
     {
         return creator;
     }
@@ -86,9 +112,11 @@ class Project {
         return tasks;
     }
 
-    public LocalDateTime getDateCreated()
+    public String getDateCreated()
     {
-        return dateCreated;
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        return dateCreated.format(format);
     }
 
 
