@@ -34,8 +34,8 @@ public class TeamController {
         return t;
     }
 
-    @PostMapping("/{team_id}/users/{user_id}")
-    Team enrollUserToSubject( //Gets the user then assigns the user to the subject
+    @PutMapping("/{team_id}/users/{user_id}")
+    Team enrollUserToTeam( //Gets the user then assigns the user to the team
                               @PathVariable Integer teamID,
                               @PathVariable Integer userID
     ) {

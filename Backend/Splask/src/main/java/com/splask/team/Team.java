@@ -8,9 +8,10 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-
+import javax.persistence.JoinColumn;
 
 @Entity
+@Table (name = "Team")
 public
 class Team {
     @Id
@@ -32,15 +33,16 @@ class Team {
     @JsonIgnore
     Project teamProjects;
 
-    @OneToMany
+    @ManyToMany
+    @JsonIgnore
 //  Creates new join table with colum of user_id and team_id and
 //  creates relationship between them. Relationship Team to User
     @JoinTable(
-            name = "users_enrolled" ,
-            joinColum = @JoinColumns(name = "user_id"),
-            inverseJoinColumns = @JoinColumns(name = "team_id")
+            name = "usersInTeam",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private Set<User> enrrolledUsers = new HashSet<>();
+    private Set<User> userTeams = new HashSet<>();
 
 
     public Integer getTeamID() {
@@ -59,9 +61,7 @@ class Team {
 
     public Project getTeamProjects() {return teamProjects;}
 
-    public void enrollUsers(User user) {
-        enrrolledUsers.add(user); //adds the student we passed in to the set
-    }
+    public void enrollUsers(User user) {userTeams.add(user);} //adds the user we passed in to the set
 
 
 }

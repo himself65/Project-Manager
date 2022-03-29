@@ -1,6 +1,7 @@
 package com.splask.user;
 
 //Class imports
+import com.splask.task.Task;
 import com.splask.team.Team;
 import com.splask.project.Project;
 
@@ -37,22 +38,24 @@ public class User {
 	@Column
 	LocalDateTime dateCreated;
 
-	@OneToOne
-	@JsonIgnore
-	Project projectsCreated;
-
 	@NotNull
 	@Column (name = "loggedIn")
 	Boolean loggedIn = false;
 
-	@OneToMany(mappedBy = "teamsUsers")
-	private Set<Team> teams = new HashSet<>();
-
-//	TODO Set relationship with Projects
-
+	@OneToOne
+	@JsonIgnore
+	Project projectsCreated;
 	Set<Project> projectUsers;
 
-//	TODO Set relationship with Roles
+	@JsonIgnore
+	@ManyToMany(mappedBy = "userTeams")
+	private Set<Team> teams = new HashSet<>();
+
+	@JsonIgnore
+	@ManyToMany(mappedBy = "userTasks")
+	private Set<Task> tasks = new HashSet<>();
+
+//	TODO (DEMO 4) Set relationship with Roles
 //	
 	
 	
@@ -94,11 +97,16 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
     public void setLoggedIn(boolean loggedIn) {this.loggedIn = loggedIn;}
 
 //	Class functions
+	public Set<Project> getProjectUsers() {return projectUsers;}
+	public void setProjectUsers(Set<Project> projectUsers) {this.projectUsers = projectUsers;}
+
 	public Set<Team> getTeam() {return teams;}
 	public void setTeams(Set<Team> teams) {this.teams = teams;}
 
-	public Set<Project> getProjectUsers() {return projectUsers;}
-	public void setProjectUsers(Set<Project> projectUsers) {this.projectUsers = projectUsers;}
+	public Set<Task> getTasks() {return tasks;}
+	public void setTasks(Set<Task> tasks) {this.tasks = tasks;}
+
+
 
 
 //	to compare an object passed to the program with an object from our database.

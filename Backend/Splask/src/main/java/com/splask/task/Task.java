@@ -6,11 +6,14 @@ import com.splask.user.User;
 
 import javax.persistence.*;
 import com.sun.istack.NotNull;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table (name = "Task")
@@ -20,11 +23,15 @@ public class Task {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column (name = "id")
-	Integer id;
+	Integer taskID;
 	
 	@NotNull
 	@Column (name = "task")
 	String taskName;
+
+	@NotNull
+	@Column (name = "status")
+	Boolean status;
 	
 	@NotNull
 	@Column
@@ -37,32 +44,36 @@ public class Task {
 	@NotNull
 	@Column (name = "dateCompleted")
 	String dateCompleted;
-	
-//	TODO Add Status relationship
-//	Task status 
-	
-//	TODO Add User relationship
-//	Task completed by
-	@ManyToMany
-	List<User> users;
 
+	@JsonIgnore
 	@ManyToMany
-	List<Team> teams;
+	//  Creates new join table with colum of user_id and team_id and
+	//  creates relationship between them. Relationship Team to User
+	@JoinTable(
+			name = "userTasks",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "task_id")
+	)
+	private Set<User> userTasks = new HashSet<>();
+
 
 	Task(){
 		dateCreated = LocalDateTime.now();
-		users = new ArrayList<>();
-		teams = new ArrayList<>();
+
 	}
 
 
-	public Integer getId() {return id;}
+	public Integer getId() {return taskID;}
 
-	public void setId(Integer id) {this.id = id;}
+	public void setId(Integer id) {this.taskID = id;}
 
 	public String getTask() {return taskName;}
 
 	public void setTask(String taskName) {this.taskName = taskName;}
+
+	public Boolean getStatus() {return status;}
+
+	public void setStatus(boolean status){ this.status = status;}
 
 	public String getDateCreated() {
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -77,10 +88,12 @@ public class Task {
 
 	public void setDateCompleted(String dateCompleted) { this.dateCompleted = dateCompleted;}
 
-	public List<User> getUsers()
-	{
-		return users;
+	public void setUserTasks(Set<User> userTasks) {this.userTasks = userTasks;}
+
+	public void assignUser(User user) {
+		userTasks.add(user); //adds the user we passed in to the set
 	}
+
 
 
 

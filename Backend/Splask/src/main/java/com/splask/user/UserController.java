@@ -23,10 +23,6 @@ public class UserController {
     @Autowired
 	UserDB userRepository;
 
-    @Autowired
-    teamDB teamRepository;
-
-
 //  get user by ID
 	@GetMapping("/user/{id}")
 	User getUsername(@PathVariable Integer id) {

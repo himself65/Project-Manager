@@ -3,15 +3,11 @@ package com.splask.task;
 import java.util.List;
 
 import com.splask.project.Project;
+import com.splask.team.Team;
+import com.splask.user.User;
 import com.splask.user.UserDB;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import net.minidev.json.JSONObject;
 
 
@@ -83,7 +79,16 @@ public class TaskController {
 		return responseBody;
 	}
 
-
+	@PutMapping("/{task_id}/users/{user_id}")
+	Task enrollUserToTask( //Gets the user then assigns the user to the task
+						   @PathVariable Integer taskID,
+						   @PathVariable Integer userID
+	) {
+		Task task = taskRepository.findById(taskID).get();
+		User user = userRepository.findById(userID).get();
+		task.assignUser(user); //sends the passed user to the assignUser method
+		return  taskRepository.save(task); //saves the new user to assigned team
+	}
 
     
     
