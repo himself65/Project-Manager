@@ -62,7 +62,7 @@ public class ProjectController {
 
         for (Team i : p.teams)
         {
-            if (t.equals(i)) {
+            if (t.getTeamName().equals(i.getTeamName())) {
                 responseBody.put("status", 400);
                 responseBody.put("message", i.getTeamName() + "already in Project");
                 return responseBody;
