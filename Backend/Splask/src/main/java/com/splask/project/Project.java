@@ -22,6 +22,7 @@ class Project {
     String projectName;
 
     @OneToMany
+    @JoinColumn(name = "Teams")
     List<Team> teams;
 
     @Column

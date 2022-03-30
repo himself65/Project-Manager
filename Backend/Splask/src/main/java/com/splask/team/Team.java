@@ -23,7 +23,7 @@ class Team {
     String teamUsers;
 
     @ManyToOne
-    @JoinColumn(name = "projectID")
+    @JoinColumn(name = "project")
     @JsonIgnore
     Project teamProjects;
 

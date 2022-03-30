@@ -1,5 +1,6 @@
 package com.splask.project;
 
+import com.splask.team.Team;
 import com.splask.team.teamDB;
 import com.splask.user.UserDB;
 import net.minidev.json.JSONObject;
@@ -52,6 +53,25 @@ public class ProjectController {
         responseBody.put("status", 200);
         responseBody.put("message", "Project successfully created!");
         pDB.save(q);
+        return responseBody;
+    }
+
+    @PutMapping("/project/team")
+    public JSONObject addTeam(@RequestBody Project p, Team t) {
+        JSONObject responseBody = new JSONObject();
+
+        for (Team i : p.teams)
+        {
+            if (t.equals(i)) {
+                responseBody.put("status", 400);
+                responseBody.put("message", i.getTeamName() + "already in Project");
+                return responseBody;
+            }
+        }
+        p.teams.add(t);
+        responseBody.put("status",400);
+        responseBody.put("message", "Team successfully added");
+
         return responseBody;
     }
 // deletes project by id
