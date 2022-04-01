@@ -28,10 +28,10 @@ class Team {
     @Column
     String teamUsers;
 
-//    @ManyToOne
-//    @JoinColumn(name = "projectID")
-//    @JsonIgnore
-//    Project teamProjects;
+    @ManyToOne
+    @JoinColumn(name = "project")
+    @JsonIgnore
+    Project teamProjects;
 
 //	Many Users to many Teams
     @ManyToMany

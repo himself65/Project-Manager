@@ -21,11 +21,15 @@ class Project {
     @Column
     String projectName;
 
+    @OneToMany
+    @JoinColumn(name = "Teams")
+    List<Team> teams;
+
     @Column
     String deadline;
 
     @Column
-    Boolean status;
+    Integer status;
 
     @Column
     String completedBy;
@@ -37,8 +41,10 @@ class Project {
 //    @OneToMany
 //    List<Team> teams;
 
+    /*
     @Column
-    String tasks;
+    List<Task> tasks;
+     */
 
     @Column
     LocalDateTime dateCreated;
@@ -47,7 +53,8 @@ class Project {
     Project() {
 
         dateCreated = LocalDateTime.now();
-//        teams = new ArrayList<>();
+        teams = new ArrayList<>();
+        status = 0;
     }
 
     public Integer getProjectID() {
@@ -77,16 +84,17 @@ class Project {
         return deadline;
     }
 
-    public boolean getStatus() {return status;}
+    public Integer getStatus() {return status;}
 
+    /*
     public void setComplete() {
         status = true;
         //setCompletedBy();
     }
 
-    public String getCompletedBy()
+    //public String getCompletedBy()
     {
-        return completedBy;
+        //return completedBy;
     }
 
     /* public void setCompletedBy() {
@@ -103,10 +111,12 @@ class Project {
 //    }
 
 
-    public String getTasks()
+    /*public String getTasks()
     {
         return tasks;
     }
+
+     */
 
     public String getDateCreated()
     {
