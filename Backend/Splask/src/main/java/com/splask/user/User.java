@@ -1,3 +1,5 @@
+
+
 package com.splask.user;
 
 //Class imports
@@ -7,8 +9,9 @@ import com.splask.project.Project;
 
 //Function imports
 import com.sun.istack.NotNull;
-import net.minidev.json.JSONObject;
 import net.minidev.json.annotate.JsonIgnore;
+//import org.h2.util.Task;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -42,10 +45,10 @@ public class User {
 	@Column (name = "loggedIn")
 	Boolean loggedIn = false;
 
-	@OneToOne
-	@JsonIgnore
-	Project projectsCreated;
-	Set<Project> projectUsers;
+//	@OneToOne
+//	@JsonIgnore
+//	Project projectsCreated;
+//	Set<Project> projectUsers;
 
 	@JsonIgnore
 	@ManyToMany(mappedBy = "userTeams")
@@ -90,15 +93,15 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 		return dateCreated.format(format);
 	}
 	
-	public Project getAuthor() {return projectsCreated;}
-	public void setAuthor(Project author) {this.projectsCreated = author;}
-	
+//	public Project getAuthor() {return projectsCreated;}
+//	public void setAuthor(Project author) {this.projectsCreated = author;}
+//	
     public boolean isLoggedIn() {return loggedIn;}
     public void setLoggedIn(boolean loggedIn) {this.loggedIn = loggedIn;}
-
-//	Class functions
-	public Set<Project> getProjectUsers() {return projectUsers;}
-	public void setProjectUsers(Set<Project> projectUsers) {this.projectUsers = projectUsers;}
+//
+////	Class functions
+//	public Set<Project> getProjectUsers() {return projectUsers;}
+//	public void setProjectUsers(Set<Project> projectUsers) {this.projectUsers = projectUsers;}
 
 	public Set<Team> getTeam() {return teams;}
 	public void setTeams(Set<Team> teams) {this.teams = teams;}

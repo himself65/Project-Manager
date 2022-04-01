@@ -45,16 +45,25 @@ public class Task {
 	@Column (name = "dateCompleted")
 	String dateCompleted;
 
-	@JsonIgnore
+//	Many task to many users
 	@ManyToMany
-	//  Creates new join table with colum of user_id and team_id and
-	//  creates relationship between them. Relationship Team to User
+	@JsonIgnore
 	@JoinTable(
-			name = "userTasks",
+			name = "User_Tasks",
 			joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "task_id")
 	)
 	private Set<User> userTasks = new HashSet<>();
+
+//	Many tasks to one Team
+	@ManyToOne
+	@JsonIgnore
+    @JoinTable(
+            name = "TaskAssignedToTeam",
+            joinColumns = @JoinColumn(name = "team"),
+            inverseJoinColumns = @JoinColumn(name = "task")
+    )
+	private Team team;
 
 
 	Task(){
@@ -93,16 +102,6 @@ public class Task {
 	public void assignUser(User user) {
 		userTasks.add(user); //adds the user we passed in to the set
 	}
-
-
-
-
-
-
-
-
-
-
 
 
 

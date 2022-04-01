@@ -1,6 +1,7 @@
 package com.splask.team;
 
 import com.splask.project.Project;
+import com.splask.task.Task;
 import com.splask.user.User;
 import net.minidev.json.annotate.JsonIgnore;
 
@@ -9,6 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.JoinColumn;
+
+import org.springframework.stereotype.Repository;
 
 @Entity
 @Table (name = "Team")
@@ -23,27 +26,32 @@ class Team {
     String teamName;
 
     @Column
-    String teamIntro;
-
-    @Column
     String teamUsers;
 
-    @ManyToOne
-    @JoinColumn(name = "projectID")
-    @JsonIgnore
-    Project teamProjects;
+//    @ManyToOne
+//    @JoinColumn(name = "projectID")
+//    @JsonIgnore
+//    Project teamProjects;
 
+//	Many Users to many Teams
     @ManyToMany
     @JsonIgnore
-//  Creates new join table with colum of user_id and team_id and
-//  creates relationship between them. Relationship Team to User
     @JoinTable(
             name = "usersInTeam",
             joinColumns = @JoinColumn(name = "team_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private Set<User> userTeams = new HashSet<>();
+    private Set<User> teamUser = new HashSet<>();
 
+//  One Team to many Tasks
+    @OneToMany(mappedBy = "team")
+    @JsonIgnore
+    @JoinTable(
+            name = "TaskAssignedToTeam",
+            joinColumns = @JoinColumn(name = "team"),
+            inverseJoinColumns = @JoinColumn(name = "task")
+    )
+    private Set<Task> tasks;
 
     public Integer getTeamID() {
         return teamID;
@@ -59,9 +67,9 @@ class Team {
 //    Class functions
     public String getTeamUsers() {return teamUsers;}
 
-    public Project getTeamProjects() {return teamProjects;}
+//    public Project getTeamProjects() {return teamProjects;}
 
-    public void enrollUsers(User user) {userTeams.add(user);} //adds the user we passed in to the set
+    public void enrollUser(User user) {teamUser.add(user);} //adds the user we passed in to the set
 
 
 }
