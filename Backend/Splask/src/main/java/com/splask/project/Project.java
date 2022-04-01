@@ -21,9 +21,6 @@ class Project {
     @Column
     String projectName;
 
-    @OneToMany
-    List<Team> teams;
-
     @Column
     String deadline;
 
@@ -33,9 +30,12 @@ class Project {
     @Column
     String completedBy;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "userID")
-    User creator;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "userID")
+//    User creator;
+//    
+//    @OneToMany
+//    List<Team> teams;
 
     @Column
     String tasks;
@@ -47,7 +47,7 @@ class Project {
     Project() {
 
         dateCreated = LocalDateTime.now();
-        teams = new ArrayList<>();
+//        teams = new ArrayList<>();
     }
 
     public Integer getProjectID() {
@@ -97,15 +97,11 @@ class Project {
         }
     }
 */
-    public List<Team> getTeam()
-    {
-        return teams;
-    }
+//    public List<Team> getTeam()
+//    {
+//        return teams;
+//    }
 
-    public User getCreator()
-    {
-        return creator;
-    }
 
     public String getTasks()
     {

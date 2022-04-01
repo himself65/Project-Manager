@@ -1,83 +1,118 @@
+
+
 package com.splask.user;
 
+//Class imports
+import com.splask.task.Task;
+import com.splask.team.Team;
 import com.splask.project.Project;
+
+//Function imports
+import com.sun.istack.NotNull;
 import net.minidev.json.annotate.JsonIgnore;
+//import org.h2.util.Task;
 
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.persistence.*;
-//import javax.validation.constraints.NotBlank;
-
 
 @Entity
 @Table (name = "User")
 public class User {
-	
-/*
- * 	Primary key
- */
+
+//  Primary key
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column (name = "user_id")
 	Integer userID;
-//	String id;
-	
-	@Column 
+
+	@NotNull
+	@Column (name = "username")
 	String username;
-	
-	@Column
+
+	@NotNull
+	@Column (name = "password")
 	String password;
-	
+
+	@NotNull
 	@Column
-	String  date;
-	
-	@Column
-	String  time;
-	
-	@OneToOne
+	LocalDateTime dateCreated;
+
+	@NotNull
+	@Column (name = "loggedIn")
+	Boolean loggedIn = false;
+
+//	@OneToOne
+//	@JsonIgnore
+//	Project projectsCreated;
+//	Set<Project> projectUsers;
+
 	@JsonIgnore
-	Project projectsCreated;
+	@ManyToMany(mappedBy = "userTeams")
+	private Set<Team> teams = new HashSet<>();
+
+	@JsonIgnore
+	@ManyToMany(mappedBy = "userTasks")
+	private Set<Task> tasks = new HashSet<>();
+
+//	TODO (DEMO 4) Set relationship with Roles
+//	
 	
-	@Column
-	Boolean loggedIn;
+	
+	
 	
 //	public user(@NotBlank String userName, @NotBlank String userPassword) {
-	public void user(String username, String password) {
-		this.username = username;
+//	public void user(String username, String password) { TODO (old) test
+public void user(String username, String password, Boolean loggedIn) { //TODO (new)test
+
+	this.username = username;
 		this.password = password;
 		this.loggedIn = false;
 	}
 
+	User(){
+		dateCreated = LocalDateTime.now();
+//		teams = new ArrayList<>();
+	}
+
 	public Integer getUserId() {return userID;}
-	
 	public void setUserId(int id) {this.userID = id;}
 	
 	public String getUsername() {return username;}
-	
 	public void setUsername(String username) {this.username = username;}
 	
 	public String getUserPassword() {return password;}
-
 	public void setUserPassword(String password) {this.password = password;}
-	
-	public String getDate() {return date;}
-	
-	public void setDate(String date) {this.date = date;}
-	
-	public String getTime() {return time;}
-	
-	public void setTime(String time) {this.time = time;}	
-	
-	public Project getAuthor() {return projectsCreated;}
-	
-	public void setAuthor(Project author) {this.projectsCreated = author;}
-	
-    public boolean isLoggedIn() {return loggedIn;}
 
+	public String getDateCreated()
+	{
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		return dateCreated.format(format);
+	}
+	
+//	public Project getAuthor() {return projectsCreated;}
+//	public void setAuthor(Project author) {this.projectsCreated = author;}
+//	
+    public boolean isLoggedIn() {return loggedIn;}
     public void setLoggedIn(boolean loggedIn) {this.loggedIn = loggedIn;}
-    
-    
-    /*
-     *  to compare an object passed to the program with an object from our database.
-     */
+//
+////	Class functions
+//	public Set<Project> getProjectUsers() {return projectUsers;}
+//	public void setProjectUsers(Set<Project> projectUsers) {this.projectUsers = projectUsers;}
+
+	public Set<Team> getTeam() {return teams;}
+	public void setTeams(Set<Team> teams) {this.teams = teams;}
+
+	public Set<Task> getTasks() {return tasks;}
+	public void setTasks(Set<Task> tasks) {this.tasks = tasks;}
+
+
+
+
+//	to compare an object passed to the program with an object from our database.
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -87,18 +122,14 @@ public class User {
                 Objects.equals(password, user.password);
     }
 
-    /*
-     * This function is used to generate a hash value of our object.
-     */
+//	This function is used to generate a hash value of our object.
     @Override
     public int hashCode() {
         return Objects.hash(userID, username, password,
                             loggedIn);
     }
 
-    /*
-     * Used to return some information about our class object in the form of a String
-     */
+//  Used to return some information about our class object in the form of a String
     @Override
     public String toString() {
         return "User{" +
@@ -108,6 +139,42 @@ public class User {
                 ", loggedIn=" + loggedIn +
                 '}';
     }
+
+	// Function that checks if string contains uppercase, lowercase
+	// special character & numeric value
+	public static boolean isAllPresent(String str) {
+
+		boolean containsAll = false;
+		// ReGex to check if a string contains uppercase, lowercase
+		// special character & numeric value
+		String regex = "^(?=.*[a-z])(?=."
+				+ "*[A-Z])(?=.*\\d)"
+				+ "(?=.*[-+_!@#$%^&*., ?]).+$";
+
+		// Compile the ReGex
+		Pattern p = Pattern.compile(regex);
+
+		// If the string is empty show password instructions
+		if (str == null) {
+			containsAll = false;
+	    }
+
+		// Checks length of password. At least 4 characters
+		if(str.length() < 4) {
+			containsAll = false;
+		}
+
+		// Find match between given string & regular expression
+		Matcher m = p.matcher(str);
+		// Print Yes if string matches ReGex
+		if (m.matches()) {
+			containsAll = true;
+		}else {
+			containsAll = false;
+		}
+
+		return containsAll;
+	}
 	
 	
 }
