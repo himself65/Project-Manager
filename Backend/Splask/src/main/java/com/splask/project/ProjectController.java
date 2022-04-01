@@ -52,7 +52,6 @@ public class ProjectController {
         pDB.save(q);
         responseBody.put("status", 200);
         responseBody.put("message", "Project successfully created!");
-        pDB.save(q);
         return responseBody;
     }
 
