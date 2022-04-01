@@ -6,7 +6,9 @@ import com.splask.user.User;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.JoinColumn;
@@ -28,28 +30,23 @@ class Team {
     @Column
     String teamUsers;
 
+    //Many teams to many Users
     @ManyToOne
-    @JoinColumn(name = "project")
     @JsonIgnore
-    Project teamProjects;
+    Project teamProject;
 
 //	Many Users to many Teams
     @ManyToMany
     @JsonIgnore
-    @JoinTable(
-            name = "usersInTeam",
-            joinColumns = @JoinColumn(name = "team_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> teamUser = new HashSet<>();
+    private List<User> ttUsers = new ArrayList<>();
 
 //  One Team to many Tasks
     @OneToMany(mappedBy = "team")
     @JsonIgnore
     @JoinTable(
-            name = "TaskAssignedToTeam",
-            joinColumns = @JoinColumn(name = "team"),
-            inverseJoinColumns = @JoinColumn(name = "task")
+            name = "Team_Tasks",
+            joinColumns = @JoinColumn(name = "team", referencedColumnName = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "task", referencedColumnName = "task_id")
     )
     private Set<Task> tasks;
 
@@ -69,7 +66,11 @@ class Team {
 
 //    public Project getTeamProjects() {return teamProjects;}
 
+    /*
+    TODO
     public void enrollUser(User user) {teamUser.add(user);} //adds the user we passed in to the set
+
+     */
 
 
 }

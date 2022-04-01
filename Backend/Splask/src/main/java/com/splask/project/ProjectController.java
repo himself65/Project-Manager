@@ -55,6 +55,8 @@ public class ProjectController {
         return responseBody;
     }
 
+    /*
+    TODO
     @PutMapping("/project/team")
     public JSONObject addTeam(@RequestBody Project p, Team t) {
         JSONObject responseBody = new JSONObject();
@@ -73,6 +75,8 @@ public class ProjectController {
 
         return responseBody;
     }
+    */
+
 // deletes project by id
     @DeleteMapping("/project/{id}")
     JSONObject deleteProject(@PathVariable Integer id)

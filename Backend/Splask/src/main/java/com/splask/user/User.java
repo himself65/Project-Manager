@@ -1,5 +1,4 @@
 
-
 package com.splask.user;
 
 //Class imports
@@ -51,11 +50,30 @@ public class User {
 //	Set<Project> projectUsers;
 
 	@JsonIgnore
-	@ManyToMany(mappedBy = "userTeams")
-	private Set<Team> teams = new HashSet<>();
+	@ManyToMany(mappedBy = "pUsers")
+	@JoinTable(
+			name = "users_projects",
+			joinColumns = @JoinColumn(name = "user", referencedColumnName = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "project", referencedColumnName = "project_id")
+	)
+	private List<Project> projects = new ArrayList<>();
 
 	@JsonIgnore
-	@ManyToMany(mappedBy = "userTasks")
+	@ManyToMany(mappedBy = "ttUsers")
+	@JoinTable(
+			name = "users_teams",
+			joinColumns = @JoinColumn(name = "user", referencedColumnName = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "team", referencedColumnName = "team_id")
+	)
+	private List<Team> teams = new ArrayList<>();
+
+	@JsonIgnore
+	@ManyToMany(mappedBy = "tUsers")
+	@JoinTable(
+			name = "users_tasks",
+			joinColumns = @JoinColumn(name = "user", referencedColumnName = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "task", referencedColumnName = "task_id")
+	)
 	private Set<Task> tasks = new HashSet<>();
 
 //	TODO (DEMO 4) Set relationship with Roles
@@ -103,8 +121,12 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 //	public Set<Project> getProjectUsers() {return projectUsers;}
 //	public void setProjectUsers(Set<Project> projectUsers) {this.projectUsers = projectUsers;}
 
+	/*
+	 TODO
 	public Set<Team> getTeam() {return teams;}
 	public void setTeams(Set<Team> teams) {this.teams = teams;}
+
+	 */
 
 	public Set<Task> getTasks() {return tasks;}
 	public void setTasks(Set<Task> tasks) {this.tasks = tasks;}

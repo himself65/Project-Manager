@@ -1,5 +1,6 @@
 package com.splask.team;
 
+import com.splask.user.UserDB;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,19 +21,19 @@ public class TeamController {
     Team getTeam(@PathVariable Integer id)
     {
 
-        return db.findById(id).orElseThrow(RuntimeException::new);
+        return teamRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 // returns all teams in database
     @RequestMapping("/team")
     List<Team> getAllTeams(){
 
-        return db.findAll();}
+        return teamRepository.findAll();}
 
 
     @PostMapping("/team")
     public JSONObject createTeam(@RequestBody Team t) {
         JSONObject responseBody = new JSONObject();
-        List<Team> teams = db.findAll();
+        List<Team> teams = teamRepository.findAll();
 
         for (Team i : teams)
         {
@@ -46,11 +47,12 @@ public class TeamController {
 
         responseBody.put("status", 200);
         responseBody.put("message", "Team successfully created");
-        db.save(t);
+        teamRepository.save(t);
         return responseBody;
 
     }
-
+/*
+    TODO
     @PutMapping("/team/{team_id}/user/{user_id}")
     Team enrollUserToTeam( //Gets the user then assigns the user to the team
                               @PathVariable Integer teamID,
@@ -62,7 +64,7 @@ public class TeamController {
         return  teamRepository.save(team); //saves the new user to assigned team
     }
 
-    
+    */
     
     
     
