@@ -20,19 +20,19 @@ public class TeamController {
     Team getTeam(@PathVariable Integer id)
     {
 
-        return db.findById(id).orElseThrow(RuntimeException::new);
+        return teamDB.findById(id).orElseThrow(RuntimeException::new);
     }
 // returns all teams in database
     @RequestMapping("/team")
     List<Team> getAllTeams(){
 
-        return db.findAll();}
+        return teamDB.findAll();}
 
 
     @PostMapping("/team")
     public JSONObject createTeam(@RequestBody Team t) {
         JSONObject responseBody = new JSONObject();
-        List<Team> teams = db.findAll();
+        List<Team> teams = teamDB.findAll();
 
         for (Team i : teams)
         {
@@ -46,7 +46,7 @@ public class TeamController {
 
         responseBody.put("status", 200);
         responseBody.put("message", "Team successfully created");
-        db.save(t);
+        teamDB.save(t);
         return responseBody;
 
     }
