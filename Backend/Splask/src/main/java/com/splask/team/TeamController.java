@@ -12,9 +12,10 @@ public class TeamController {
 
     @Autowired
     teamDB teamRepository;
-
+/*
     @Autowired
     UserDB userRepository;
+    */
 
     @GetMapping("/team/{id}")
     Team getTeam(@PathVariable Integer id)
@@ -51,6 +52,7 @@ public class TeamController {
 
     }
 
+    /*
     @PutMapping("/team/{team_id}/user/{user_id}")
     Team enrollUserToTeam( //Gets the user then assigns the user to the team
                               @PathVariable Integer teamID,
@@ -61,6 +63,7 @@ public class TeamController {
         team.enrollUser(user); //sends the passed user to the enrollUsers method
         return  teamRepository.save(team); //saves the new user to assigned team
     }
+    */
 
     
     
