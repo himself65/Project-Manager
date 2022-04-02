@@ -9,6 +9,7 @@ import androidx.databinding.ObservableField;
 import com.coms3091mc3.projectmanager.ProjectAdapter;
 import com.coms3091mc3.projectmanager.R;
 import com.coms3091mc3.projectmanager.data.Project;
+import com.coms3091mc3.projectmanager.utils.Const;
 
 public class DashboardDataModal {
     public ObservableField<String> name;
@@ -18,7 +19,7 @@ public class DashboardDataModal {
 
     public DashboardDataModal(Context context) {
         this.context = context;
-        this.name = new ObservableField<>("UNKNOWN");
+        this.name = new ObservableField<>(Const.username);
         this.projectsAdapter = new ProjectAdapter(context, R.layout.fragment_item);
     }
 }
