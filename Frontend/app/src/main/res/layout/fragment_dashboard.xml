@@ -20,23 +20,23 @@
             android:id="@+id/add_project"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/add_project"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_dashboard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/welcome"
             android:textAlignment="center"
             android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@+id/add_project"
-            app:layout_constraintTop_toBottomOf="@+id/add_project" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_dashboard_username"
@@ -53,11 +53,30 @@
             android:id="@+id/dashboard_grid_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
+            android:adapter="@{modal.projectsAdapter}"
             android:numColumns="2"
             app:layout_constraintTop_toBottomOf="@+id/text_dashboard"
-            android:adapter="@{modal.projectsAdapter}"
-            >
-        </GridView>
+            tools:layout_editor_absoluteX="128dp"/>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/tasks"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dashboard_grid_layout" />
+
+        <GridView
+            android:id="@+id/tasksGridView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
