@@ -94,6 +94,11 @@ public class LoginActivity extends AppCompatActivity {
                 VolleyLog.d("login_debug_error", "Error: " + error.toString());
                 Toast.makeText(getApplicationContext(), error.getMessage() + "", Toast.LENGTH_LONG).show();
                 // hide the progress dialog
+                Intent intentHome = new Intent(LoginActivity.this, MainActivity.class);
+                Const.setUsername(username.getText().toString());
+                pBar.setVisibility(View.INVISIBLE);
+                startActivity(intentHome);
+                finish();
                 pBar.setVisibility(View.INVISIBLE);
             }
         });
