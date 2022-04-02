@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("login_debug_error", "Error: " + error.toString());
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), error.getMessage() + "", Toast.LENGTH_LONG).show();
                 // hide the progress dialog
                 pBar.setVisibility(View.INVISIBLE);
             }
