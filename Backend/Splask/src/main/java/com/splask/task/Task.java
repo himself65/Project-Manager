@@ -46,6 +46,7 @@ public class Task {
 	@Column (name = "dateCompleted")
 	String dateCompleted;
 
+	
 //	Many task to many users
 	@ManyToMany
 	@JsonIgnore
@@ -54,15 +55,17 @@ public class Task {
 //	Many tasks to one Team
 	@ManyToOne
 	@JsonIgnore
-	private Team team;
+	private List<Team> taskTeam = new ArrayList<>();
 
+//  Many teams to many Projects
 	@ManyToOne
 	@JsonIgnore
-	private Project project;
+	private List<Project> taskProject = new ArrayList<>();
 
-
-
-
+	
+	
+	
+	
 	Task(){
 		dateCreated = LocalDateTime.now();
 
@@ -98,12 +101,17 @@ TODO
 
 	public void setUserTasks(Set<User> userTasks) {this.userTasks = userTasks;}
 */
-	/*
-	TODO
+
+	
+//  Task Controller functions
 	public void assignUser(User user) {
-		userTasks.add(user); //adds the user we passed in to the set
+		tUsers.add(user); //adds the user we passed in to the set
+		
 	}
-	 */
+	
+	public void assignTaskToTeam(Team team) {taskTeam.add(team);}
+
+	public void assignTaskToProject(Project project) {taskProject.add(project);}
 
 
 

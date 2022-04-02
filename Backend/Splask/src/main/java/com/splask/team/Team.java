@@ -11,8 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.JoinColumn;
-
 import org.springframework.stereotype.Repository;
 
 @Entity
@@ -27,50 +25,74 @@ class Team {
     @Column
     String teamName;
 
-    @Column
+    @Column //TODO What is this suppose to be used for? isn't it just the relationship table instead of an object string 
     String teamUsers;
 
-    //Many teams to many Users
-    @ManyToOne
-    @JsonIgnore
-    Project teamProject;
-
+    
+    
+    
+    
+    //Many teams to many Projects
+	@ManyToOne
+	@JsonIgnore
+	private List<Project> teamProject = new ArrayList<>();
+    
+    
+    
 //	Many Users to many Teams
     @ManyToMany
     @JsonIgnore
     private List<User> ttUsers = new ArrayList<>();
 
+    
+    
+    
+    
+    
 //  One Team to many Tasks
     @OneToMany(mappedBy = "team")
-    @JsonIgnore
     @JoinTable(
             name = "Team_Tasks",
             joinColumns = @JoinColumn(name = "team", referencedColumnName = "team_id"),
             inverseJoinColumns = @JoinColumn(name = "task", referencedColumnName = "task_id")
     )
-    private Set<Task> tasks;
+    private List<Task> tasks;
+    
+    
+    
+    
+    
+    
 
-    public Integer getTeamID() {
-        return teamID;
-    }
-
-    public String getTeamName()
-    {
-        return teamName;
-    }
-
-    public String getTeamIntro;
-
-//    Class functions
+    
+    public Integer getTeamID() {return teamID;}
+    public void setTeamID(int id) {this.teamID = id;}
+    
+    public String getTeamName() {return teamName;}
+    public void setTeamID(String str) {this.teamName = str;}
+    
     public String getTeamUsers() {return teamUsers;}
+    public void setTeamUsers(String str) {this.teamUsers = str;}
 
-//    public Project getTeamProjects() {return teamProjects;}
+    
+//  Team Controller functions
+    public void enrollUser(User user) {ttUsers.add(user);} //adds the user we passed in to the set
+    
+    
+    
+//	Relationship tables setters and getters
+	public List<Task> getTasks() {return tasks;} //TODO this is a Set, do we want to change it to a List????
+	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
+	
+	
+//  Task Controller functions
+	public void assignTeamToProject(Project project) {teamProject.add(project);}
 
-    /*
-    TODO
-    public void enrollUser(User user) {teamUser.add(user);} //adds the user we passed in to the set
+	
+	
 
-     */
+    
+
 
 
 }

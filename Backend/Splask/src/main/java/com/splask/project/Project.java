@@ -75,32 +75,18 @@ class Project {
         status = 0;
     }
 
-    public Integer getProjectID() {
-
-        return projectID;
-    }
+    public Integer getProjectID() {return projectID;}
 
 
-    public String getProjectName()
-    {
+    public String getProjectName(){return projectName;}
+    public void setProjectName(String newName){projectName = newName;}
 
-        return projectName;
-    }
-
-    public void setProjectName(String newName)
-    {
-
-        projectName = newName;
-    }
-
+//  TODO What does this is suppose to be @Chad
     public void setDeadline()
     {
 
     }
-    public String getDeadline()
-    {
-        return deadline;
-    }
+    public String getDeadline(){return deadline;}
 
     public Integer getStatus() {return status;}
 
@@ -139,9 +125,25 @@ class Project {
     public String getDateCreated()
     {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
         return dateCreated.format(format);
     }
 
+//  Controller function
+	public void enrollUserToProject(User user) {pUsers.add(user);}
+    
+
+//	Relationship tables setters and getters
+	public List<Team> getTeams() {return teams;}
+	public void setTeams(List<Team> teams) {this.teams = teams;}
+
+	public List<Task> getTasks() {return tasks;} 
+	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
+    
+	
+    
+    
+    
+    
+    
 
 }

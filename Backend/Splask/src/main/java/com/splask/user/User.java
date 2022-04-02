@@ -44,12 +44,7 @@ public class User {
 	@Column (name = "loggedIn")
 	Boolean loggedIn = false;
 
-//	@OneToOne
-//	@JsonIgnore
-//	Project projectsCreated;
-//	Set<Project> projectUsers;
 
-	@JsonIgnore
 	@ManyToMany(mappedBy = "pUsers")
 	@JoinTable(
 			name = "users_projects",
@@ -58,7 +53,6 @@ public class User {
 	)
 	private List<Project> projects = new ArrayList<>();
 
-	@JsonIgnore
 	@ManyToMany(mappedBy = "ttUsers")
 	@JoinTable(
 			name = "users_teams",
@@ -67,14 +61,13 @@ public class User {
 	)
 	private List<Team> teams = new ArrayList<>();
 
-	@JsonIgnore
 	@ManyToMany(mappedBy = "tUsers")
 	@JoinTable(
 			name = "users_tasks",
 			joinColumns = @JoinColumn(name = "user", referencedColumnName = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "task", referencedColumnName = "task_id")
 	)
-	private Set<Task> tasks = new HashSet<>();
+	private List<Task> tasks = new ArrayList<>();
 
 //	TODO (DEMO 4) Set relationship with Roles
 //	
@@ -86,7 +79,7 @@ public class User {
 //	public void user(String username, String password) { TODO (old) test
 public void user(String username, String password, Boolean loggedIn) { //TODO (new)test
 
-	this.username = username;
+		this.username = username;
 		this.password = password;
 		this.loggedIn = false;
 	}
@@ -111,28 +104,31 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 		return dateCreated.format(format);
 	}
 	
+//	TODO Delete???
 //	public Project getAuthor() {return projectsCreated;}
 //	public void setAuthor(Project author) {this.projectsCreated = author;}
 //	
     public boolean isLoggedIn() {return loggedIn;}
     public void setLoggedIn(boolean loggedIn) {this.loggedIn = loggedIn;}
-//
-////	Class functions
-//	public Set<Project> getProjectUsers() {return projectUsers;}
-//	public void setProjectUsers(Set<Project> projectUsers) {this.projectUsers = projectUsers;}
 
-	/*
-	 TODO
-	public Set<Team> getTeam() {return teams;}
-	public void setTeams(Set<Team> teams) {this.teams = teams;}
-
-	 */
-
-	public Set<Task> getTasks() {return tasks;}
-	public void setTasks(Set<Task> tasks) {this.tasks = tasks;}
+    
+//	Relationship tables setters and getters
+	public List<Project> getProjectUsers() {return projects;}
+	public void setProjectUsers(List<Project> projects) {this.projects = projects;}
 
 
+	public List<Team> getTeam() {return teams;}
+	public void setTeams(List<Team> teams) {this.teams = teams;}
 
+	
+	public List<Task> getTasks() {return tasks;} //TODO this is a Set, do we want to change it to a List????
+	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
+
+
+
+	
+	
+	
 
 //	to compare an object passed to the program with an object from our database.
     @Override
