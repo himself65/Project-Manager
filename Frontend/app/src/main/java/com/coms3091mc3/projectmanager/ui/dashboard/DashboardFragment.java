@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -101,27 +103,48 @@ public class DashboardFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getChildFragmentManager();
-                AddProjectDialogFragment fragment = new AddProjectDialogFragment(new AddProjectDialogFragment.AddProjectDialogListener() {
-                    @Override
-                    public void onDialogPositiveClick(Project project) {
-                        String url = Const.API_SERVER + "/project";
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("projectName", project.getName());
-                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
-                                new JSONObject(params),
-                                response -> {
-                                    Logger.getLogger("json").log(Level.INFO, response.toString());
-                                    binding.getModal().projectsAdapter.add(project);
-                                },
-                                error -> Logger.getLogger("json").log(Level.INFO, error.toString()));
-                        AppController.getInstance().addToRequestQueue(request);
-                    }
-                });
-                fragment.show(fragmentManager, "hello");
+                showMenu(view);
             }
         });
         return view;
+    }
+
+    public void showMenu(View v) {
+        PopupMenu popup = new PopupMenu(getContext(), v);
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                if (id == R.id.add_project) {
+                    addProject();
+                }
+                return true;
+            }
+        });
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.popup_dashboard_menu, popup.getMenu());
+        popup.show();
+    }
+
+    public void addProject() {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        AddProjectDialogFragment fragment = new AddProjectDialogFragment(new AddProjectDialogFragment.AddProjectDialogListener() {
+            @Override
+            public void onDialogPositiveClick(Project project) {
+                String url = Const.API_SERVER + "/project";
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("projectName", project.getName());
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
+                        new JSONObject(params),
+                        response -> {
+                            Logger.getLogger("json").log(Level.INFO, response.toString());
+                            binding.getModal().projectsAdapter.add(project);
+                        },
+                        error -> Logger.getLogger("json").log(Level.INFO, error.toString()));
+                AppController.getInstance().addToRequestQueue(request);
+            }
+        });
+        fragment.show(fragmentManager, "hello");
     }
 
     @Override
