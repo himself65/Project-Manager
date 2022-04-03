@@ -1,5 +1,8 @@
 package com.coms3091mc3.projectmanager;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,9 +10,13 @@ import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -34,6 +41,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.coms3091mc3.projectmanager.databinding.ActivityMainBinding;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -43,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     Uri.Builder uri = new Uri.Builder();
-
+    String tag_project_req = "project_req";
+    JSONArray teams;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,9 +97,34 @@ public class MainActivity extends AppCompatActivity {
         popup.show();
     }
 
+    public void projectMenu(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.listMembers:
+                        listMembers(v);
+                        return true;
+                    case R.id.addMembers:
+                        addMembers(v);
+                        return true;
+                    case R.id.addTask:
+                        getTeams(v);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.project_menu, popup.getMenu());
+        popup.show();
+    }
+
     public void logout(MenuItem item){
-//        uri = Uri.parse(Const.MOCK_SERVER + "/logout").buildUpon();
-        uri = Uri.parse(Const.API_SERVER + "/logout").buildUpon();
+        uri = Uri.parse(Const.MOCK_SERVER + "/logout").buildUpon();
+//        uri = Uri.parse(Const.API_SERVER + "/logout").buildUpon();
         ProgressBar pBar = findViewById(R.id.progressBar);
         Map<String, String> params = new HashMap<String, String>();
         params.put("username", Const.username);
@@ -124,6 +158,181 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         AppController.getInstance().addToRequestQueue(logoutRequest, "logout_request");
+    }
+
+    public void listMembers(View v){
+        Map<String, String> params = new HashMap<String, String>();
+//        params.put("id", username.getText().toString()); //pass project id
+
+        projectRequest(params, v, "users");
+
+    }
+
+    public void addMembers(View v){
+        Map<String, String> params = new HashMap<String, String>();
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        final EditText dialogInput = new EditText(getBaseContext());
+        dialogInput.setLayoutParams(lp);
+        alertBuilder.setView(dialogInput);
+
+        alertBuilder.setMessage("Enter username")
+                .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if(dialogInput.getText().toString().length() < 4){ //at least 4 characters
+                            Toast.makeText(getApplicationContext(), "Name must be at least 4 characters", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        params.put("username", dialogInput.getText().toString());
+                        projectRequest(params, v, "addUser");
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        return;
+                    }
+                });
+        // Create the AlertDialog object and return it
+        alertBuilder.create().show();
+
+    }
+
+    public void getTeams(View v){
+        Log.d("project_debug","Teams: " + teams.toString());
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("project",String.valueOf(5)); //pass project ID
+        projectRequest(params, v, "teams"); //get list of teams
+    }
+
+    public void addTask(View v){
+        if(teams != null && teams.length() > 0){
+            JSONObject[] projectTeams = new JSONObject[teams.length()];
+
+            Map<String, String> params = new HashMap<String, String>();
+
+            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            final EditText taskName = new EditText(getBaseContext());
+            taskName.setHint("Task Name");
+
+            final Spinner assignedTeam = new Spinner(getBaseContext());
+            for(int i = 0; i < teams.length(); i++){
+                try{
+                    projectTeams[i] = teams.getJSONObject(i);
+                }
+                catch(Exception e){
+                    Log.e("project_debug",e.getMessage());
+                }
+            }
+            ArrayAdapter<JSONObject> teamsArray = new ArrayAdapter<JSONObject>(this, android.R.layout.simple_spinner_dropdown_item, projectTeams);
+            assignedTeam.setAdapter(teamsArray);
+
+            assignedTeam.setLayoutParams(lp);
+            taskName.setLayoutParams(lp);
+            alertBuilder.setView(taskName);
+            alertBuilder.setView(assignedTeam);
+            alertBuilder.setTitle("Create Task");
+            alertBuilder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    if(taskName.getText().toString().length() < 4){ //at least 4 characters
+                        Toast.makeText(getApplicationContext(), "Project Name must be at least 4 characters", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    params.put("taskName", taskName.getText().toString()); //task name
+                    params.put("assignedTeam", String.valueOf(id)); //team ID
+                    projectRequest(params, v, "addTask");
+                }
+            })
+                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                            return;
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            alertBuilder.create().show();
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "No teams exists in the project yet", Toast.LENGTH_LONG);
+        }
+    }
+
+    public void projectRequest(Map<String, String> params, View v, String tag){
+        uri = Uri.parse(Const.MOCK_SERVER + "/project/" + tag).buildUpon();
+//        uri = Uri.parse(Const.API_SERVER + "/project/" + tag).buildUpon();
+        JsonObjectRequest projectRequest = new JsonObjectRequest(Request.Method.POST, uri.build().toString(),
+                new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    public void onResponse(JSONObject response) {
+                        try{
+                            if(response.getInt("status") != 200){
+                                Toast.makeText(getApplicationContext(), "An error has occured", Toast.LENGTH_LONG);
+                            }
+                            else{
+                                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
+                                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                                        LinearLayout.LayoutParams.MATCH_PARENT,
+                                        LinearLayout.LayoutParams.MATCH_PARENT);
+
+                                switch(tag){
+                                    case "users": //Get List of Members Request Success
+                                        alertBuilder.setTitle("List of Members")
+                                                .setPositiveButton("BACK", new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int id) {
+                                                        return;
+                                                    }
+                                                });
+
+                                        String[] memberList = new String[response.getJSONArray("Users").length()];
+                                        for(int i = 0; i < memberList.length; i++){
+                                            memberList[i] = response.getJSONArray("Users").getString(i);
+                                        }
+
+                                        alertBuilder.setItems(memberList, null);
+
+                                        //handle on click item
+//                                alertBuilder.setItems(memberList, new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                                    }
+//                                });
+
+                                        // Create the AlertDialog object and return it
+                                        alertBuilder.create().show();
+                                        break;
+                                    case "addUser": //add user to project
+                                        Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_SHORT).show();
+                                        break;
+                                    case "teams": //get list of teams on project
+                                        teams = response.getJSONArray("teams");
+                                        addTask(v);
+                                        break;
+                                    case "addTask": //create a task and assing a team to it
+                                        Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                                        break;
+                                }
+                            }
+                        }
+                        catch(Exception e){
+                            Log.d("project_debug",e.getMessage());
+//                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("project_debug", "Error: " + error.toString());
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        AppController.getInstance().addToRequestQueue(projectRequest, tag_project_req);
     }
 
 
