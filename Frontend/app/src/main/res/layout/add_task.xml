@@ -6,9 +6,9 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="319dp"
         android:layout_height="165dp"
-        android:background="@color/material_dynamic_neutral50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,27 +23,36 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="29dp"
             android:layout_marginEnd="77dp"
-            android:layout_marginBottom="79dp"
-            android:text="Enter name"
-            android:textColor="@color/white"
+            android:layout_marginBottom="99dp"
+            android:hint="Task name"
+            android:textColor="@color/black"
             android:textSize="22sp" />
 
-        <Button
-            android:id="@+id/btnOkay"
+        <Spinner
+            android:id="@+id/teamList"
+            android:layout_width="176dp"
+            android:layout_height="45dp"
+            android:layout_below="@+id/popup_input"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="-67dp"
+            android:layout_marginEnd="20dp" />
+
+        <TextView
+            android:id="@+id/AssignTo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="97dp"
-            android:layout_marginEnd="42dp"
-            android:onClick="popupWindowClick"
-            android:tag="popup_window"
-            android:text="OK"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.111"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="0.1" />
+            android:layout_below="@+id/popup_input"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="-67dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="27dp"
+            android:layout_toStartOf="@+id/teamList"
+            android:text="Assign To Team: "
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
 
     </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

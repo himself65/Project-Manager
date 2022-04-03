@@ -2,11 +2,13 @@ package com.coms3091mc3.projectmanager;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -202,7 +204,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getTeams(View v){
-        Log.d("project_debug","Teams: " + teams.toString());
         Map<String, String> params = new HashMap<String, String>();
         params.put("project",String.valueOf(5)); //pass project ID
         projectRequest(params, v, "teams"); //get list of teams
@@ -210,42 +211,39 @@ public class MainActivity extends AppCompatActivity {
 
     public void addTask(View v){
         if(teams != null && teams.length() > 0){
-            JSONObject[] projectTeams = new JSONObject[teams.length()];
-
+            int[] projectTeamsID = new int[teams.length()];
+            String[] projectTeamsName = new String[teams.length()];
             Map<String, String> params = new HashMap<String, String>();
 
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-            final EditText taskName = new EditText(getBaseContext());
-            taskName.setHint("Task Name");
-
-            final Spinner assignedTeam = new Spinner(getBaseContext());
             for(int i = 0; i < teams.length(); i++){
                 try{
-                    projectTeams[i] = teams.getJSONObject(i);
+                    projectTeamsID[i] = teams.getJSONObject(i).getInt("id");
+                    projectTeamsName[i] = teams.getJSONObject(i).getString("name");
                 }
                 catch(Exception e){
                     Log.e("project_debug",e.getMessage());
                 }
             }
-            ArrayAdapter<JSONObject> teamsArray = new ArrayAdapter<JSONObject>(this, android.R.layout.simple_spinner_dropdown_item, projectTeams);
-            assignedTeam.setAdapter(teamsArray);
-
-            assignedTeam.setLayoutParams(lp);
-            taskName.setLayoutParams(lp);
-            alertBuilder.setView(taskName);
-            alertBuilder.setView(assignedTeam);
+            ArrayAdapter<String> teamsArray = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, projectTeamsName);
             alertBuilder.setTitle("Create Task");
+
+            LayoutInflater inflater = (LayoutInflater)MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View addTaskView = inflater.inflate(R.layout.add_task,null);
+            EditText taskName = (EditText)addTaskView.findViewById(R.id.popup_input);
+            Spinner teamList = (Spinner)addTaskView.findViewById(R.id.teamList);
+            teamList.setAdapter(teamsArray);
+            alertBuilder.setView(addTaskView);
+
             alertBuilder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
+                public void onClick(DialogInterface dialog, int which) {
                     if(taskName.getText().toString().length() < 4){ //at least 4 characters
                         Toast.makeText(getApplicationContext(), "Project Name must be at least 4 characters", Toast.LENGTH_LONG).show();
                         return;
                     }
                     params.put("taskName", taskName.getText().toString()); //task name
-                    params.put("assignedTeam", String.valueOf(id)); //team ID
+
+                    params.put("assignedTeam", String.valueOf(projectTeamsID[teamList.getSelectedItemPosition()] )); //team ID
                     projectRequest(params, v, "addTask");
                 }
             })
@@ -312,6 +310,7 @@ public class MainActivity extends AppCompatActivity {
                                         break;
                                     case "teams": //get list of teams on project
                                         teams = response.getJSONArray("teams");
+                                        Log.d("project_debug","Teams: " + teams.toString());
                                         addTask(v);
                                         break;
                                     case "addTask": //create a task and assing a team to it
@@ -321,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         catch(Exception e){
-                            Log.d("project_debug",e.getMessage());
+                            Log.d("project_debug",tag + ": " + e.getMessage());
 //                            e.printStackTrace();
                         }
                     }
