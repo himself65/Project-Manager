@@ -1,6 +1,9 @@
 package com.splask.user;
 
+
 import java.util.List;
+
+import com.splask.team.Team;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,121 +24,88 @@ public class UserController {
     @Autowired
 	UserDB userRepository;
 
-	/*
-	 * to get User details by ID from the database
-	 */
-	@GetMapping("/user/{id}")  //("/user/{id}") is the endpoint
-	User getUserName(@PathVariable Integer id) {
-		return userRepository.findById(id).get();	
+//  get user by ID
+	@GetMapping("/user/{id}")
+	User getUsername(@PathVariable Integer id) {
+		return userRepository.findById(id).orElseThrow(RuntimeException::new);
 	}
-	
-/*
- * 	to get all the Users details from the database
- */
+
+//  get all the users
 	@RequestMapping("user")
 	List<User> getAllUsers() {
-		//List<User> users = userRepository.findAll();
-//		System.out.println("\n\n\n\n" + users + "\n\n\n\n");
 		return userRepository.findAll();
 	}
-	
-/*
- * Registers user to the database and checks if there is an
- * existing user registered with the same parameters 
- */
+
+// Registers user to the database and checks if there is an
+// existing user registered with the same username
 	@PostMapping("/register")
 	public JSONObject registerUser(@RequestBody User newUser) {
-		
 		JSONObject responseBody = new JSONObject();
 		List<User> users = userRepository.findAll();
 
-        System.out.println("New user: " + newUser.toString());
-        
-        String userId = newUser.username + "309";
-
         for (User user : users) {
             if (user.username.equals(newUser.username)) {
-                System.out.println("User Already exists!");
                 responseBody.put("status", 400);
                 responseBody.put("message", "User Already Exists!");
                 return responseBody;
-//                return Status.USER_ALREADY_EXISTS;
             }
         }
-        
-        if(newUser.password.length() < 3) {
+
+//      Checks length, upper, lower case, numeric value and special character of the input password
+        User user = new User();
+        if (user.isAllPresent(user.password) != true){ //Checks if the password meets the safety criteria
             responseBody.put("status", 400);
-            responseBody.put("message", "Password Too Short!");
-            return responseBody;
-//        	return Status.PASSWORD_SHORT;
+            responseBody.put("message", "Please enter a valid password of at least 4 characters containing uppercase, lowercase\n" +
+                    "\t// special character & numeric value");
         }
-//        newUser.setLoggedIn(true);
-//        newUser.setUserId(userId);
-        System.out.println("Registered user: " + newUser.toString());
-        
+
         userRepository.save(newUser);
         responseBody.put("status", 200);
         responseBody.put("message", "Account successfully created!");
         
         return responseBody;
-//        return Status.SUCCESS;
     }
-	
-	/*
-	 * Log in call 
-	 */
+
     @PostMapping("/login")
     public JSONObject loginUser(@RequestBody User user) {
-        List<User> users = userRepository.findAll();
         JSONObject responseBody = new JSONObject();
-        
-        System.out.println("User list");
-    	System.out.println("\n\n" + users + "\n\n\n");
-    	
-    	System.out.println(user.username);
-    	System.out.println();
+        List<User> users = userRepository.findAll();
 
+//      Updates user logged in status
         for (User other : users) {
             if (other.equals(user)) {
                 user.setLoggedIn(true);
-                userRepository.save(user);
-
                 responseBody.put("status", 200);
                 responseBody.put("message", "Login Successful");
                 return responseBody;
             }
         }
+
         responseBody.put("status", 400);
         responseBody.put("message", "Login Failed");
         return responseBody;
     }
 
-    /* 
-     * Log out call 
-     */
+//  Log out call
     @PostMapping("/logout")
-    public JSONObject logUserOut(@RequestBody User user) {
+    public JSONObject logoutUser(@RequestBody User user) {
         JSONObject responseBody = new JSONObject();
-
         List<User> users = userRepository.findAll();
 
         for (User other : users) {
             if (other.username.equals(user.username)) {
                 user.setLoggedIn(false);
-                userRepository.save(user);
                 responseBody.put("status", 200);
                 responseBody.put("message", "User Successfully logged out");
                 return responseBody;
             }
         }
         responseBody.put("status", 400);
-        responseBody.put("message", "Failure to Logout");
+        responseBody.put("message", "Failure to logout");
         return responseBody;
     }
 
-	/*
-	 * to delete user detail from the database
-	 */
+//	 Delete user by id
 	@DeleteMapping("/user/{id}")
 	JSONObject deleteUser(@PathVariable Integer id) {
         JSONObject responseBody = new JSONObject();
@@ -150,11 +120,10 @@ public class UserController {
     public JSONObject deleteUsers() {
         JSONObject responseBody = new JSONObject();
     	userRepository.deleteAll();
-
         responseBody.put("status", 200);
         responseBody.put("message", "Successfully deleted all users");
         return responseBody;
     }
 
-	
+
 }

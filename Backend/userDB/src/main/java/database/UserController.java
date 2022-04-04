@@ -2,6 +2,7 @@ package database;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//import com.sun.org.apache.xerces.internal.util.URI;
+import java.util.regex.*;
+
+import javax.validation.Valid;
 
 import database.User;
 import net.minidev.json.JSONObject;
@@ -38,7 +41,6 @@ public class UserController {
 	@RequestMapping("/user")
 	List<User> getAllUsers() {
 		List<User> users = userRepository.findAll();
-//		System.out.println("\n\n\n\n" + users + "\n\n\n\n");
 		return users;
 	}
 	
@@ -47,62 +49,85 @@ public class UserController {
  * existing user registered with the same parameters 
  */
 	@PostMapping("/register")
-	public JSONObject registerUser(@RequestBody User newUser) {
+	public JSONObject registerUser(@Valid @RequestBody User newUser) {
 		
 		JSONObject responseBody = new JSONObject();
 		List<User> users = userRepository.findAll();
 
         System.out.println("New user: " + newUser.toString());
         
-        String userId = newUser.username + "309";
-
         for (User user : users) {
             if (user.username.equals(newUser.username)) {
                 System.out.println("User Already exists!");
                 responseBody.put("status", 400);
                 responseBody.put("message", "User Already Exists!");
                 return responseBody;
-//                return Status.USER_ALREADY_EXISTS;
             }
         }
-        
+	/*
+	 * Checks the length of the password        
+	 */
         if(newUser.password.length() < 3) {
             responseBody.put("status", 400);
             responseBody.put("message", "Password Too Short!");
             return responseBody;
-//        	return Status.PASSWORD_SHORT;
         }
-//        newUser.setLoggedIn(true);
-//        newUser.setUserId(userId);
-        System.out.println("Registered user: " + newUser.toString());
-        
-        userRepository.save(newUser);
-        responseBody.put("status", 200);
-        responseBody.put("message", "Account successfully created!");
+        /*
+         * Check that the password contains an upper, lower, 
+         * & a numeric value  and that the password is not null
+         */
+        if((newUser.password != null) && (checkString(newUser.password) == true)) {  
+        	        	
+            System.out.println("Registered user: " + newUser.toString());
+            
+            userRepository.save(newUser);
+            responseBody.put("status", 200);
+            responseBody.put("message", "Account Successfully Created!");        	
+        	
+        } else {
+        	responseBody.put("status", 400);
+            responseBody.put("message", "Please enter a valid password. -*It must contain a capital,lowerCase letter and a digit number *-");   
+        }
         
         return responseBody;
-//        return Status.SUCCESS;
     }
+	
+	/*
+	 * Checks if the password contains a upper, lower case letter & a numeric value
+	 */
+	private static boolean checkString(String str) {
+	    char ch;
+	    boolean capitalFlag = false;
+	    boolean lowerCaseFlag = false;
+	    boolean numberFlag = false;
+	    for(int i=0;i < str.length();i++) {
+	        ch = str.charAt(i);
+	        if( Character.isDigit(ch)) {
+	            numberFlag = true;
+	        }
+	        else if (Character.isUpperCase(ch)) {
+	            capitalFlag = true;
+	        } else if (Character.isLowerCase(ch)) {
+	            lowerCaseFlag = true;
+	        }
+	        if(numberFlag && capitalFlag && lowerCaseFlag)
+	            return true;
+	    }
+	    return false;
+	}
+	
 	
 	/*
 	 * Log in call 
 	 */
     @PostMapping("/login")
-    public JSONObject loginUser(@RequestBody User user) {
+    public JSONObject loginUser(@Valid @RequestBody User user) {
         List<User> users = userRepository.findAll();
         JSONObject responseBody = new JSONObject();
-        
-        System.out.println("User list");
-    	System.out.println("\n\n" + users + "\n\n\n");
-    	
-    	System.out.println(user.username);
-    	System.out.println();
 
         for (User other : users) {
             if (other.equals(user)) {
                 user.setLoggedIn(true);
-                userRepository.save(user);
-
                 responseBody.put("status", 200);
                 responseBody.put("message", "Login Successful");
                 return responseBody;
@@ -125,7 +150,6 @@ public class UserController {
         for (User other : users) {
             if (other.username.equals(user.username)) {
                 user.setLoggedIn(false);
-                userRepository.save(user);
                 responseBody.put("status", 200);
                 responseBody.put("message", "User Successfully logged out");
                 return responseBody;

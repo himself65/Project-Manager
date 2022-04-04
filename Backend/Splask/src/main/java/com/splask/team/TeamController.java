@@ -1,7 +1,15 @@
 package com.splask.team;
 
+import com.splask.project.Project;
+import com.splask.project.projectDB;
+import com.splask.task.Task;
+import com.splask.task.TaskRepository;
+import com.splask.user.User;
+import com.splask.user.UserDB;
+
+
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,23 +18,88 @@ import java.util.List;
 public class TeamController {
 
     @Autowired
-    teamDB db;
-
+    teamDB teamRepository;
+    
+    @Autowired
+    UserDB userRepository;
+    
+    @Autowired
+    TaskRepository taskRepository;
+    
+    @Autowired
+    projectDB projectRepository;
 
     @GetMapping("/team/{id}")
     Team getTeam(@PathVariable Integer id)
     {
-        return db.findById(id).orElseThrow(RuntimeException::new);
-    }
 
+        return teamRepository.findById(id).orElseThrow(RuntimeException::new);
+    }
+// returns all teams in database
     @RequestMapping("/team")
-    List<Team> getAllTeams(){return db.findAll();}
+    List<Team> getAllTeams(){
+
+        return teamRepository.findAll();}
 
 
     @PostMapping("/team")
-    Team createTeam(@RequestBody Team t) {
-        db.save(t);
-        return t;
+    public JSONObject createTeam(@RequestBody Team t) {
+        JSONObject responseBody = new JSONObject();
+        List<Team> teams = teamRepository.findAll();
+
+        for (Team i : teams)
+        {
+            if (t.getTeamName().equals(i.getTeamName()))
+            {
+                responseBody.put("status", 400);
+                responseBody.put("message", "Project Name in Use");
+                return responseBody;
+            }
+        }
+
+        responseBody.put("status", 200);
+        responseBody.put("message", "Team successfully created");
+        teamRepository.save(t);
+        return responseBody;
+
     }
+    
+    //TODO Waiting to be tested 
+//  Sets the user to the assigned team
+    @PutMapping("/team/{team_id}/user/{user_id}")
+    Team enrollUserToTeam( //Gets the user then assigns the user to the team
+                              @PathVariable Integer teamID,
+                              @PathVariable Integer userID
+    ) {
+        Team team = teamRepository.findById(teamID).get();
+        User user = userRepository.findById(userID).get();
+        team.enrollUser(user); //sends the passed user to the enrollUsers method
+        return  teamRepository.save(team); //saves the new user to assigned team
+    }
+    
+    //TODO Waiting to be tested 
+    @PutMapping("/team/{team_id}/project/{project_id}")
+    Team assignTaskToTeam(
+    		@PathVariable Integer projectID,
+    		@PathVariable Integer teamID
+    		
+    ) {
+    	Project project = projectRepository.findById(projectID).get();
+    	Team team= teamRepository.findById(teamID).get();
+    	team.assignTeamToProject(project);
+    	return teamRepository.save(team);
+    }
+    
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 }
