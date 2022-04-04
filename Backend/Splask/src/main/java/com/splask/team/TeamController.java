@@ -7,6 +7,7 @@ import com.splask.user.User;
 import com.splask.user.UserDB;
 
 
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -63,9 +64,30 @@ public class TeamController {
 
     }
     
-    //TODO Waiting to be tested 
+
+    @GetMapping("/team/{team_id}/users")
+    JSONObject usersInTeam(@PathVariable Integer teamID)
+    {
+        Team team= teamRepository.getById(teamID);
+        JSONArray users = new JSONArray();
+        JSONObject responseBody = new JSONObject();
+        /*
+        for (User i : project.getUsers())
+        {
+            users.add(i);
+        }
+         */
+
+        users.addAll(team.getttUsers());
+        responseBody.put("users",users);
+        responseBody.put("status", 200);
+        responseBody.put("message", "Successfully retrieved all teams from" + team.getTeamName());
+
+
+        return responseBody;
+    }
 //  Sets the user to the assigned team
-    @PutMapping("/team/{team_id}/user/addUser")
+    @PutMapping("/team/{team_id}/addUser")
     JSONObject enrollUserToTeam( //Gets the user then assigns the user to the team
                               @PathVariable Integer teamID,
                               @PathVariable Integer userID
@@ -86,7 +108,7 @@ public class TeamController {
         team.enrollUser(user); //sends the passed user to the enrollUsers method
         teamRepository.save(team);
         responseBody.put("status",200);
-        responseBody.put("message", "User successfully added to team");
+        responseBody.put("message", "User successfully added to Team");
 
         return  responseBody;
     }
