@@ -2,8 +2,7 @@ package com.splask.team;
 
 import com.splask.project.Project;
 import com.splask.project.projectDB;
-import com.splask.task.Task;
-import com.splask.task.TaskRepository;
+import com.splask.task.TaskDB;
 import com.splask.user.User;
 import com.splask.user.UserDB;
 
@@ -24,7 +23,7 @@ public class TeamController {
     UserDB userRepository;
     
     @Autowired
-    TaskRepository taskRepository;
+    TaskDB taskRepository;
     
     @Autowired
     projectDB projectRepository;
@@ -52,7 +51,7 @@ public class TeamController {
             if (t.getTeamName().equals(i.getTeamName()))
             {
                 responseBody.put("status", 400);
-                responseBody.put("message", "Project Name in Use");
+                responseBody.put("message", "Team Name in Use");
                 return responseBody;
             }
         }
@@ -66,19 +65,34 @@ public class TeamController {
     
     //TODO Waiting to be tested 
 //  Sets the user to the assigned team
-    @PutMapping("/team/{team_id}/user/{user_id}")
-    Team enrollUserToTeam( //Gets the user then assigns the user to the team
+    @PutMapping("/team/{team_id}/user/addUser")
+    JSONObject enrollUserToTeam( //Gets the user then assigns the user to the team
                               @PathVariable Integer teamID,
                               @PathVariable Integer userID
     ) {
-        Team team = teamRepository.findById(teamID).get();
-        User user = userRepository.findById(userID).get();
+        JSONObject responseBody = new JSONObject();
+
+        Team team = teamRepository.getById(teamID);
+        User user = userRepository.getById(userID);
+
+        if (team.getttUsers().contains(user))
+        {
+            responseBody.put("status",400);
+            responseBody.put("message", "User already in Team");
+            return responseBody;
+        }
+
+
         team.enrollUser(user); //sends the passed user to the enrollUsers method
-        return  teamRepository.save(team); //saves the new user to assigned team
+        teamRepository.save(team);
+        responseBody.put("status",200);
+        responseBody.put("message", "User successfully added to team");
+
+        return  responseBody;
     }
     
     //TODO Waiting to be tested 
-    @PutMapping("/team/{team_id}/project/{project_id}")
+    @PutMapping("/team/{team_id}/project/addProject")
     Team assignTaskToTeam(
     		@PathVariable Integer projectID,
     		@PathVariable Integer teamID

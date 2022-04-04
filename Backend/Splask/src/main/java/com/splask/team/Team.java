@@ -71,8 +71,9 @@ class Team {
     public String getTeamName() {return teamName;}
     public void setTeamID(String str) {this.teamName = str;}
     
-    public String getTeamUsers() {return teamUsers;}
-    public void setTeamUsers(String str) {this.teamUsers = str;}
+    public List<User> getttUsers() {return ttUsers;}
+
+    public void setTeamUsers(List<User> users) {this.ttUsers = users;}
 
     
 //  Team Controller functions

@@ -17,7 +17,7 @@ import net.minidev.json.JSONObject;
 public class TaskController {
 	
     @Autowired
-	TaskRepository taskRepository;
+	TaskDB taskRepository;
 
 	@Autowired
 	UserDB userRepository;
@@ -102,22 +102,35 @@ public class TaskController {
 	}
 //  TODO Waiting to be tested 
 //  Sets the task to the assigned team
-    @PutMapping("/task/{task_id}/team/{team_id}")
-    Task assignTaskToTeam(
+    @PutMapping("/task/{task_id}/add")
+    JSONObject assignTaskToTeam(
     		@PathVariable Integer taskID,
     		@PathVariable Integer teamID
     ) {
-    	Task task= taskRepository.findById(taskID).get();
-    	Team team = teamRepository.findById(teamID).get();
+		JSONObject responseBody = new JSONObject();
+
+		Task task = taskRepository.getById(taskID);
+		Team team = teamRepository.getById(teamID);
+		if(team.getTasks().contains(task))
+		{
+			responseBody.put("status", 400);
+			responseBody.put("message", "task is already assigned to this team");
+
+			return responseBody;
+		}
+
     	task.assignTaskToTeam(team);
-    	return taskRepository.save(task);
+		taskRepository.save(task);
+		responseBody.put("status",200);
+		responseBody.put("message", "task successfully added to" + team.getTeamName());
+    	return responseBody;
     }
     
     
 //  TODO Waiting to be tested 
-//  Sets the task to the assigned team
+//  Sets the task to the assigned project
     @PutMapping("/task/{task_id}/project/{project_id}")
-    Task assignTaslToProject(
+    Task assignTaskToProject(
     		@PathVariable Integer taskID,
     		@PathVariable Integer projectID
     ) {
