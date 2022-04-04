@@ -65,10 +65,8 @@ public class User {
 
 	public void setUserPassword(String password) {this.password = password;}
 	
-	
     public LocalDateTime getDateCreated() {return dateCreated;}
 
-	
 	public String getAuthor() {return author;}
 	
 	public void setAuthor(String author) {this.author = author;}
