@@ -5,15 +5,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
+import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,6 +34,7 @@ import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.data.Project;
 import com.coms3091mc3.projectmanager.databinding.FragmentDashboardBinding;
 import com.coms3091mc3.projectmanager.store.DashboardDataModal;
+import com.coms3091mc3.projectmanager.ui.project.ProjectFragment;
 import com.coms3091mc3.projectmanager.utils.Const;
 import com.coms3091mc3.projectmanager.view.AddProjectDialogFragment;
 
@@ -70,7 +78,7 @@ public class DashboardFragment extends Fragment {
                                         object.getString("projectName"),
                                         object.getString("dateCreated")
                                 );
-                                binding.getModal().projectsAdapter.add(project.getName());
+                                binding.getModal().projectsAdapter.add(project);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -83,30 +91,60 @@ public class DashboardFragment extends Fragment {
         binding.setModal(new DashboardDataModal(context));
         View view = binding.getRoot();
         Button button = view.findViewById(R.id.add_project);
+        GridView gridView = view.findViewById(R.id.dashboard_grid_layout);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Project project = binding.getModal().projectsAdapter.getItem(i);
+                DashboardFragmentDirections.ActionNavigationDashboardToNavigationProject action = DashboardFragmentDirections.actionNavigationDashboardToNavigationProject(project.getId());
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getChildFragmentManager();
-                AddProjectDialogFragment fragment = new AddProjectDialogFragment(new AddProjectDialogFragment.AddProjectDialogListener() {
-                    @Override
-                    public void onDialogPositiveClick(String projectName) {
-                        String url = Const.API_SERVER + "/project";
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("projectName", projectName);
-                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
-                                new JSONObject(params),
-                                response -> {
-                                    Logger.getLogger("json").log(Level.INFO, response.toString());
-                                    binding.getModal().projectsAdapter.add(projectName);
-                                },
-                                error -> Logger.getLogger("json").log(Level.INFO, error.toString()));
-                        AppController.getInstance().addToRequestQueue(request);
-                    }
-                });
-                fragment.show(fragmentManager, "hello");
+                showMenu(view);
             }
         });
         return view;
+    }
+
+    public void showMenu(View v) {
+        PopupMenu popup = new PopupMenu(getContext(), v);
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                if (id == R.id.add_project) {
+                    addProject();
+                }
+                return true;
+            }
+        });
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.popup_dashboard_menu, popup.getMenu());
+        popup.show();
+    }
+
+    public void addProject() {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        AddProjectDialogFragment fragment = new AddProjectDialogFragment(new AddProjectDialogFragment.AddProjectDialogListener() {
+            @Override
+            public void onDialogPositiveClick(Project project) {
+                String url = Const.API_SERVER + "/project";
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("projectName", project.getName());
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
+                        new JSONObject(params),
+                        response -> {
+                            Logger.getLogger("json").log(Level.INFO, response.toString());
+                            binding.getModal().projectsAdapter.add(project);
+                        },
+                        error -> Logger.getLogger("json").log(Level.INFO, error.toString()));
+                AppController.getInstance().addToRequestQueue(request);
+            }
+        });
+        fragment.show(fragmentManager, "hello");
     }
 
     @Override

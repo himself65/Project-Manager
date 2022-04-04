@@ -15,7 +15,13 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.coms3091mc3.projectmanager.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_project"
+            app:destination="@id/navigation_project">
+            <argument android:name="projectID" app:argType="integer"/>
+        </action>
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -28,4 +34,10 @@
         android:name="com.coms3091mc3.projectmanager.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/navigation_project"
+        android:name="com.coms3091mc3.projectmanager.ui.project.ProjectFragment"
+        android:label="Project"
+        tools:layout="@layout/fragment_project" />
 </navigation>
