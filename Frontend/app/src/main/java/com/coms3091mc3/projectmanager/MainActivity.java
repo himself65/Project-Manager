@@ -56,12 +56,18 @@ public class MainActivity extends AppCompatActivity {
     String tag_project_req = "project_req";
     JSONArray teams;
     boolean viewAdd = false;
+    int projectID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        //get project details from intent parameters
+        Intent prevIntent = getIntent();
+        projectID = prevIntent.getIntExtra("projectID", 0);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -303,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void projectRequest(Map<String, String> params, View v, String tag){
-        uri = Uri.parse(Const.MOCK_SERVER + "/project/" + tag).buildUpon();
+        uri = Uri.parse(Const.MOCK_SERVER + "/project/projectID" + tag).buildUpon();
 //        uri = Uri.parse(Const.API_SERVER + "/project/" + tag).buildUpon();
         JsonObjectRequest projectRequest = new JsonObjectRequest(Request.Method.POST, uri.build().toString(),
                 new JSONObject(params),
@@ -328,9 +334,9 @@ public class MainActivity extends AppCompatActivity {
                                                     }
                                                 });
 
-                                        String[] memberList = new String[response.getJSONArray("Users").length()];
+                                        String[] memberList = new String[response.getJSONArray("users").length()];
                                         for(int i = 0; i < memberList.length; i++){
-                                            memberList[i] = response.getJSONArray("Users").getString(i);
+                                            memberList[i] = response.getJSONArray("users").getString(i);
                                         }
 
                                         alertBuilder.setItems(memberList, null);
@@ -402,11 +408,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("project_debug", "Error: " + error.toString());
+                error.printStackTrace();
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
         AppController.getInstance().addToRequestQueue(projectRequest, tag_project_req);
     }
 
+    @Override
+    public void onBackPressed() { //Handle back button pressed on android
+
+
+    }
 
 }
