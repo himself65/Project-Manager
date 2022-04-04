@@ -1,6 +1,5 @@
 package com.coms3091mc3.projectmanager.ui.project;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,18 +14,17 @@ import android.widget.Button;
 import android.widget.PopupMenu;
 
 import com.android.volley.Request;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.coms3091mc3.projectmanager.R;
 import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.data.Project;
-import com.coms3091mc3.projectmanager.databinding.FragmentProjectBinding;
+import com.coms3091mc3.projectmanager.data.Team;
 import com.coms3091mc3.projectmanager.store.ProjectDataModel;
 import com.coms3091mc3.projectmanager.utils.Const;
 import com.coms3091mc3.projectmanager.view.AddProjectDialogFragment;
+import com.coms3091mc3.projectmanager.view.AddTeamDialogFragment;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,9 +76,9 @@ public class ProjectFragment extends Fragment {
                 int id = menuItem.getItemId();
                 if (id == R.id.add_team) {
                     FragmentManager fragmentManager = getChildFragmentManager();
-                    AddProjectDialogFragment fragment = new AddProjectDialogFragment(new AddProjectDialogFragment.AddProjectDialogListener() {
+                    AddTeamDialogFragment fragment = new AddTeamDialogFragment(new AddTeamDialogFragment.AddTeamDialogListener() {
                         @Override
-                        public void onDialogPositiveClick(Project projectName) {
+                        public void onDialogPositiveClick(Team projectName) {
 
                         }
                     });

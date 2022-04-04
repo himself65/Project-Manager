@@ -8,7 +8,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,19 +15,16 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.coms3091mc3.projectmanager.R;
-import com.coms3091mc3.projectmanager.data.Project;
 import com.coms3091mc3.projectmanager.data.Team;
 
-import java.util.Date;
-
-public class AddTeamFragment extends DialogFragment {
+public class AddTeamDialogFragment extends DialogFragment {
     public interface AddTeamDialogListener {
         public void onDialogPositiveClick(Team team);
     }
 
-    AddTeamFragment.AddTeamDialogListener listener;
+    AddTeamDialogFragment.AddTeamDialogListener listener;
 
-    public AddTeamFragment(AddTeamFragment.AddTeamDialogListener listener) {
+    public AddTeamDialogFragment(AddTeamDialogFragment.AddTeamDialogListener listener) {
         this.listener = listener;
     }
 
@@ -56,7 +52,7 @@ public class AddTeamFragment extends DialogFragment {
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        AddTeamFragment.this.getDialog().cancel();
+                        AddTeamDialogFragment.this.getDialog().cancel();
                     }
                 }).setTitle("New Project");
         return builder.create();
