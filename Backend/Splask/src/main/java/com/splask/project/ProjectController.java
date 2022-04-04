@@ -5,6 +5,8 @@ import com.splask.team.Team;
 import com.splask.team.teamDB;
 import com.splask.user.User;
 import com.splask.user.UserDB;
+import com.splask.task.TaskDB;
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,10 @@ public class ProjectController {
 
     @Autowired
     UserDB userRepository;
+
+    @Autowired
+    TaskDB taskRepository;
+
 
     @GetMapping("/project/{id}")
     public Project getProject(@PathVariable Integer id)
@@ -90,18 +96,98 @@ public class ProjectController {
         return responseBody;
     }
     
-    
+
+
+    // returns all users in the project
+    @GetMapping("/project/{project_id}/users")
+    JSONArray usersInProject(@PathVariable Integer projectID)
+    {
+        Project project = projectRepository.getById(projectID);
+        JSONArray users = new JSONArray();
+        /*
+        for (User i : project.getUsers())
+        {
+            users.add(i);
+        }
+         */
+        users.addAll(project.getUsers());
+
+        return users;
+    }
+
     //TODO Waiting to be tested 
 //  Sets the user to the assigned project
-    @PutMapping("/project/{project_id}/user/{user_id}")
-    Project enrollUserToProject( //Gets the user then assigns the user to the project
+    @PutMapping("/project/{project_id}/addUser")
+    JSONObject enrollUserToProject( //Gets the user then assigns the user to the project
                               @PathVariable Integer projectID,
-                              @PathVariable Integer userID
+                              @PathVariable String username
     ) {
-        Project project = projectRepository.findById(projectID).get();
-        User user = userRepository.findById(userID).get();
+        JSONObject responseBody = new JSONObject();
+
+        Project project = projectRepository.getById(projectID);
+        User user = userRepository.findByUsername(username);
+        if (project.getUsers().contains(user))
+        {
+            responseBody.put("status", 400);
+            responseBody.put("message", user.getUsername() +"already in" + project.getProjectName());
+            return responseBody;
+        }
         project.enrollUserToProject(user); //sends the passed user to the enrollUsers method
-        return  projectRepository.save(project); //saves the new user to assigned team
+        responseBody.put("status", 200);
+        responseBody.put("message", "User successfully added to" +project.getProjectName());
+        return  responseBody; //saves the new user to assigned team
     }
+
+
+    //retrieves all teams from Project
+    @GetMapping("/project/project_id/teams")
+    JSONArray teamsInProject(@PathVariable Integer projectID)
+    {
+        Project project = projectRepository.getById(projectID);
+        JSONArray teams = new JSONArray();
+        /*
+        for (User i : project.getUsers())
+        {
+            users.add(i);
+        }
+         */
+        teams.addAll(project.getTeams());
+
+        return teams;
+    }
+    @PutMapping("/project/{project_id}/addTeam")
+    JSONObject addTeamToProject(@PathVariable Integer pID)
+    {
+        JSONObject responseBody = new JSONObject();
+        Team t = new Team();
+
+        Project project = projectRepository.getById(pID);
+        project.addTeamToProject(t);
+
+        teamRepository.save(t);
+        projectRepository.save(project);
+
+
+        responseBody.put("status",200);
+        responseBody.put("message", "Team successfully created");
+        return responseBody;
+    }
+
+    @PutMapping("/project/{project_id}/addTask")
+    JSONObject addTaskToProject(@PathVariable Integer pID)
+    {
+        JSONObject responseBody = new JSONObject();
+        Task task = new Task();
+
+        Project project = projectRepository.getById(pID);
+        project.addTaskToProject(task);
+        taskRepository.save(task);
+        projectRepository.save(project);
+        responseBody.put("status",200);
+        responseBody.put("message", "Task successfully created");
+
+        return responseBody;
+    }
+
 
 }
