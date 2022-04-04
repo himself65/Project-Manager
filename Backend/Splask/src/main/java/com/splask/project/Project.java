@@ -130,9 +130,18 @@ class Project {
 
 //  Controller function
 	public void enrollUserToProject(User user) {pUsers.add(user);}
+
+    //Controller function
+    public void addTeamToProject(Team team) {teams.add(team);}
+
+    //Controller function
+    public void addTaskToProject(Task task) {tasks.add(task);}
     
 
 //	Relationship tables setters and getters
+    public List<User> getUsers() {return pUsers;}
+    public void setUsers(List<User> users) {this.pUsers = users;}
+
 	public List<Team> getTeams() {return teams;}
 	public void setTeams(List<Team> teams) {this.teams = teams;}
 
