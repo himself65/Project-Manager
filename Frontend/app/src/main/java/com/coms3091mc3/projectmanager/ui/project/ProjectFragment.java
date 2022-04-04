@@ -89,7 +89,7 @@ public class ProjectFragment extends Fragment {
             }
         });
         MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.popup_dashboard_menu, popup.getMenu());
+        inflater.inflate(R.menu.popup_project_menu, popup.getMenu());
         popup.show();
     }
 
