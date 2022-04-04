@@ -1,12 +1,13 @@
 package com.splask.project;
 
+import com.splask.task.Task;
 import com.splask.team.Team;
 import com.splask.team.teamDB;
+import com.splask.user.User;
 import com.splask.user.UserDB;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -15,30 +16,30 @@ import java.util.List;
 public class ProjectController {
 
     @Autowired
-    projectDB pDB;
+    projectDB projectRepository;
 
     @Autowired
-    teamDB tDB;
+    teamDB teamRepository;
 
     @Autowired
-    UserDB uDB;
+    UserDB userRepository;
 
     @GetMapping("/project/{id}")
     public Project getProject(@PathVariable Integer id)
     {
-        return pDB.findById(id).
+        return projectRepository.findById(id).
                 orElseThrow(RuntimeException::new);
     }
 // returns all Projects from database
     @RequestMapping("/project")
-    List<Project> hello(){return pDB.findAll();}
+    List<Project> hello(){return projectRepository.findAll();}
 
 // creates new project
     @PostMapping("/project")
     public JSONObject createProject(@RequestBody Project q) {
         JSONObject responseBody = new JSONObject();
 
-        List<Project> projects = pDB.findAll();
+        List<Project> projects = projectRepository.findAll();
 
         for (Project p : projects) {
             if (p.projectName.equals(q.projectName))
@@ -49,12 +50,14 @@ public class ProjectController {
             }
         }
 
-        pDB.save(q);
+        projectRepository.save(q);
         responseBody.put("status", 200);
         responseBody.put("message", "Project successfully created!");
         return responseBody;
     }
 
+    /*
+    TODO
     @PutMapping("/project/team")
     public JSONObject addTeam(@RequestBody Project p, Team t) {
         JSONObject responseBody = new JSONObject();
@@ -73,16 +76,32 @@ public class ProjectController {
 
         return responseBody;
     }
+    */
+
 // deletes project by id
     @DeleteMapping("/project/{id}")
     JSONObject deleteProject(@PathVariable Integer id)
     {
         JSONObject responseBody = new JSONObject();
-        pDB.deleteById(id);
+        projectRepository.deleteById(id);
         responseBody.put("status", 200);
         responseBody.put("message", "Successfully Removed Project");
 
         return responseBody;
+    }
+    
+    
+    //TODO Waiting to be tested 
+//  Sets the user to the assigned project
+    @PutMapping("/project/{project_id}/user/{user_id}")
+    Project enrollUserToProject( //Gets the user then assigns the user to the project
+                              @PathVariable Integer projectID,
+                              @PathVariable Integer userID
+    ) {
+        Project project = projectRepository.findById(projectID).get();
+        User user = userRepository.findById(userID).get();
+        project.enrollUserToProject(user); //sends the passed user to the enrollUsers method
+        return  projectRepository.save(project); //saves the new user to assigned team
     }
 
 }

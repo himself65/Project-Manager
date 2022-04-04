@@ -1,5 +1,6 @@
 package com.splask.task;
 
+import com.splask.project.Project;
 import com.splask.team.Team;
 import com.splask.user.User;
 
@@ -22,7 +23,7 @@ public class Task {
 //  Primary key
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column (name = "id")
+	@Column (name = "task_id")
 	Integer taskID;
 	
 	@NotNull
@@ -45,27 +46,26 @@ public class Task {
 	@Column (name = "dateCompleted")
 	String dateCompleted;
 
+	
 //	Many task to many users
 	@ManyToMany
 	@JsonIgnore
-	@JoinTable(
-			name = "User_Tasks",
-			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "task_id")
-	)
-	private Set<User> userTasks = new HashSet<>();
+	private List<User> tUsers = new ArrayList<>();
 
 //	Many tasks to one Team
 	@ManyToOne
 	@JsonIgnore
-    @JoinTable(
-            name = "TaskAssignedToTeam",
-            joinColumns = @JoinColumn(name = "team"),
-            inverseJoinColumns = @JoinColumn(name = "task")
-    )
-	private Team team;
+	private List<Team> taskTeam = new ArrayList<>();
 
+//  Many teams to many Projects
+	@ManyToOne
+	@JsonIgnore
+	private List<Project> taskProject = new ArrayList<>();
 
+	
+	
+	
+	
 	Task(){
 		dateCreated = LocalDateTime.now();
 
@@ -96,12 +96,22 @@ public class Task {
 	public String getDateCompleted() {return dateCompleted;}
 
 	public void setDateCompleted(String dateCompleted) { this.dateCompleted = dateCompleted;}
+/*
+TODO
 
 	public void setUserTasks(Set<User> userTasks) {this.userTasks = userTasks;}
+*/
 
+	
+//  Task Controller functions
 	public void assignUser(User user) {
-		userTasks.add(user); //adds the user we passed in to the set
+		tUsers.add(user); //adds the user we passed in to the set
+		
 	}
+	
+	public void assignTaskToTeam(Team team) {taskTeam.add(team);}
+
+	public void assignTaskToProject(Project project) {taskProject.add(project);}
 
 
 

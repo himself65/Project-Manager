@@ -3,7 +3,9 @@ package com.splask.task;
 import java.util.List;
 
 import com.splask.project.Project;
+import com.splask.project.projectDB;
 import com.splask.team.Team;
+import com.splask.team.teamDB;
 import com.splask.user.User;
 import com.splask.user.UserDB;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,13 @@ public class TaskController {
 	@Autowired
 	UserDB userRepository;
 	
+	@Autowired
+	teamDB teamRepository;
 	
+	@Autowired
+	projectDB projectRepository;
+	
+//	Get task by id
 	@GetMapping("/task/{id}")  
 	Task getTask(@PathVariable Integer id) {
 		return taskRepository.findById(id).get();	
@@ -31,7 +39,8 @@ public class TaskController {
 	List<Task> getAllTasks() {
 		return taskRepository.findAll();
 	}
-//	Get all tasks
+	
+//	Creates a new task
 	@PostMapping("/task")
 	public JSONObject createTask(@RequestBody Task newTask) {
 		JSONObject responseBody = new JSONObject();
@@ -53,6 +62,7 @@ public class TaskController {
 			return responseBody;
 		}
 
+//		saves the new task
 		taskRepository.save(newTask);
 		responseBody.put("status", 200);
 		responseBody.put("message", "Task Successfully Created!");
@@ -79,19 +89,43 @@ public class TaskController {
 		return responseBody;
 	}
 
+//	TODO Waiting to be tested
 	@PutMapping("/{task_id}/users/{user_id}")
 	Task enrollUserToTask( //Gets the user then assigns the user to the task
-						   @PathVariable Integer taskID,
+						   @PathVariable Integer taskID, /*TODO if error, change variable name to task_id and test */
 						   @PathVariable Integer userID
 	) {
 		Task task = taskRepository.findById(taskID).get();
 		User user = userRepository.findById(userID).get();
 		task.assignUser(user); //sends the passed user to the assignUser method
-		return  taskRepository.save(task); //saves the new user to assigned team
+		return  taskRepository.save(task); //saves the new task to assigned user
 	}
-
+//  TODO Waiting to be tested 
+//  Sets the task to the assigned team
+    @PutMapping("/task/{task_id}/team/{team_id}")
+    Task assignTaskToTeam(
+    		@PathVariable Integer taskID,
+    		@PathVariable Integer teamID
+    ) {
+    	Task task= taskRepository.findById(taskID).get();
+    	Team team = teamRepository.findById(teamID).get();
+    	task.assignTaskToTeam(team);
+    	return taskRepository.save(task);
+    }
     
     
+//  TODO Waiting to be tested 
+//  Sets the task to the assigned team
+    @PutMapping("/task/{task_id}/project/{project_id}")
+    Task assignTaslToProject(
+    		@PathVariable Integer taskID,
+    		@PathVariable Integer projectID
+    ) {
+    	Task task= taskRepository.findById(taskID).get();
+    	Project project = projectRepository.findById(projectID).get();
+    	task.assignTaskToProject(project);
+    	return taskRepository.save(task);
+    }
     
     
 

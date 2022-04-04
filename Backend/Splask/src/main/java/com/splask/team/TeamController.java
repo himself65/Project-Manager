@@ -1,8 +1,15 @@
 package com.splask.team;
 
+import com.splask.project.Project;
+import com.splask.project.projectDB;
+import com.splask.task.Task;
+import com.splask.task.TaskRepository;
+import com.splask.user.User;
+import com.splask.user.UserDB;
+
+
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,10 +19,15 @@ public class TeamController {
 
     @Autowired
     teamDB teamRepository;
-/*
+    
     @Autowired
     UserDB userRepository;
-    */
+    
+    @Autowired
+    TaskRepository taskRepository;
+    
+    @Autowired
+    projectDB projectRepository;
 
     @GetMapping("/team/{id}")
     Team getTeam(@PathVariable Integer id)
@@ -47,12 +59,13 @@ public class TeamController {
 
         responseBody.put("status", 200);
         responseBody.put("message", "Team successfully created");
-     teamRepository.save(t);
+        teamRepository.save(t);
         return responseBody;
 
     }
-
-    /*
+    
+    //TODO Waiting to be tested 
+//  Sets the user to the assigned team
     @PutMapping("/team/{team_id}/user/{user_id}")
     Team enrollUserToTeam( //Gets the user then assigns the user to the team
                               @PathVariable Integer teamID,
@@ -63,9 +76,22 @@ public class TeamController {
         team.enrollUser(user); //sends the passed user to the enrollUsers method
         return  teamRepository.save(team); //saves the new user to assigned team
     }
-    */
-
     
+    //TODO Waiting to be tested 
+    @PutMapping("/team/{team_id}/project/{project_id}")
+    Team assignTaskToTeam(
+    		@PathVariable Integer projectID,
+    		@PathVariable Integer teamID
+    		
+    ) {
+    	Project project = projectRepository.findById(projectID).get();
+    	Team team= teamRepository.findById(teamID).get();
+    	team.assignTeamToProject(project);
+    	return teamRepository.save(team);
+    }
+    
+
+
     
     
     
