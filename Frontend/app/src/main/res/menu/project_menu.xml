@@ -4,6 +4,10 @@
         android:title="Members" />
     <item android:id="@+id/addMembers"
         android:title="Add Members" />
+    <item android:id="@+id/viewTeams"
+        android:title="View Teams" />
+    <item android:id="@+id/addTeam"
+        android:title="Create Team" />
     <item android:id="@+id/addTask"
         android:title="Add Task" />
 </menu>

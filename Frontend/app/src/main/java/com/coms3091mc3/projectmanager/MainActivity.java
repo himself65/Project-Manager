@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     Uri.Builder uri = new Uri.Builder();
     String tag_project_req = "project_req";
     JSONArray teams;
+    boolean viewAdd = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +112,15 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.addMembers:
                         addMembers(v);
                         return true;
+                    case R.id.viewTeams:
+                        viewAdd = false;
+                        getTeams(v);
+                        return true;
+                    case R.id.addTeam:
+                        addTeam(v);
+                        return true;
                     case R.id.addTask:
+                        viewAdd = true;
                         getTeams(v);
                         return true;
                     default:
@@ -207,6 +216,38 @@ public class MainActivity extends AppCompatActivity {
         Map<String, String> params = new HashMap<String, String>();
         params.put("project",String.valueOf(5)); //pass project ID
         projectRequest(params, v, "teams"); //get list of teams
+    }
+
+    public void addTeam(View v){
+        Map<String, String> params = new HashMap<String, String>();
+//        params.put("id", username.getText().toString()); //pass project id
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        final EditText dialogInput = new EditText(getBaseContext());
+        dialogInput.setLayoutParams(lp);
+        alertBuilder.setView(dialogInput);
+
+        alertBuilder.setMessage("Enter Team Name")
+                .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if(dialogInput.getText().toString().length() < 4){ //at least 4 characters
+                            Toast.makeText(getApplicationContext(), "Name must be at least 4 characters", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        params.put("username", dialogInput.getText().toString());
+                        projectRequest(params, v, "addTeam");
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        return;
+                    }
+                });
+        // Create the AlertDialog object and return it
+        alertBuilder.create().show();
     }
 
     public void addTask(View v){
@@ -311,9 +352,42 @@ public class MainActivity extends AppCompatActivity {
                                     case "teams": //get list of teams on project
                                         teams = response.getJSONArray("teams");
                                         Log.d("project_debug","Teams: " + teams.toString());
-                                        addTask(v);
+                                        if(viewAdd){ //view teams and add task action
+                                            addTask(v);
+                                        }
+                                        else { //view teams action
+                                            alertBuilder.setTitle("List of Teams")
+                                                    .setPositiveButton("BACK", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            return;
+                                                        }
+                                                    });
+
+                                            String[] teamList = new String[teams.length()];
+                                            for(int i = 0; i < teamList.length; i++){
+                                                teamList[i] = teams.getJSONObject(i).getString("name");
+                                            }
+
+//                                            alertBuilder.setItems(teamList, null);
+                                            //handle on click item
+                                            alertBuilder.setItems(teamList, new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) { //open team details page
+                                                    Intent newIntent = new Intent(MainActivity.this, TeamActivity.class);
+                                                    newIntent.putExtra("teamId", 0);
+                                                    newIntent.putExtra("teamName",teamList[i]);
+                                                    startActivity(newIntent);
+                                                    finish();
+                                                }
+                                            });
+                                            // Create the AlertDialog object and return it
+                                            alertBuilder.create().show();
+                                        }
                                         break;
                                     case "addTask": //create a task and assing a team to it
+                                        Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                                        break;
+                                    case "addTeam": //create a new team
                                         Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                                         break;
                                 }
