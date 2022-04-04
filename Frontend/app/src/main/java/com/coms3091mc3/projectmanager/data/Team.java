@@ -8,4 +8,20 @@ public class Team {
         this.teamID = id;
         this.teamName = name;
     }
+
+    public int getTeamID() {
+        return teamID;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamID(int teamID) {
+        this.teamID = teamID;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
 }

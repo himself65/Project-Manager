@@ -26,12 +26,14 @@ import com.coms3091mc3.projectmanager.view.AddProjectDialogFragment;
 import com.coms3091mc3.projectmanager.view.AddTeamDialogFragment;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ProjectFragment extends Fragment {
-    private Project project;
     private FragmentProjectBinding binding;
 
     @Override
@@ -79,8 +81,17 @@ public class ProjectFragment extends Fragment {
                     FragmentManager fragmentManager = getChildFragmentManager();
                     AddTeamDialogFragment fragment = new AddTeamDialogFragment(new AddTeamDialogFragment.AddTeamDialogListener() {
                         @Override
-                        public void onDialogPositiveClick(Team projectName) {
+                        public void onDialogPositiveClick(Team team) {
+                            Logger.getGlobal().log(Level.INFO, team.getTeamName());
+                            String url = Const.API_SERVER + "/project" + binding.getModal().project.get().getId() + "/addTeam";
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("teamName", team.getTeamName());
+                            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(params), response -> {
 
+                            }, error -> {
+
+                            });
+                            AppController.getInstance().addToRequestQueue(request);
                         }
                     });
                     fragment.show(fragmentManager, "addTeam");
