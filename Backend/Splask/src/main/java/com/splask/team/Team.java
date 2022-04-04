@@ -3,6 +3,7 @@ package com.splask.team;
 import com.splask.project.Project;
 import com.splask.task.Task;
 import com.splask.user.User;
+import com.sun.istack.NotNull;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
@@ -30,26 +31,24 @@ class Team {
     
     
 //    //Many teams to many Projects
-//	@ManyToOne
-//	@JsonIgnore
-//	private List<Project> teamProject = new ArrayList<>();
+	@ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+	@JsonIgnore
+	private Project teamProject;
 //    
 //    
 //    
-////	Many Users to many Teams
-//    @ManyToMany
-//    @JsonIgnore
-//    private List<User> ttUsers = new ArrayList<>();
+//  Many Users to many Teams
+    @ManyToMany(mappedBy = "teams")
+    @JsonIgnore
+    @NotNull
+    private List<User> users = new ArrayList<>();
 
-//    
-////  One Team to many Tasks
-//    @OneToMany(mappedBy = "team")
-//    @JoinTable(
-//            name = "Team_Tasks",
-//            joinColumns = @JoinColumn(name = "team", referencedColumnName = "team_id"),
-//            inverseJoinColumns = @JoinColumn(name = "task", referencedColumnName = "task_id")
-//    )
-//    private List<Task> tasks;
+
+//  One Team to many Tasks
+    @OneToMany(mappedBy = "taskTeam")
+    @NotNull
+    private List<Task> tasks;
     
     
     
@@ -68,19 +67,19 @@ class Team {
 
     
 ////  Team Controller functions
-//    public void enrollUser(User user) {ttUsers.add(user);} //adds the user we passed in to the set
+    public void enrollUser(User user) {users.add(user);} //adds the user we passed in to the set
+
+
 //    
-//    
-//    
-////	Relationship tables setters and getters
-//	public List<Task> getTasks() {return tasks;} //TODO this is a Set, do we want to change it to a List????
-//	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
-//	
-//    public List<User> getttUsers() {return ttUsers;}
-//    public void setTeamUsers(List<User> users) {this.ttUsers = users;}
+//	Relationship tables setters and getters
+	public List<Task> getTasks() {return tasks;}
+	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
+//
+    public List<User> getUsers() {return users;}
+    public void setTeamUsers(List<User> users) {this.users = users;}
 //    
 ////  Task Controller functions
-//	public void assignTeamToProject(Project project) {teamProject.add(project);}
+	public void assignTeamToProject(Project project) {teamProject = project;}
 
 	
 	

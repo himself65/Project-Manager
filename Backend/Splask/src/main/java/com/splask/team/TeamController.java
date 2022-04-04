@@ -20,14 +20,14 @@ public class TeamController {
     @Autowired
     teamDB teamRepository;
     
-//    @Autowired
-//    UserDB userRepository;
-//    
-//    @Autowired
-//    TaskDB taskRepository;
-//    
-//    @Autowired
-//    projectDB projectRepository;
+    @Autowired
+    UserDB userRepository;
+
+    @Autowired
+    TaskDB taskRepository;
+
+    @Autowired
+    projectDB projectRepository;
 
     @GetMapping("/team/{id}")
     Team getTeam(@PathVariable Integer id)
@@ -65,66 +65,60 @@ public class TeamController {
     }
     
 
-//    @GetMapping("/team/{team_id}/users")
-//    JSONObject usersInTeam(@PathVariable Integer teamID)
-//    {
-//        Team team= teamRepository.getById(teamID);
-//        JSONArray users = new JSONArray();
-//        JSONObject responseBody = new JSONObject();
-//        /*
-//        for (User i : project.getUsers())
-//        {
-//            users.add(i);
-//        }
-//         */
-//
-//        users.addAll(team.getttUsers());
-//        responseBody.put("users",users);
-//        responseBody.put("status", 200);
-//        responseBody.put("message", "Successfully retrieved all teams from" + team.getTeamName());
-//
-//
-//        return responseBody;
-//    }
-////  Sets the user to the assigned team
-//    @PutMapping("/team/{team_id}/addUser")
-//    JSONObject enrollUserToTeam( //Gets the user then assigns the user to the team
-//                              @PathVariable Integer teamID,
-//                              @PathVariable Integer userID
-//    ) {
-//        JSONObject responseBody = new JSONObject();
-//
-//        Team team = teamRepository.getById(teamID);
-//        User user = userRepository.getById(userID);
-//
-//        if (team.getttUsers().contains(user))
-//        {
-//            responseBody.put("status",400);
-//            responseBody.put("message", "User already in Team");
-//            return responseBody;
-//        }
-//
-//
-//        team.enrollUser(user); //sends the passed user to the enrollUsers method
-//        teamRepository.save(team);
-//        responseBody.put("status",200);
-//        responseBody.put("message", "User successfully added to Team");
-//
-//        return  responseBody;
-//    }
-//    
-//    //TODO Waiting to be tested 
-//    @PutMapping("/team/{team_id}/project/addProject")
-//    Team assignTaskToTeam(
-//    		@PathVariable Integer projectID,
-//    		@PathVariable Integer teamID
-//    		
-//    ) {
-//    	Project project = projectRepository.findById(projectID).get();
-//    	Team team= teamRepository.findById(teamID).get();
-//    	team.assignTeamToProject(project);
-//    	return teamRepository.save(team);
-//    }
+    @GetMapping("/team/{team_id}/users")
+    JSONObject usersInTeam(@PathVariable Integer teamID)
+    {
+        Team team= teamRepository.getById(teamID);
+        JSONArray users = new JSONArray();
+        JSONObject responseBody = new JSONObject();
+
+        users.addAll(team.getUsers());
+        responseBody.put("users",users);
+        responseBody.put("status", 200);
+        responseBody.put("message", "Successfully retrieved all teams from" + team.getTeamName());
+
+
+        return responseBody;
+    }
+//  Sets the user to the assigned team
+    @PutMapping("/team/{team_id}/addUser")
+    JSONObject enrollUserToTeam( //Gets the user then assigns the user to the team
+                              @PathVariable Integer teamID,
+                              @PathVariable Integer userID
+    ) {
+        JSONObject responseBody = new JSONObject();
+
+        Team team = teamRepository.getById(teamID);
+        User user = userRepository.getById(userID);
+
+        if (team.getUsers().contains(user))
+        {
+            responseBody.put("status",400);
+            responseBody.put("message", "User already in Team");
+            return responseBody;
+        }
+
+
+        team.enrollUser(user); //sends the passed user to the enrollUsers method
+        teamRepository.save(team);
+        responseBody.put("status",200);
+        responseBody.put("message", "User successfully added to Team");
+
+        return  responseBody;
+    }
+
+    //TODO Waiting to be tested
+    @PutMapping("/team/{team_id}/project/addProject")
+    Team assignTaskToTeam(
+    		@PathVariable Integer projectID,
+    		@PathVariable Integer teamID
+
+    ) {
+    	Project project = projectRepository.getById(projectID);
+    	Team team= teamRepository.getById(teamID);
+    	team.assignTeamToProject(project);
+    	return teamRepository.save(team);
+    }
     
 
  

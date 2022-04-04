@@ -52,22 +52,31 @@ public class User {
 //			inverseJoinColumns = @JoinColumn(name = "project", referencedColumnName = "project_id")
 //	)
 //	private List<Project> projects = new ArrayList<>();
+	@ManyToMany(cascade = CascadeType.ALL)
+	@NotNull
+	@JoinTable(
+			name = "user_project",
+			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "project_id")
+	)
+//	Set<Project> projects = new HashSet<>();
+	private List<Project> projects = new ArrayList<>();
 ////
-//	@ManyToMany(mappedBy = "ttUsers")
-//	@JoinTable(
-//			name = "users_teams",
-//			joinColumns = @JoinColumn(name = "user", referencedColumnName = "user_id"),
-//			inverseJoinColumns = @JoinColumn(name = "team", referencedColumnName = "team_id")
-//	)
-//	private List<Team> teams = new ArrayList<>();
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "user_team",
+			joinColumns = @JoinColumn(name = "user", referencedColumnName = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "team", referencedColumnName = "team_id")
+	)
+	private List<Team> teams = new ArrayList<>();
 //
-//	@ManyToMany(mappedBy = "tUsers")
-//	@JoinTable(
-//			name = "users_tasks",
-//			joinColumns = @JoinColumn(name = "user", referencedColumnName = "user_id"),
-//			inverseJoinColumns = @JoinColumn(name = "task", referencedColumnName = "task_id")
-//	)
-//	private List<Task> tasks = new ArrayList<>();
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "user_task",
+			joinColumns = @JoinColumn(name = "user", referencedColumnName = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "task", referencedColumnName = "task_id")
+	)
+	private List<Task> tasks = new ArrayList<>();
 
 //	TODO (DEMO 4) Set relationship with Roles
 //	
@@ -113,16 +122,16 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 
     
 ////	Relationship tables setters and getters
-//	public List<Project> getProjectUsers() {return projects;}
-//	public void setProjectUsers(List<Project> projects) {this.projects = projects;}
-//
-//
-//	public List<Team> getTeam() {return teams;}
-//	public void setTeams(List<Team> teams) {this.teams = teams;}
-//
-//	
-//	public List<Task> getTasks() {return tasks;} //TODO this is a Set, do we want to change it to a List????
-//	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
+	public List<Project> getProjectUsers() {return projects;}
+	public void setProjectUsers(List<Project> projects) {this.projects = projects;}
+
+
+	public List<Team> getTeam() {return teams;}
+	public void setTeams(List<Team> teams) {this.teams = teams;}
+
+
+	public List<Task> getTasks() {return tasks;}
+	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
 
 
 

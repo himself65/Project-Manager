@@ -47,20 +47,22 @@ public class Task {
 	String dateCompleted;
 
 	
-////	Many task to many users
-//	@ManyToMany
-//	@JsonIgnore
-//	private List<User> tUsers = new ArrayList<>();
+//	Many task to many users
+	@ManyToMany(mappedBy = "tasks")
+	@JsonIgnore
+	private List<User> users = new ArrayList<>();
 //
-////	Many tasks to one Team
-//	@ManyToOne
-//	@JsonIgnore
-//	private List<Team> taskTeam = new ArrayList<>();
+//	Many tasks to one Team
+	@ManyToOne
+	@JoinColumn(name = "team_id")
+	@JsonIgnore
+	private Team taskTeam;
 //
-////  Many teams to many Projects
-//	@ManyToOne
-//	@JsonIgnore
-//	private List<Project> taskProject = new ArrayList<>();
+//  Many tasks to one Project
+	@ManyToOne
+	@JoinColumn(name = "project_id", nullable = false)
+	@JsonIgnore
+	private Project taskProject;
 
 	
 	
@@ -96,22 +98,30 @@ public class Task {
 	public String getDateCompleted() {return dateCompleted;}
 
 	public void setDateCompleted(String dateCompleted) { this.dateCompleted = dateCompleted;}
-/*
-TODO
 
-	public void setUserTasks(Set<User> userTasks) {this.userTasks = userTasks;}
-*/
+	public List<User> getUsers() {
+		return users;
+	}
+	public void setUsers(List<User> users)
+	{
+		this.users = users;
+	}
 
-	
-////  Task Controller functions
-//	public void assignUser(User user) {
-//		tUsers.add(user); //adds the user we passed in to the set
-//		
-//	}
-//	
-//	public void assignTaskToTeam(Team team) {taskTeam.add(team);}
-//
-//	public void assignTaskToProject(Project project) {taskProject.add(project);}
+	public Project getTaskProject(){return taskProject;}
+	public void setTaskProject(Project project) {taskProject = project;}
+
+	public Team getTaskTeam(){return taskTeam;}
+	public void setTaskTeam(Team team) {taskTeam = team;}
+
+	//  Task Controller functions
+	public void assignUser(User user) {
+		users.add(user); //adds the user we passed in to the set
+
+	}
+
+	public void assignTaskToTeam(Team team) {taskTeam = team;}
+
+	public void assignTaskToProject(Project project) {taskProject = project;}
 
 
 

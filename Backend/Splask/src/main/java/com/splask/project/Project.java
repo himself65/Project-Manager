@@ -3,13 +3,16 @@ package com.splask.project;
 import com.splask.task.Task;
 import com.splask.team.Team;
 import com.splask.user.User;
+import com.sun.istack.NotNull;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -29,27 +32,23 @@ public class Project {
 //    @ManyToMany
 //    @JsonIgnore
 //    private List<User> pUsers = new ArrayList<>();
+
+      @ManyToMany(mappedBy = "projects")
+      @NotNull
+      private List<User> users = new ArrayList<>();
 //
 //
 //    //One project to Many Teams
-//    @OneToMany(mappedBy = "teamProject")
-//    @JoinTable(
-//            name = "teams_in_project",
-//            joinColumns = @JoinColumn(name = "project", referencedColumnName = "project_id"),
-//            inverseJoinColumns =  @JoinColumn(name = "team", referencedColumnName = "team_id")
-//    )
-//    private List<Team> teams = new ArrayList<>();
+    @OneToMany(mappedBy = "teamProject")
+    @NotNull
+    private List<Team> teams = new ArrayList<>();
 
 //
 //    //One project to Many Tasks
-//    @OneToMany(mappedBy = "project")
-//    @JsonIgnore
-//    @JoinTable(
-//            name = "project_tasks",
-//            joinColumns = @JoinColumn(name = "project", referencedColumnName = "project_id"),
-//            inverseJoinColumns = @JoinColumn(name = "task", referencedColumnName = "task_id")
-//    )
-//    private List<Task> tasks = new ArrayList<>();
+    @OneToMany(mappedBy = "taskProject")
+    @JsonIgnore
+    @NotNull
+    private List<Task> tasks = new ArrayList<>();
 
 
 
@@ -130,25 +129,25 @@ public class Project {
     }
 
 ////  Controller function
-//	public void enrollUserToProject(User user) {pUsers.add(user);}
-//
-//    //Controller function
-//    public void addTeamToProject(Team team) {teams.add(team);}
-//
-//    //Controller function
-//    public void addTaskToProject(Task task) {tasks.add(task);}
-//    
-//
-////	Relationship tables setters and getters
-//    public List<User> getUsers() {return pUsers;}
-//    public void setUsers(List<User> users) {this.pUsers = users;}
-//
-//	public List<Team> getTeams() {return teams;}
-//	public void setTeams(List<Team> teams) {this.teams = teams;}
-//
-//	public List<Task> getTasks() {return tasks;} 
-//	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
-//    
+	public void enrollUserToProject(User user) {users.add(user);}
+
+    //Controller function
+    public void addTeamToProject(Team team) {teams.add(team);}
+
+    //Controller function
+    public void addTaskToProject(Task task) {tasks.add(task);}
+
+
+//	Relationship tables setters and getters
+    public List<User> getUsers() {return users;}
+    public void setUsers(List<User> users) {this.users = users;}
+
+	public List<Team> getTeams() {return teams;}
+	public void setTeams(List<Team> teams) {this.teams = teams;}
+
+	public List<Task> getTasks() {return tasks;}
+	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
+
 	
     
     
