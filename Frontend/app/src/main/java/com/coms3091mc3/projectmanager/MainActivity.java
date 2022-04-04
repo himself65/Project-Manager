@@ -309,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void projectRequest(Map<String, String> params, View v, String tag){
-        uri = Uri.parse(Const.MOCK_SERVER + "/project/projectID" + tag).buildUpon();
+        uri = Uri.parse(Const.MOCK_SERVER + "/project/projectID/" + tag).buildUpon();
 //        uri = Uri.parse(Const.API_SERVER + "/project/" + tag).buildUpon();
         JsonObjectRequest projectRequest = new JsonObjectRequest(Request.Method.POST, uri.build().toString(),
                 new JSONObject(params),
