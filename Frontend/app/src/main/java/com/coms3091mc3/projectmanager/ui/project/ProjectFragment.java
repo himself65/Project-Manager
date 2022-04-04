@@ -83,6 +83,7 @@ public class ProjectFragment extends Fragment {
 
                         }
                     });
+                    fragment.show(fragmentManager, "addTeam");
                 }
                 return true;
             }
