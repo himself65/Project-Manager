@@ -6,6 +6,8 @@ import com.splask.project.Project;
 import com.splask.project.projectDB;
 import com.splask.team.Team;
 import com.splask.team.teamDB;
+import com.splask.team.Team;
+
 import com.splask.user.User;
 import com.splask.user.UserDB;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +18,18 @@ import net.minidev.json.JSONObject;
 @RestController 
 public class TaskController {
 	
-    @Autowired
-	TaskDB taskRepository;
 
 	@Autowired
-	UserDB userRepository;
-	
-	@Autowired
-	teamDB teamRepository;
-	
-	@Autowired
-	projectDB projectRepository;
+	TaskDB taskRepository;
+
+//	@Autowired
+//	UserDB userRepository;
+//	
+//	@Autowired
+//	teamDB teamRepository;
+//	
+//	@Autowired
+//	projectDB projectRepository;
 	
 //	Get task by id
 	@GetMapping("/task/{id}")  
@@ -89,57 +92,59 @@ public class TaskController {
 		return responseBody;
 	}
 
-//	TODO Waiting to be tested
-	@PutMapping("/{task_id}/users/{user_id}")
-	Task enrollUserToTask( //Gets the user then assigns the user to the task
-						   @PathVariable Integer taskID, /*TODO if error, change variable name to task_id and test */
-						   @PathVariable Integer userID
-	) {
-		Task task = taskRepository.findById(taskID).get();
-		User user = userRepository.findById(userID).get();
-		task.assignUser(user); //sends the passed user to the assignUser method
-		return  taskRepository.save(task); //saves the new task to assigned user
-	}
-//  TODO Waiting to be tested 
-//  Sets the task to the assigned team
-    @PutMapping("/task/{task_id}/add")
-    JSONObject assignTaskToTeam(
-    		@PathVariable Integer taskID,
-    		@PathVariable Integer teamID
-    ) {
-		JSONObject responseBody = new JSONObject();
-
-		Task task = taskRepository.getById(taskID);
-		Team team = teamRepository.getById(teamID);
-		if(team.getTasks().contains(task))
-		{
-			responseBody.put("status", 400);
-			responseBody.put("message", "task is already assigned to this team");
-
-			return responseBody;
-		}
-
-    	task.assignTaskToTeam(team);
-		taskRepository.save(task);
-		responseBody.put("status",200);
-		responseBody.put("message", "task successfully added to" + team.getTeamName());
-    	return responseBody;
-    }
-    
-    
-//  TODO Waiting to be tested 
-//  Sets the task to the assigned project
-    @PutMapping("/task/{task_id}/project/{project_id}")
-    Task assignTaskToProject(
-    		@PathVariable Integer taskID,
-    		@PathVariable Integer projectID
-    ) {
-    	Task task= taskRepository.findById(taskID).get();
-    	Project project = projectRepository.findById(projectID).get();
-    	task.assignTaskToProject(project);
-    	return taskRepository.save(task);
-    }
-    
+	
+	
+////	TODO Waiting to be tested
+//	@PutMapping("/{task_id}/users/{user_id}")
+//	Task enrollUserToTask( //Gets the user then assigns the user to the task
+//						   @PathVariable Integer taskID, /*TODO if error, change variable name to task_id and test */
+//						   @PathVariable Integer userID
+//	) {
+//		Task task = taskRepository.findById(taskID).get();
+//		User user = userRepository.findById(userID).get();
+//		task.assignUser(user); //sends the passed user to the assignUser method
+//		return  taskRepository.save(task); //saves the new task to assigned user
+//	}
+////  TODO Waiting to be tested 
+////  Sets the task to the assigned team
+//    @PutMapping("/task/{task_id}/add")
+//    JSONObject assignTaskToTeam(
+//    		@PathVariable Integer taskID,
+//    		@PathVariable Integer teamID
+//    ) {
+//		JSONObject responseBody = new JSONObject();
+//
+//		Task task = taskRepository.getById(taskID);
+//		Team team = teamRepository.getById(teamID);
+//		if(team.getTasks().contains(task))
+//		{
+//			responseBody.put("status", 400);
+//			responseBody.put("message", "task is already assigned to this team");
+//
+//			return responseBody;
+//		}
+//
+//    	task.assignTaskToTeam(team);
+//		taskRepository.save(task);
+//		responseBody.put("status",200);
+//		responseBody.put("message", "task successfully added to" + team.getTeamName());
+//    	return responseBody;
+//    }
+//    
+//    
+////  TODO Waiting to be tested 
+////  Sets the task to the assigned project
+//    @PutMapping("/task/{task_id}/project/{project_id}")
+//    Task assignTaskToProject(
+//    		@PathVariable Integer taskID,
+//    		@PathVariable Integer projectID
+//    ) {
+//    	Task task= taskRepository.findById(taskID).get();
+//    	Project project = projectRepository.findById(projectID).get();
+//    	task.assignTaskToProject(project);
+//    	return taskRepository.save(task);
+//    }
+//    
     
 
 }

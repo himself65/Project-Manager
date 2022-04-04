@@ -47,20 +47,20 @@ public class Task {
 	String dateCompleted;
 
 	
-//	Many task to many users
-	@ManyToMany
-	@JsonIgnore
-	private List<User> tUsers = new ArrayList<>();
-
-//	Many tasks to one Team
-	@ManyToOne
-	@JsonIgnore
-	private List<Team> taskTeam = new ArrayList<>();
-
-//  Many teams to many Projects
-	@ManyToOne
-	@JsonIgnore
-	private List<Project> taskProject = new ArrayList<>();
+////	Many task to many users
+//	@ManyToMany
+//	@JsonIgnore
+//	private List<User> tUsers = new ArrayList<>();
+//
+////	Many tasks to one Team
+//	@ManyToOne
+//	@JsonIgnore
+//	private List<Team> taskTeam = new ArrayList<>();
+//
+////  Many teams to many Projects
+//	@ManyToOne
+//	@JsonIgnore
+//	private List<Project> taskProject = new ArrayList<>();
 
 	
 	
@@ -103,15 +103,15 @@ TODO
 */
 
 	
-//  Task Controller functions
-	public void assignUser(User user) {
-		tUsers.add(user); //adds the user we passed in to the set
-		
-	}
-	
-	public void assignTaskToTeam(Team team) {taskTeam.add(team);}
-
-	public void assignTaskToProject(Project project) {taskProject.add(project);}
+////  Task Controller functions
+//	public void assignUser(User user) {
+//		tUsers.add(user); //adds the user we passed in to the set
+//		
+//	}
+//	
+//	public void assignTaskToTeam(Team team) {taskTeam.add(team);}
+//
+//	public void assignTaskToProject(Project project) {taskProject.add(project);}
 
 
 
