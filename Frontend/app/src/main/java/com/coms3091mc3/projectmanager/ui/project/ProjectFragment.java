@@ -14,10 +14,12 @@ import android.widget.Button;
 import android.widget.PopupMenu;
 
 import com.android.volley.Request;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.coms3091mc3.projectmanager.R;
 import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.data.Project;
+import com.coms3091mc3.projectmanager.data.Task;
 import com.coms3091mc3.projectmanager.data.Team;
 import com.coms3091mc3.projectmanager.databinding.FragmentProjectBinding;
 import com.coms3091mc3.projectmanager.store.ProjectDataModel;
@@ -44,6 +46,7 @@ public class ProjectFragment extends Fragment {
         View view = binding.getRoot();
         int id = (Integer) getArguments().get("projectID");
         String url = Const.API_SERVER + "/project/" + id;
+        String tasksUrl = url + "/tasks";
         Button button = view.findViewById(R.id.add_project);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +54,24 @@ public class ProjectFragment extends Fragment {
                 showMenu(view);
             }
         });
+
+        JsonArrayRequest tasksRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                projects -> {
+                    try {
+                        for (int i = 0; i < projects.length(); i++) {
+                            JSONObject object = (JSONObject) projects.get(i);
+                            Task task = new Task(
+                                    object.getInt("taskID"),
+                                    object.getString("taskName")
+                            );
+                            binding.getModal().tasksAdapter.add(task);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> Logger.getLogger("json").log(Level.INFO, error.toString())
+        );
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 project -> {
