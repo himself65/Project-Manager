@@ -119,9 +119,19 @@ public class TeamController {
     	team.assignTeamToProject(project);
     	return teamRepository.save(team);
     }
-    
 
- 
+
+    // deletes project by id
+    @DeleteMapping("/team/{id}")
+    JSONObject deleteTeam(@PathVariable Integer id)
+    {
+        JSONObject responseBody = new JSONObject();
+        teamRepository.deleteById(id);
+        responseBody.put("status", 200);
+        responseBody.put("message", "Successfully Removed Team");
+
+        return responseBody;
+    }
     
 
 }

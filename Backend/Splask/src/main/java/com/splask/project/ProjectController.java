@@ -2,6 +2,7 @@ package com.splask.project;
 
 import com.splask.task.Task;
 import com.splask.team.Team;
+import com.splask.team.TeamController;
 import com.splask.team.teamDB;
 import com.splask.user.User;
 import com.splask.user.UserDB;
@@ -11,6 +12,7 @@ import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -83,9 +85,9 @@ public class ProjectController {
 
     // returns all users in the project
     @GetMapping("/project/{project_id}/users")
-    JSONObject usersInProject(@PathVariable Integer projectID)
+    JSONObject usersInProject(@PathVariable Integer project_id)
     {
-        Project project = projectRepository.getById(projectID);
+        Project project = projectRepository.getById(project_id);
         JSONArray users = new JSONArray();
         JSONObject responseBody = new JSONObject();
         /*
@@ -106,13 +108,16 @@ public class ProjectController {
 //  Sets the user to the assigned project
     @PutMapping("/project/{project_id}/addUser")
     JSONObject enrollUserToProject( //Gets the user then assigns the user to the project
-                              @PathVariable Integer projectID,
-                              @PathVariable String username
+                              @PathVariable Integer project_id,
+                              @RequestBody JSONObject username
     ) {
         JSONObject responseBody = new JSONObject();
 
-        Project project = projectRepository.getById(projectID);
-        User user = userRepository.findByUsername(username);
+        Project project = projectRepository.getById(project_id);
+        List<User> users = userRepository.findByUsername(username.getAsString("username"));
+        System.out.println(username.toString());
+        System.out.println(users.size());
+        User user = users.get(0);
         if (project.getUsers().contains(user))
         {
             responseBody.put("status", 400);
@@ -120,6 +125,7 @@ public class ProjectController {
             return responseBody;
         }
         project.enrollUserToProject(user); //sends the passed user to the enrollUsers method
+        user.addProjectToUser(project);
         responseBody.put("status", 200);
         responseBody.put("message", "User successfully added to" + project.getProjectName());
         return  responseBody; //saves the new user to assigned team
@@ -127,10 +133,10 @@ public class ProjectController {
 
 
     //retrieves all teams from Project
-    @GetMapping("/project/project_id/teams")
-    JSONObject teamsInProject(@PathVariable Integer projectID)
+    @GetMapping("/project/{project_id}/teams")
+    JSONObject teamsInProject(@PathVariable Integer project_id)
     {
-        Project project = projectRepository.getById(projectID);
+        Project project = projectRepository.getById(project_id);
         JSONArray teams = new JSONArray();
         JSONObject responseBody = new JSONObject();
         /*
@@ -142,21 +148,26 @@ public class ProjectController {
         teams.addAll(project.getTeams());
         responseBody.put("teams",teams);
         responseBody.put("status", 200);
-        responseBody.put("message", "Successfully retrieved all teams from" + project.getProjectName());
+        responseBody.put("message", "Successfully retrieved all teams from " + project.getProjectName());
 
         return responseBody;
     }
     @PutMapping("/project/{project_id}/addTeam")
-    JSONObject addTeamToProject(@PathVariable Integer pID)
+    JSONObject addTeamToProject(@PathVariable Integer project_id, @RequestBody Team team)
     {
         JSONObject responseBody = new JSONObject();
-        Team t = new Team();
 
-        Project project = projectRepository.getById(pID);
-        project.addTeamToProject(t);
+        Project project = projectRepository.getById(project_id);
 
-        teamRepository.save(t);
+        if (project.addTeamToProject(team)){
+            responseBody.put("status",400);
+            responseBody.put("message", "Team name already in use");
+            return responseBody;
+        }
+        team.assignTeamToProject(project);
         projectRepository.save(project);
+        teamRepository.save(team);
+
 
 
         responseBody.put("status",200);
@@ -165,10 +176,10 @@ public class ProjectController {
     }
 
     //retrieves all teams from Project
-    @GetMapping("/project/project_id/tasks")
-    JSONObject tasksInProject(@PathVariable Integer projectID)
+    @GetMapping("/project/{project_id}/tasks")
+    JSONObject tasksInProject(@PathVariable Integer project_id)
     {
-        Project project = projectRepository.getById(projectID);
+        Project project = projectRepository.getById(project_id);
         JSONArray tasks = new JSONArray();
         JSONObject responseBody = new JSONObject();
         /*
@@ -189,12 +200,12 @@ public class ProjectController {
     }
 
     @PutMapping("/project/{project_id}/addTask")
-    JSONObject addTaskToProject(@PathVariable Integer pID)
+    JSONObject addTaskToProject(@PathVariable Integer project_id)
     {
         JSONObject responseBody = new JSONObject();
         Task task = new Task();
 
-        Project project = projectRepository.getById(pID);
+        Project project = projectRepository.getById(project_id);
         project.addTaskToProject(task);
         taskRepository.save(task);
         projectRepository.save(project);

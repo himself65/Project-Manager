@@ -32,7 +32,7 @@ class Team {
     
 //    //Many teams to many Projects
 	@ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
+    @JoinColumn(name = "project_id")
 	@JsonIgnore
 	private Project teamProject;
 //    
@@ -61,7 +61,7 @@ class Team {
     public void setTeamID(int id) {this.teamID = id;}
     
     public String getTeamName() {return teamName;}
-    public void setTeamID(String str) {this.teamName = str;}
+
     
 
 

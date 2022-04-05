@@ -20,7 +20,7 @@ import javax.persistence.*;
 
 @Entity
 @Table (name = "User")
-public class User {
+public class User{
 
 //  Primary key
 	@Id
@@ -36,30 +36,22 @@ public class User {
 	@Column (name = "password")
 	String password;
 
-	@NotNull
+//	@NotNull
 	@Column
 	LocalDateTime dateCreated;
 
-	@NotNull
+    @NotNull
 	@Column (name = "loggedIn")
-	Boolean loggedIn = false;
+	Integer loggedIn = 0;
 
 
-//	@ManyToMany(mappedBy = "pUsers")
-//	@JoinTable(
-//			name = "users_projects",
-//			joinColumns = @JoinColumn(name = "user", referencedColumnName = "user_id"),
-//			inverseJoinColumns = @JoinColumn(name = "project", referencedColumnName = "project_id")
-//	)
-//	private List<Project> projects = new ArrayList<>();
 	@ManyToMany(cascade = CascadeType.ALL)
-	@NotNull
 	@JoinTable(
 			name = "user_project",
 			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "project_id")
 	)
-//	Set<Project> projects = new HashSet<>();
+
 	private List<Project> projects = new ArrayList<>();
 ////
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -90,7 +82,7 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 
 		this.username = username;
 		this.password = password;
-		this.loggedIn = false;
+		this.loggedIn = 0;
 	}
 
 	User(){
@@ -117,8 +109,8 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 //	public Project getAuthor() {return projectsCreated;}
 //	public void setAuthor(Project author) {this.projectsCreated = author;}
 //	
-    public boolean isLoggedIn() {return loggedIn;}
-    public void setLoggedIn(boolean loggedIn) {this.loggedIn = loggedIn;}
+    public Integer isLoggedIn() {return loggedIn;}
+    public void setLoggedIn(Integer loggedIn) {this.loggedIn = loggedIn;}
 
     
 ////	Relationship tables setters and getters
@@ -132,6 +124,14 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 
 	public List<Task> getTasks() {return tasks;}
 	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
+
+	//Controller Functions
+	public void addProjectToUser(Project project)
+	{
+		System.out.println(project.toString());
+		projects.add(project);
+	}
+
 
 
 

@@ -4,6 +4,7 @@ import com.splask.task.Task;
 import com.splask.team.Team;
 import com.splask.user.User;
 import com.sun.istack.NotNull;
+import net.minidev.json.JSONObject;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
@@ -129,10 +130,29 @@ public class Project {
     }
 
 ////  Controller function
-	public void enrollUserToProject(User user) {users.add(user);}
+	public void enrollUserToProject(User user)
+    {
+        System.out.println(user.toString());
+        users.add(user);
+    }
 
     //Controller function
-    public void addTeamToProject(Team team) {teams.add(team);}
+    public boolean addTeamToProject(Team team) {
+
+        for (Team i : teams)
+        {
+            if (i.getTeamName().equals(team.getTeamName()))
+            {
+                System.out.println(i.getTeamName());
+                System.out.println(team.getTeamName());
+                System.out.println("we innnnn");
+                return true;
+            }
+        }
+
+        teams.add(team);
+        return false;
+    }
 
     //Controller function
     public void addTaskToProject(Task task) {tasks.add(task);}
