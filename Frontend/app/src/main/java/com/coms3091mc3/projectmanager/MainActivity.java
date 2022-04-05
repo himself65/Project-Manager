@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         popup.show();
     }
 
-    public void logout(MenuItem item){
+    public void logout(MenuItem item) {
         uri = Uri.parse(Const.MOCK_SERVER + "/logout").buildUpon();
 //        uri = Uri.parse(Const.API_SERVER + "/logout").buildUpon();
         ProgressBar pBar = findViewById(R.id.progressBar);
@@ -141,23 +141,23 @@ public class MainActivity extends AppCompatActivity {
         logoutRequest = new JsonObjectRequest(Request.Method.POST, uri.build().toString(),
                 new JSONObject(params),
                 new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        if (response.getInt("status") == 200) { //Logout Success
-                            Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                            Intent intentLogout = new Intent(MainActivity.this, LoginActivity.class);
-                            startActivity(intentLogout);
-                            finish();
-                        }
-                    } catch (Exception e) {
-                        Log.d("logout_debug", e.getMessage());
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getInt("status") == 200) { //Logout Success
+                                Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                                Intent intentLogout = new Intent(MainActivity.this, LoginActivity.class);
+                                startActivity(intentLogout);
+                                finish();
+                            }
+                        } catch (Exception e) {
+                            Log.d("logout_debug", e.getMessage());
 //                            e.printStackTrace();
-                    } finally {
-                        pBar.setVisibility(View.INVISIBLE);
+                        } finally {
+                            pBar.setVisibility(View.INVISIBLE);
+                        }
                     }
-                }
-            }, new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("logout_debug", "Error: " + error.toString());
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(logoutRequest, "logout_request");
     }
 
-    public void listMembers(View v){
+    public void listMembers(View v) {
         Map<String, String> params = new HashMap<String, String>();
 //        params.put("id", username.getText().toString()); //pass project id
 
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void addMembers(View v){
+    public void addMembers(View v) {
         Map<String, String> params = new HashMap<String, String>();
 
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
         alertBuilder.setMessage("Enter username")
                 .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if(dialogInput.getText().toString().length() < 4){ //at least 4 characters
+                        if (dialogInput.getText().toString().length() < 4) { //at least 4 characters
                             Toast.makeText(getApplicationContext(), "Name must be at least 4 characters", Toast.LENGTH_LONG).show();
                             return;
                         }
@@ -210,13 +210,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void getTeams(View v){
+    public void getTeams(View v) {
         Map<String, String> params = new HashMap<String, String>();
-        params.put("project",String.valueOf(5)); //pass project ID
+        params.put("project", String.valueOf(5)); //pass project ID
         projectRequest(params, v, "teams"); //get list of teams
     }
 
-    public void addTeam(View v){
+    public void addTeam(View v) {
         Map<String, String> params = new HashMap<String, String>();
 //        params.put("id", username.getText().toString()); //pass project id
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
         alertBuilder.setMessage("Enter Team Name")
                 .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if(dialogInput.getText().toString().length() < 4){ //at least 4 characters
+                        if (dialogInput.getText().toString().length() < 4) { //at least 4 characters
                             Toast.makeText(getApplicationContext(), "Name must be at least 4 characters", Toast.LENGTH_LONG).show();
                             return;
                         }
@@ -248,41 +248,40 @@ public class MainActivity extends AppCompatActivity {
         alertBuilder.create().show();
     }
 
-    public void addTask(View v){
-        if(teams != null && teams.length() > 0){
+    public void addTask(View v) {
+        if (teams != null && teams.length() > 0) {
             int[] projectTeamsID = new int[teams.length()];
             String[] projectTeamsName = new String[teams.length()];
             Map<String, String> params = new HashMap<String, String>();
 
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
-            for(int i = 0; i < teams.length(); i++){
-                try{
+            for (int i = 0; i < teams.length(); i++) {
+                try {
                     projectTeamsID[i] = teams.getJSONObject(i).getInt("id");
                     projectTeamsName[i] = teams.getJSONObject(i).getString("name");
-                }
-                catch(Exception e){
-                    Log.e("project_debug",e.getMessage());
+                } catch (Exception e) {
+                    Log.e("project_debug", e.getMessage());
                 }
             }
             ArrayAdapter<String> teamsArray = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, projectTeamsName);
             alertBuilder.setTitle("Create Task");
 
-            LayoutInflater inflater = (LayoutInflater)MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View addTaskView = inflater.inflate(R.layout.add_task,null);
-            EditText taskName = (EditText)addTaskView.findViewById(R.id.popup_input);
-            Spinner teamList = (Spinner)addTaskView.findViewById(R.id.teamList);
+            LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View addTaskView = inflater.inflate(R.layout.add_task, null);
+            EditText taskName = (EditText) addTaskView.findViewById(R.id.popup_input);
+            Spinner teamList = (Spinner) addTaskView.findViewById(R.id.teamList);
             teamList.setAdapter(teamsArray);
             alertBuilder.setView(addTaskView);
 
             alertBuilder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    if(taskName.getText().toString().length() < 4){ //at least 4 characters
+                    if (taskName.getText().toString().length() < 4) { //at least 4 characters
                         Toast.makeText(getApplicationContext(), "Project Name must be at least 4 characters", Toast.LENGTH_LONG).show();
                         return;
                     }
                     params.put("taskName", taskName.getText().toString()); //task name
 
-                    params.put("assignedTeam", String.valueOf(projectTeamsID[teamList.getSelectedItemPosition()] )); //team ID
+                    params.put("assignedTeam", String.valueOf(projectTeamsID[teamList.getSelectedItemPosition()])); //team ID
                     projectRequest(params, v, "addTask");
                 }
             })
@@ -294,30 +293,28 @@ public class MainActivity extends AppCompatActivity {
                     });
             // Create the AlertDialog object and return it
             alertBuilder.create().show();
-        }
-        else{
+        } else {
             Toast.makeText(getApplicationContext(), "No teams exists in the project yet", Toast.LENGTH_LONG);
         }
     }
 
-    public void projectRequest(Map<String, String> params, View v, String tag){
-        uri = Uri.parse(Const.MOCK_SERVER + "/project/projectID/" + tag).buildUpon();
+    public void projectRequest(Map<String, String> params, View v, String tag) {
+        uri = Uri.parse(Const.API_SERVER + "/project/" + "projectID" + "/" + tag).buildUpon();
 //        uri = Uri.parse(Const.API_SERVER + "/project/" + tag).buildUpon();
         JsonObjectRequest projectRequest = new JsonObjectRequest(Request.Method.POST, uri.build().toString(),
                 new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     public void onResponse(JSONObject response) {
-                        try{
-                            if(response.getInt("status") != 200){
+                        try {
+                            if (response.getInt("status") != 200) {
                                 Toast.makeText(getApplicationContext(), "An error has occured", Toast.LENGTH_LONG);
-                            }
-                            else{
+                            } else {
                                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
                                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                                         LinearLayout.LayoutParams.MATCH_PARENT,
                                         LinearLayout.LayoutParams.MATCH_PARENT);
 
-                                switch(tag){
+                                switch (tag) {
                                     case "users": //Get List of Members Request Success
                                         alertBuilder.setTitle("List of Members")
                                                 .setPositiveButton("BACK", new DialogInterface.OnClickListener() {
@@ -327,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
                                                 });
 
                                         String[] memberList = new String[response.getJSONArray("users").length()];
-                                        for(int i = 0; i < memberList.length; i++){
+                                        for (int i = 0; i < memberList.length; i++) {
                                             memberList[i] = response.getJSONArray("users").getString(i);
                                         }
 
@@ -349,11 +346,10 @@ public class MainActivity extends AppCompatActivity {
                                         break;
                                     case "teams": //get list of teams on project
                                         teams = response.getJSONArray("teams");
-                                        Log.d("project_debug","Teams: " + teams.toString());
-                                        if(viewAdd){ //view teams and add task action
+                                        Log.d("project_debug", "Teams: " + teams.toString());
+                                        if (viewAdd) { //view teams and add task action
                                             addTask(v);
-                                        }
-                                        else { //view teams action
+                                        } else { //view teams action
                                             alertBuilder.setTitle("List of Teams")
                                                     .setPositiveButton("BACK", new DialogInterface.OnClickListener() {
                                                         public void onClick(DialogInterface dialog, int id) {
@@ -362,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
                                                     });
 
                                             String[] teamList = new String[teams.length()];
-                                            for(int i = 0; i < teamList.length; i++){
+                                            for (int i = 0; i < teamList.length; i++) {
                                                 teamList[i] = teams.getJSONObject(i).getString("name");
                                             }
 
@@ -373,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
                                                 public void onClick(DialogInterface dialogInterface, int i) { //open team details page
                                                     Intent newIntent = new Intent(MainActivity.this, TeamActivity.class);
                                                     newIntent.putExtra("teamId", 0);
-                                                    newIntent.putExtra("teamName",teamList[i]);
+                                                    newIntent.putExtra("teamName", teamList[i]);
                                                     startActivity(newIntent);
                                                     finish();
                                                 }
@@ -390,9 +386,8 @@ public class MainActivity extends AppCompatActivity {
                                         break;
                                 }
                             }
-                        }
-                        catch(Exception e){
-                            Log.d("project_debug",tag + ": " + e.getMessage());
+                        } catch (Exception e) {
+                            Log.d("project_debug", tag + ": " + e.getMessage());
 //                            e.printStackTrace();
                         }
                     }
