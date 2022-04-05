@@ -24,7 +24,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_projects"
         android:name="com.coms3091mc3.projectmanager.ui.projects.ProjectsFragment"
         android:label="@string/title_projects"
         tools:layout="@layout/fragment_projects" />
