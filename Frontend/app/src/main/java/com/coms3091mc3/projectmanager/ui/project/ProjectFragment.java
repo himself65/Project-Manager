@@ -42,7 +42,7 @@ public class ProjectFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentProjectBinding.inflate(inflater, container, false);
-        binding.setModal(new ProjectDataModel());
+        binding.setModal(new ProjectDataModel(getContext()));
         View view = binding.getRoot();
         int id = (Integer) getArguments().get("projectID");
         String url = Const.API_SERVER + "/project/" + id;
@@ -55,11 +55,11 @@ public class ProjectFragment extends Fragment {
             }
         });
 
-        JsonArrayRequest tasksRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                projects -> {
+        JsonArrayRequest tasksRequest = new JsonArrayRequest(Request.Method.GET, tasksUrl, null,
+                tasks -> {
                     try {
-                        for (int i = 0; i < projects.length(); i++) {
-                            JSONObject object = (JSONObject) projects.get(i);
+                        for (int i = 0; i < tasks.length(); i++) {
+                            JSONObject object = (JSONObject) tasks.get(i);
                             Task task = new Task(
                                     object.getInt("taskID"),
                                     object.getString("taskName")
@@ -89,6 +89,7 @@ public class ProjectFragment extends Fragment {
                 },
                 error -> Logger.getLogger("json").log(Level.INFO, error.toString()));
         AppController.getInstance().addToRequestQueue(request);
+        AppController.getInstance().addToRequestQueue(tasksRequest);
         return view;
     }
 

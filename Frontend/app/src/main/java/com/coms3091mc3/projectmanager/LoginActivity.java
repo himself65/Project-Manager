@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void submit(View v) {
-        uri = Uri.parse(Const.MOCK_SERVER + "/" + v.getTag().toString()).buildUpon();
+        uri = Uri.parse(Const.API_SERVER + "/" + v.getTag().toString()).buildUpon();
 //        uri = Uri.parse(Const.API_SERVER + "/" + v.getTag().toString()).buildUpon();
 //        uri.appendQueryParameter("username", username.getText().toString());
 //        uri.appendQueryParameter("password", password.getText().toString());
