@@ -56,17 +56,13 @@ public class TaskFragment extends Fragment {
                                 object.getInt("taskID"),
                                 object.getString("taskName")
                         );
-                        task.setStatus(object.getString("status"));
+                        task.setStatus(object.getInt("status"));
+                        task.setTeamName(object.getString("teamName"));
                         binding.getModal().task.set(task);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("task_debug_error", "Error: " + error.toString());
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-            }
+                }, error -> {
         });
         AppController.getInstance().addToRequestQueue(taskRequest);
     }

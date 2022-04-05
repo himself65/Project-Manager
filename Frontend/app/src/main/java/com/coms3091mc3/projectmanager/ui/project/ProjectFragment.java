@@ -139,7 +139,7 @@ public class ProjectFragment extends Fragment {
     public void listTeams() {
         String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "teams";
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
-        JsonArrayRequest teamsRequest = new JsonArrayRequest(Request.Method.POST, url, null,
+        JsonArrayRequest teamsRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 teams -> {
                     alertBuilder.setTitle("List of Teams");
                     TeamsAdapter adapter = new TeamsAdapter(getContext(), R.layout.fragment_task_item);
@@ -251,9 +251,4 @@ public class ProjectFragment extends Fragment {
         );
         AppController.getInstance().addToRequestQueue(request);
     }
-
-    public void addUser() {
-
-    }
-
 }

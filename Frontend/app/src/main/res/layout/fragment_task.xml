@@ -32,13 +32,10 @@
                 android:background="@color/design_default_color_error"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="@{modal.task.status}"
+                android:text="@{modal.task.status == 0 ? `unfinished` : `finihsed`}"
                 android:textAlignment="viewStart"
                 android:textColor="@color/white"
-                android:textSize="20sp">
-
-
-            </TextView>
+                android:textSize="20sp"/>
         </LinearLayout>
 
         <TextView
@@ -68,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="44dp"
-            android:text="team_name"
+            android:text="@{modal.task.teamName}"
             app:layout_constraintStart_toEndOf="@+id/team_icon"
             app:layout_constraintTop_toTopOf="parent" />
 

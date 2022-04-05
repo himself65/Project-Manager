@@ -3,19 +3,28 @@ package com.coms3091mc3.projectmanager.data;
 public class Task {
     int taskID;
     String taskName;
-    String status;
+    int status;
+    String teamName;
 
     public Task(int taskID, String taskName) {
         this.taskID = taskID;
         this.taskName = taskName;
-        this.status = "UNKNOWN";
+        this.status = 0;
     }
 
-    public String getStatus() {
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
