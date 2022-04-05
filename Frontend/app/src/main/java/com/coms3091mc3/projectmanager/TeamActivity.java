@@ -23,7 +23,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.coms3091mc3.projectmanager.app.AppController;
-import com.coms3091mc3.projectmanager.ui.notifications.NotificationsFragment;
 import com.coms3091mc3.projectmanager.utils.Const;
 
 import org.json.JSONObject;

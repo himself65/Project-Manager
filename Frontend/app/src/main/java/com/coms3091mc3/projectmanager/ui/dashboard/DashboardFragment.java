@@ -65,29 +65,27 @@ public class DashboardFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         Context context = getContext();
-        if (context != null) {
-            String url = Const.API_SERVER + "/project";
+        String url = Const.API_SERVER + "/project";
 
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
-                    projects -> {
-                        try {
-                            for (int i = 0; i < projects.length(); i++) {
-                                JSONObject object = (JSONObject) projects.get(i);
-                                Project project = new Project(
-                                        object.getInt("projectID"),
-                                        object.getString("projectName"),
-                                        object.getString("dateCreated")
-                                );
-                                binding.getModal().projectsAdapter.add(project);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                projects -> {
+                    try {
+                        for (int i = 0; i < projects.length(); i++) {
+                            JSONObject object = (JSONObject) projects.get(i);
+                            Project project = new Project(
+                                    object.getInt("projectID"),
+                                    object.getString("projectName"),
+                                    object.getString("dateCreated")
+                            );
+                            binding.getModal().projectsAdapter.add(project);
                         }
-                    },
-                    error -> Logger.getLogger("json").log(Level.INFO, error.toString()));
-
-            AppController.getInstance().addToRequestQueue(request);
-        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> Logger.getLogger("json").log(Level.INFO, error.toString())
+        );
+        AppController.getInstance().addToRequestQueue(request);
         binding.setModal(new DashboardDataModal(context));
         View view = binding.getRoot();
         Button button = view.findViewById(R.id.add_project);
