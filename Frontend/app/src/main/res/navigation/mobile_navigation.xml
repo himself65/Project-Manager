@@ -41,5 +41,19 @@
         android:id="@+id/navigation_project"
         android:name="com.coms3091mc3.projectmanager.ui.project.ProjectFragment"
         android:label="Project"
-        tools:layout="@layout/fragment_project" />
+        tools:layout="@layout/fragment_project">
+        <action
+            android:id="@+id/action_navigation_project_to_navigation_task"
+            app:destination="@id/navigation_task">
+            <argument
+                android:name="taskID"
+                app:argType="integer" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_task"
+        android:name="com.coms3091mc3.projectmanager.ui.task.TaskFragment"
+        android:label="Task"
+        tools:layout="@layout/fragment_task" />
 </navigation>

@@ -6,13 +6,16 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -27,6 +30,7 @@ import com.coms3091mc3.projectmanager.data.Task;
 import com.coms3091mc3.projectmanager.data.Team;
 import com.coms3091mc3.projectmanager.databinding.FragmentProjectBinding;
 import com.coms3091mc3.projectmanager.store.ProjectDataModel;
+import com.coms3091mc3.projectmanager.ui.dashboard.DashboardFragmentDirections;
 import com.coms3091mc3.projectmanager.utils.Const;
 import com.coms3091mc3.projectmanager.view.AddTeamDialogFragment;
 
@@ -55,6 +59,16 @@ public class ProjectFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 showMenu(view);
+            }
+        });
+
+        GridView gridView = view.findViewById(R.id.projectTasks);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Task task = binding.getModal().tasksAdapter.getItem(i);
+                ProjectFragmentDirections.ActionNavigationProjectToNavigationTask action = ProjectFragmentDirections.actionNavigationProjectToNavigationTask(task.getTaskID());
+                Navigation.findNavController(view).navigate(action);
             }
         });
 
