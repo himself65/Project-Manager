@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.coms3091mc3.projectmanager.ui.projects.ProjectsFragment"
-        android:label="@string/title_notifications"
+        android:label="@string/title_projects"
         tools:layout="@layout/fragment_projects" />
 
     <fragment

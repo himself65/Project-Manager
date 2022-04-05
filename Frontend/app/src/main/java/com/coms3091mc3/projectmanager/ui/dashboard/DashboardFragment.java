@@ -65,7 +65,7 @@ public class DashboardFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         Context context = getContext();
-        String url = Const.API_SERVER + "/project";
+        String url = Const.API_SERVER + "/projects";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 projects -> {
@@ -129,7 +129,7 @@ public class DashboardFragment extends Fragment {
         AddProjectDialogFragment fragment = new AddProjectDialogFragment(new AddProjectDialogFragment.AddProjectDialogListener() {
             @Override
             public void onDialogPositiveClick(Project project) {
-                String url = Const.API_SERVER + "/project";
+                String url = Const.API_SERVER + "/projects";
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("projectName", project.getName());
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,

@@ -31,7 +31,7 @@ public class ProjectsFragment extends Fragment {
         binding = FragmentProjectsBinding.inflate(inflater, container, false);
         binding.setModal(new ProjectsDataModel(getContext()));
         View root = binding.getRoot();
-        String url = Const.API_SERVER + "/project";
+        String url = Const.API_SERVER + "/projects";
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 projects -> {
                     try {
