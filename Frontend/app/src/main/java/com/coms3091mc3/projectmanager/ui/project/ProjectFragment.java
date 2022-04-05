@@ -24,13 +24,14 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.coms3091mc3.projectmanager.R;
+import com.coms3091mc3.projectmanager.TasksAdapter;
+import com.coms3091mc3.projectmanager.TeamsAdapter;
 import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.data.Project;
 import com.coms3091mc3.projectmanager.data.Task;
 import com.coms3091mc3.projectmanager.data.Team;
 import com.coms3091mc3.projectmanager.databinding.FragmentProjectBinding;
 import com.coms3091mc3.projectmanager.store.ProjectDataModel;
-import com.coms3091mc3.projectmanager.ui.dashboard.DashboardFragmentDirections;
 import com.coms3091mc3.projectmanager.utils.Const;
 import com.coms3091mc3.projectmanager.view.AddTeamDialogFragment;
 
@@ -136,23 +137,28 @@ public class ProjectFragment extends Fragment {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
         JsonArrayRequest teamsRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 teams -> {
-                    alertBuilder.setTitle("List of Teams")
-                            .setPositiveButton("BACK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    return;
-                                }
-                            });
-
-                    String[] teamsList = new String[teams.length()];
-                    for (int i = 0; i < teamsList.length; i++) {
+                    alertBuilder.setTitle("List of Teams");
+                    TeamsAdapter adapter = new TeamsAdapter(getContext(), R.layout.fragment_task_item);
+                    for (int i = 0; i < teams.length(); i++) {
                         try {
-                            teamsList[i] = teams.getJSONObject(i).getString("teamName");
+                            JSONObject object = teams.getJSONObject(i);
+                            int id = object.getInt("teamID");
+                            String name = object.getString("teamName");
+                            Team team = new Team(id, name);
+                            adapter.add(team);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-
-                    alertBuilder.setItems(teamsList, null);
+                    alertBuilder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Team team = (Team) adapter.getItem(i);
+                            int id = team.getTeamID();
+                            ProjectFragmentDirections.ActionNavigationProjectToNavigationTeam action = ProjectFragmentDirections.actionNavigationProjectToNavigationTeam(id);
+                            Navigation.findNavController(getView()).navigate(action);
+                        }
+                    });
                     alertBuilder.create().show();
                 },
                 error -> {
