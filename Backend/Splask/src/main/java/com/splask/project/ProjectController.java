@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -90,13 +91,9 @@ public class ProjectController {
         Project project = projectRepository.getById(project_id);
         JSONArray users = new JSONArray();
         JSONObject responseBody = new JSONObject();
-        /*
-        for (User i : project.getUsers())
-        {
-            users.add(i);
-        }
-         */
+
         users.addAll(project.getUsers());
+
         responseBody.put("users",users);
         responseBody.put("status", 200);
         responseBody.put("message", "Successfully retrieved all users from" + project.getProjectName());
@@ -114,20 +111,24 @@ public class ProjectController {
         JSONObject responseBody = new JSONObject();
 
         Project project = projectRepository.getById(project_id);
-        List<User> users = userRepository.findByUsername(username.getAsString("username"));
-        System.out.println(username.toString());
-        System.out.println(users.size());
-        User user = users.get(0);
+        User user = userRepository.findByUsername(username.getAsString("username")).get(0);
+
+
         if (project.getUsers().contains(user))
         {
+
             responseBody.put("status", 400);
-            responseBody.put("message", user.getUsername() +"already in" + project.getProjectName());
+            responseBody.put("message", user.getUsername() +" already in " + project.getProjectName());
             return responseBody;
         }
+
         project.enrollUserToProject(user); //sends the passed user to the enrollUsers method
         user.addProjectToUser(project);
+        projectRepository.save(project);
+        userRepository.save(user);
+
         responseBody.put("status", 200);
-        responseBody.put("message", "User successfully added to" + project.getProjectName());
+        responseBody.put("message", "User successfully added to " + project.getProjectName());
         return  responseBody; //saves the new user to assigned team
     }
 
@@ -139,13 +140,9 @@ public class ProjectController {
         Project project = projectRepository.getById(project_id);
         JSONArray teams = new JSONArray();
         JSONObject responseBody = new JSONObject();
-        /*
-        for (User i : project.getUsers())
-        {
-            users.add(i);
-        }
-         */
+
         teams.addAll(project.getTeams());
+
         responseBody.put("teams",teams);
         responseBody.put("status", 200);
         responseBody.put("message", "Successfully retrieved all teams from " + project.getProjectName());
@@ -182,12 +179,7 @@ public class ProjectController {
         Project project = projectRepository.getById(project_id);
         JSONArray tasks = new JSONArray();
         JSONObject responseBody = new JSONObject();
-        /*
-        for (User i : project.getUsers())
-        {
-            users.add(i);
-        }
-         */
+
         tasks.addAll(project.getTasks());
 
         responseBody.put("tasks",tasks);
@@ -207,6 +199,8 @@ public class ProjectController {
 
         Project project = projectRepository.getById(project_id);
         project.addTaskToProject(task);
+
+
         taskRepository.save(task);
         projectRepository.save(project);
         responseBody.put("status",200);

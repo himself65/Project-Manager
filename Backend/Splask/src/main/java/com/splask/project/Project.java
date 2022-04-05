@@ -1,19 +1,16 @@
 package com.splask.project;
 
+import com.fasterxml.jackson.annotation.*;
 import com.splask.task.Task;
 import com.splask.team.Team;
 import com.splask.user.User;
 import com.sun.istack.NotNull;
 import net.minidev.json.JSONObject;
-import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Entity
@@ -28,32 +25,25 @@ public class Project {
     @Column
     String projectName;
 
-    
-//    //Many Projects to Many Users
-//    @ManyToMany
-//    @JsonIgnore
-//    private List<User> pUsers = new ArrayList<>();
 
-      @ManyToMany(mappedBy = "projects")
-      @NotNull
-      private List<User> users = new ArrayList<>();
-//
-//
-//    //One project to Many Teams
+
+    @ManyToMany(mappedBy = "projects")
+    @NotNull
+    @JsonBackReference
+    private List<User> users = new ArrayList<>();
+
+
+    //One project to Many Teams
     @OneToMany(mappedBy = "teamProject")
     @NotNull
+    @JsonManagedReference
     private List<Team> teams = new ArrayList<>();
 
-//
-//    //One project to Many Tasks
+    //One project to Many Tasks
     @OneToMany(mappedBy = "taskProject")
     @JsonIgnore
     @NotNull
     private List<Task> tasks = new ArrayList<>();
-
-
-
-
 
     @Column
     String deadline;
@@ -63,8 +53,6 @@ public class Project {
 
     @Column
     String completedBy;
-
-
 
     @Column
     LocalDateTime dateCreated;
@@ -91,6 +79,7 @@ public class Project {
 
     public Integer getStatus() {return status;}
 
+    //TODO
     /*
     public void setComplete() {
         status = true;
@@ -110,18 +99,6 @@ public class Project {
         }
     }
 */
-//    public List<Team> getTeam()
-//    {
-//        return teams;
-//    }
-
-
-    /*public String getTasks()
-    {
-        return tasks;
-    }
-
-     */
 
     public String getDateCreated()
     {
@@ -129,11 +106,13 @@ public class Project {
         return dateCreated.format(format);
     }
 
-////  Controller function
+    //  Controller function
 	public void enrollUserToProject(User user)
     {
         System.out.println(user.toString());
+        System.out.println(Arrays.toString(users.toArray()));
         users.add(user);
+        System.out.println(Arrays.toString(users.toArray()));
     }
 
     //Controller function
@@ -143,9 +122,7 @@ public class Project {
         {
             if (i.getTeamName().equals(team.getTeamName()))
             {
-                System.out.println(i.getTeamName());
-                System.out.println(team.getTeamName());
-                System.out.println("we innnnn");
+
                 return true;
             }
         }
@@ -159,7 +136,9 @@ public class Project {
 
 
 //	Relationship tables setters and getters
-    public List<User> getUsers() {return users;}
+    public List<User> getUsers() {
+        return users;}
+
     public void setUsers(List<User> users) {this.users = users;}
 
 	public List<Team> getTeams() {return teams;}

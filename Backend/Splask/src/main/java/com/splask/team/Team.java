@@ -1,5 +1,6 @@
 package com.splask.team;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.splask.project.Project;
 import com.splask.task.Task;
 import com.splask.user.User;
@@ -33,7 +34,7 @@ class Team {
 //    //Many teams to many Projects
 	@ManyToOne
     @JoinColumn(name = "project_id")
-	@JsonIgnore
+    @JsonBackReference
 	private Project teamProject;
 //    
 //    
@@ -51,10 +52,10 @@ class Team {
     private List<Task> tasks;
     
     
-    
-    
-    
-    
+
+
+
+
 
     
     public Integer getTeamID() {return teamID;}
@@ -81,11 +82,9 @@ class Team {
 ////  Task Controller functions
 	public void assignTeamToProject(Project project) {teamProject = project;}
 
-	
-	
 
-    
-
-
+    public Project getTeamProject() {
+        return teamProject;
+    }
 
 }

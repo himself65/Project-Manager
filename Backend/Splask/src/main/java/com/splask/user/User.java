@@ -2,6 +2,7 @@
 package com.splask.user;
 
 //Class imports
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.splask.task.Task;
 import com.splask.team.Team;
 import com.splask.project.Project;
@@ -51,7 +52,7 @@ public class User{
 			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "project_id")
 	)
-
+	@JsonManagedReference
 	private List<Project> projects = new ArrayList<>();
 ////
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -105,17 +106,14 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 		return dateCreated.format(format);
 	}
 	
-//	TODO Delete???
-//	public Project getAuthor() {return projectsCreated;}
-//	public void setAuthor(Project author) {this.projectsCreated = author;}
-//	
+
     public Integer isLoggedIn() {return loggedIn;}
     public void setLoggedIn(Integer loggedIn) {this.loggedIn = loggedIn;}
 
     
 ////	Relationship tables setters and getters
-	public List<Project> getProjectUsers() {return projects;}
-	public void setProjectUsers(List<Project> projects) {this.projects = projects;}
+//	public List<Project> getProject() {return projects;}
+//	public void setProject(List<Project> projects) {this.projects = projects;}
 
 
 	public List<Team> getTeam() {return teams;}
@@ -125,11 +123,14 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 	public List<Task> getTasks() {return tasks;}
 	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
 
+
+
 	//Controller Functions
 	public void addProjectToUser(Project project)
 	{
-		System.out.println(project.toString());
+		System.out.println(Arrays.toString(projects.toArray()));
 		projects.add(project);
+		System.out.println(Arrays.toString(projects.toArray()));
 	}
 
 
