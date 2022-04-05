@@ -29,6 +29,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.coms3091mc3.projectmanager.MainActivity;
 import com.coms3091mc3.projectmanager.R;
 import com.coms3091mc3.projectmanager.TasksAdapter;
+import com.coms3091mc3.projectmanager.TeamActivity;
 import com.coms3091mc3.projectmanager.TeamsAdapter;
 import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.data.Project;
@@ -127,6 +128,8 @@ public class ProjectFragment extends Fragment {
                     listMembers();
                 } else if (id == R.id.listTeams) {
                     listTeams();
+                } else if (id == R.id.addMembers) {
+                    addMember();
                 }
                 return true;
             }
@@ -172,6 +175,40 @@ public class ProjectFragment extends Fragment {
                 }
         );
         AppController.getInstance().addToRequestQueue(teamsRequest);
+    }
+
+    public void addMember() {
+        Map<String, String> params = new HashMap<String, String>();
+        Context context = getContext();
+//        params.put("username", username.getText().toString()); //insert team id here
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        final EditText dialogInput = new EditText(context);
+        dialogInput.setLayoutParams(lp);
+        alertBuilder.setView(dialogInput);
+
+        alertBuilder.setMessage("Enter username")
+                .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (dialogInput.getText().toString().length() < 4) { //at least 4 characters
+                            Toast.makeText(context, "Name must be at least 4 characters", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        params.put("username", dialogInput.getText().toString());
+                        // todo: post to add user
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        return;
+                    }
+                });
+        // Create the AlertDialog object and return it
+        alertBuilder.create().show();
     }
 
     public void listMembers() {
