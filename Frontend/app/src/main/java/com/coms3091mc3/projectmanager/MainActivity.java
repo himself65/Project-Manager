@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.addMembers:
                         addMembers(v);
                         return true;
-                    case R.id.viewTeams:
+                    case R.id.listTeams:
                         viewAdd = false;
                         getTeams(v);
                         return true;

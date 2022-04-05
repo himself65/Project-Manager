@@ -20,7 +20,6 @@ import com.android.volley.Request;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.coms3091mc3.projectmanager.MainActivity;
 import com.coms3091mc3.projectmanager.R;
 import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.data.Project;
@@ -29,7 +28,6 @@ import com.coms3091mc3.projectmanager.data.Team;
 import com.coms3091mc3.projectmanager.databinding.FragmentProjectBinding;
 import com.coms3091mc3.projectmanager.store.ProjectDataModel;
 import com.coms3091mc3.projectmanager.utils.Const;
-import com.coms3091mc3.projectmanager.view.AddProjectDialogFragment;
 import com.coms3091mc3.projectmanager.view.AddTeamDialogFragment;
 
 import org.json.JSONException;
@@ -105,25 +103,11 @@ public class ProjectFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 if (id == R.id.addTeam) {
-                    FragmentManager fragmentManager = getChildFragmentManager();
-                    AddTeamDialogFragment fragment = new AddTeamDialogFragment(new AddTeamDialogFragment.AddTeamDialogListener() {
-                        @Override
-                        public void onDialogPositiveClick(Team team) {
-                            Logger.getGlobal().log(Level.INFO, team.getTeamName());
-                            String url = Const.API_SERVER + "/project" + binding.getModal().project.get().getId() + "/addTeam";
-                            Map<String, String> params = new HashMap<String, String>();
-                            params.put("teamName", team.getTeamName());
-                            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(params), response -> {
-
-                            }, error -> {
-
-                            });
-                            AppController.getInstance().addToRequestQueue(request);
-                        }
-                    });
-                    fragment.show(fragmentManager, "addTeam");
+                    addTeam();
                 } else if (id == R.id.listMembers) {
                     listMembers();
+                } else if (id == R.id.listTeams) {
+                    listTeams();
                 }
                 return true;
             }
@@ -131,6 +115,39 @@ public class ProjectFragment extends Fragment {
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.popup_project_menu, popup.getMenu());
         popup.show();
+    }
+
+    public void listTeams() {
+        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "teams";
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+        JsonArrayRequest teamsRequest = new JsonArrayRequest(Request.Method.POST, url, null,
+                teams -> {
+                    alertBuilder.setTitle("List of Teams")
+                            .setPositiveButton("BACK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    return;
+                                }
+                            });
+
+                    String[] teamsList = new String[teams.length()];
+                    for (int i = 0; i < teamsList.length; i++) {
+                        try {
+                            teamsList[i] = teams.getJSONObject(i).getString("teamName");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    alertBuilder.setItems(teamsList, null);
+                    alertBuilder.create().show();
+                },
+                error -> {
+                    VolleyLog.d("project_debug", "Error: " + error.toString());
+                    error.printStackTrace();
+                    Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                }
+        );
+        AppController.getInstance().addToRequestQueue(teamsRequest);
     }
 
     public void listMembers() {
@@ -171,7 +188,23 @@ public class ProjectFragment extends Fragment {
     }
 
     public void addTeam() {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        AddTeamDialogFragment fragment = new AddTeamDialogFragment(new AddTeamDialogFragment.AddTeamDialogListener() {
+            @Override
+            public void onDialogPositiveClick(Team team) {
+                Logger.getGlobal().log(Level.INFO, team.getTeamName());
+                String url = Const.API_SERVER + "/project" + binding.getModal().project.get().getId() + "/addTeam";
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("teamName", team.getTeamName());
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(params), response -> {
+                    Toast.makeText(getContext(), "Add Team Success!", Toast.LENGTH_SHORT).show();
+                }, error -> {
 
+                });
+                AppController.getInstance().addToRequestQueue(request);
+            }
+        });
+        fragment.show(fragmentManager, "addTeam");
     }
 
     public void addUser() {
