@@ -177,7 +177,7 @@ public class ProjectFragment extends Fragment {
     public void listMembers() {
         String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "users";
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
-        JsonArrayRequest usersRequest = new JsonArrayRequest(Request.Method.POST, url, null,
+        JsonArrayRequest usersRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 users -> {
                     alertBuilder.setTitle("List of Members")
                             .setPositiveButton("BACK", new DialogInterface.OnClickListener() {
@@ -201,7 +201,7 @@ public class ProjectFragment extends Fragment {
                 error -> {
                     VolleyLog.d("project_debug", "Error: " + error.toString());
                     error.printStackTrace();
-                    Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Unknown Error", Toast.LENGTH_LONG).show();
                 }
         );
         AppController.getInstance().addToRequestQueue(usersRequest);
