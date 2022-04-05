@@ -1,6 +1,7 @@
 package com.coms3091mc3.projectmanager.ui.project;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -15,7 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -23,6 +26,7 @@ import com.android.volley.Request;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.coms3091mc3.projectmanager.MainActivity;
 import com.coms3091mc3.projectmanager.R;
 import com.coms3091mc3.projectmanager.TasksAdapter;
 import com.coms3091mc3.projectmanager.TeamsAdapter;
@@ -203,28 +207,49 @@ public class ProjectFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(usersRequest);
     }
 
-    public void addTask() {
+    public void addTeam() {
+        Map<String, String> params = new HashMap<String, String>();
+        Context context = getContext();
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        final EditText dialogInput = new EditText(context);
+        dialogInput.setLayoutParams(lp);
+        alertBuilder.setView(dialogInput);
 
+        alertBuilder.setMessage("Enter Team Name")
+                .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (dialogInput.getText().toString().length() < 4) { //at least 4 characters
+                            Toast.makeText(context, "Name must be at least 4 characters", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        params.put("username", dialogInput.getText().toString());
+                        addTeamRequest(params);
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        return;
+                    }
+                });
+        // Create the AlertDialog object and return it
+        alertBuilder.create().show();
     }
 
-    public void addTeam() {
-        FragmentManager fragmentManager = getChildFragmentManager();
-        AddTeamDialogFragment fragment = new AddTeamDialogFragment(new AddTeamDialogFragment.AddTeamDialogListener() {
-            @Override
-            public void onDialogPositiveClick(Team team) {
-                Logger.getGlobal().log(Level.INFO, team.getTeamName());
-                String url = Const.API_SERVER + "/project" + binding.getModal().project.get().getId() + "/addTeam";
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("teamName", team.getTeamName());
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(params), response -> {
-                    Toast.makeText(getContext(), "Add Team Success!", Toast.LENGTH_SHORT).show();
-                }, error -> {
-
-                });
-                AppController.getInstance().addToRequestQueue(request);
-            }
-        });
-        fragment.show(fragmentManager, "addTeam");
+    void addTeamRequest(Map<String, String> query) {
+        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "addTeam";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
+                new JSONObject(query),
+                response -> {
+                    Toast.makeText(getContext(), "success", Toast.LENGTH_LONG).show();
+                },
+                error -> {
+                }
+        );
+        AppController.getInstance().addToRequestQueue(request);
     }
 
     public void addUser() {
