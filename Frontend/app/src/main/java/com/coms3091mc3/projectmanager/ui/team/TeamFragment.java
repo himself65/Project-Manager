@@ -18,11 +18,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.coms3091mc3.projectmanager.R;
 import com.coms3091mc3.projectmanager.TeamActivity;
 import com.coms3091mc3.projectmanager.app.AppController;
+import com.coms3091mc3.projectmanager.data.Project;
 import com.coms3091mc3.projectmanager.data.Team;
+import com.coms3091mc3.projectmanager.data.User;
 import com.coms3091mc3.projectmanager.databinding.FragmentTeamBinding;
 import com.coms3091mc3.projectmanager.store.TeamDataModel;
 import com.coms3091mc3.projectmanager.utils.Const;
@@ -65,6 +68,8 @@ public class TeamFragment extends Fragment {
                         int teamID = object.getInt("teamID");
                         Team team = new Team(teamID, teamName);
                         binding.getModal().team.set(team);
+
+                        getMembersRequest(id);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -110,7 +115,32 @@ public class TeamFragment extends Fragment {
         alertBuilder.create().show();
     }
 
-    void addMemberRequest(Map<String, String> params) {
+    void getMembersRequest(int id){ //get list of users
+        String url = Const.API_SERVER + "/team/" + id + "/users";
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                users -> {
+                    try {
+                        for (int i = 0; i < users.length(); i++) {
+                            JSONObject object = (JSONObject) users.get(i);
+                            User user = new User(
+                                    object.getInt("user_id"),
+                                    object.getString("username"),
+                                    object.getString("fullname")
+                            );
+//                            binding.getModal().team.
+                            Log.d("project_debug",object.toString());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> Logger.getLogger("json").log(Level.INFO, error.toString())
+        );
+
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    void addMemberRequest(Map<String, String> params) { //add member to team
         String url = Const.API_SERVER + "/team/" + binding.getModal().team.get().getTeamID() +"/addUser";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
                 new JSONObject(params),
