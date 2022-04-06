@@ -8,9 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,16 +32,22 @@ import com.coms3091mc3.projectmanager.databinding.FragmentTeamBinding;
 import com.coms3091mc3.projectmanager.store.TeamDataModel;
 import com.coms3091mc3.projectmanager.utils.Const;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TeamFragment extends Fragment {
     FragmentTeamBinding binding;
+
+    ListView lv;
+    private JSONArray usersArray = new JSONArray();
 
     @Nullable
     @Override
@@ -50,6 +58,7 @@ public class TeamFragment extends Fragment {
         getTeamRequest(id);
         View view = binding.getRoot();
         Button button = view.findViewById(R.id.btnAddUser);
+        lv = (ListView) view.findViewById(R.id.user_list);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,6 +129,7 @@ public class TeamFragment extends Fragment {
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 users -> {
                     try {
+                        List<String> userNameList = new ArrayList<String>();
                         for (int i = 0; i < users.length(); i++) {
                             JSONObject object = (JSONObject) users.get(i);
                             User user = new User(
@@ -127,9 +137,15 @@ public class TeamFragment extends Fragment {
                                     object.getString("username"),
                                     object.getString("fullname")
                             );
+                            usersArray.put(object);
+                            userNameList.add(object.getString("fullname"));
 //                            binding.getModal().team.
                             Log.d("project_debug",object.toString());
                         }
+                        ArrayAdapter<String> userName = new ArrayAdapter<String>(getContext(),
+                                android.R.layout.simple_list_item_1,
+                                userNameList);
+                        lv.setAdapter(userName);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
