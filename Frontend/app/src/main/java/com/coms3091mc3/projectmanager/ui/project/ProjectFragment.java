@@ -332,9 +332,10 @@ public class ProjectFragment extends Fragment {
             EditText taskName = (EditText) addTaskView.findViewById(R.id.editTextTextTaskName);
             Spinner teamList = (Spinner) addTaskView.findViewById(R.id.assignTeamSpinner);
             teamList.setAdapter(teamNames);
+            teamList.
 
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
-
+            alertBuilder.setView(addTaskView);
             alertBuilder.setMessage("Add a Task");
             alertBuilder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
@@ -399,7 +400,7 @@ public class ProjectFragment extends Fragment {
                 response -> {
                     try {
                         Log.d("project_debug", response.getString("message"));
-                        Toast.makeText(getContext(), "success", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
