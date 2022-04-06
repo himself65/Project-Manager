@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +28,12 @@ import com.coms3091mc3.projectmanager.store.TeamDataModel;
 import com.coms3091mc3.projectmanager.utils.Const;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TeamFragment extends Fragment {
     FragmentTeamBinding binding;
@@ -40,7 +44,7 @@ public class TeamFragment extends Fragment {
         binding = FragmentTeamBinding.inflate(inflater, container, false);
         binding.setModal(new TeamDataModel());
         int id = (Integer) getArguments().get("teamID");
-        teamRequest(id);
+        getTeamRequest(id);
         View view = binding.getRoot();
         Button button = view.findViewById(R.id.btnAddUser);
         button.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +56,7 @@ public class TeamFragment extends Fragment {
         return view;
     }
 
-    void teamRequest(int id) {
+    void getTeamRequest(int id) {
         String url = Const.API_SERVER + "/team/" + id;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 object -> {
@@ -88,11 +92,12 @@ public class TeamFragment extends Fragment {
                 .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (dialogInput.getText().toString().length() < 4) { //at least 4 characters
-                            Toast.makeText(context, "Name must be at least 4 characters", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context.getApplicationContext(), "Name must be at least 4 characters", Toast.LENGTH_LONG).show();
                             return;
                         }
                         params.put("username", dialogInput.getText().toString());
                         // todo: query to add team member
+                        addMemberRequest(params);
                     }
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -103,5 +108,24 @@ public class TeamFragment extends Fragment {
                 });
         // Create the AlertDialog object and return it
         alertBuilder.create().show();
+    }
+
+    void addMemberRequest(Map<String, String> params) {
+        String url = Const.API_SERVER + "/team/" + binding.getModal().team.get().getTeamID() +"/addUser";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
+                new JSONObject(params),
+                response -> {
+                    try {
+                        Log.d("project_debug",response.getString("message"));
+                        Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+
+                }
+        );
+        AppController.getInstance().addToRequestQueue(request);
     }
 }
