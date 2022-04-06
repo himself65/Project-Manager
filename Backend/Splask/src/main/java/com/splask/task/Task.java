@@ -1,5 +1,6 @@
 package com.splask.task;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.splask.project.Project;
 import com.splask.team.Team;
 import com.splask.user.User;
@@ -61,7 +62,7 @@ public class Task {
 //  Many tasks to one Project
 	@ManyToOne
 	@JoinColumn(name = "project_id", nullable = false)
-	@JsonIgnore
+	@JsonBackReference
 	private Project taskProject;
 
 	

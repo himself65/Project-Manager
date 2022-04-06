@@ -84,13 +84,19 @@ public class TeamController {
     @PutMapping("/team/{team_id}/addUser")
     JSONObject enrollUserToTeam( //Gets the user then assigns the user to the team
                               @PathVariable Integer teamID,
-                              @PathVariable Integer userID
+                              @RequestBody JSONObject username
     ) {
         JSONObject responseBody = new JSONObject();
 
         Team team = teamRepository.getById(teamID);
-        User user = userRepository.getById(userID);
+        User user = userRepository.findByUsername(username.getAsString("username")).get(0);
 
+        if (!team.getTeamProject().getUsers().contains(user)) {
+
+            responseBody.put("status",400);
+            responseBody.put("message","Invalid. User not in project");
+            return responseBody;
+        }
         if (team.getUsers().contains(user))
         {
             responseBody.put("status",400);

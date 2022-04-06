@@ -69,6 +69,7 @@ public class User{
 			joinColumns = @JoinColumn(name = "user", referencedColumnName = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "task", referencedColumnName = "task_id")
 	)
+
 	private List<Task> tasks = new ArrayList<>();
 
 //	TODO (DEMO 4) Set relationship with Roles

@@ -51,7 +51,6 @@ class Team {
     @NotNull
     private List<Task> tasks;
     
-    
 
 
 

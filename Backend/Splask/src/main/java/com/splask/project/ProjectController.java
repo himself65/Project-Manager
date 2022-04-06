@@ -2,7 +2,6 @@ package com.splask.project;
 
 import com.splask.task.Task;
 import com.splask.team.Team;
-import com.splask.team.TeamController;
 import com.splask.team.teamDB;
 import com.splask.user.User;
 import com.splask.user.UserDB;
@@ -192,14 +191,21 @@ public class ProjectController {
     }
 
     @PutMapping("/project/{project_id}/addTask")
-    JSONObject addTaskToProject(@PathVariable Integer project_id)
+    JSONObject addTaskToProject(@PathVariable Integer project_id, @RequestBody Task task)
     {
         JSONObject responseBody = new JSONObject();
-        Task task = new Task();
+
 
         Project project = projectRepository.getById(project_id);
-        project.addTaskToProject(task);
 
+        if (project.addTaskToProject(task)){
+
+            responseBody.put("status",400);
+            responseBody.put("message", "Task already exists");
+            return responseBody;
+        }
+
+        task.assignTaskToProject(project);
 
         taskRepository.save(task);
         projectRepository.save(project);

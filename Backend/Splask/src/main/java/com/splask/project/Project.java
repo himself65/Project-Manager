@@ -41,8 +41,8 @@ public class Project {
 
     //One project to Many Tasks
     @OneToMany(mappedBy = "taskProject")
-    @JsonIgnore
     @NotNull
+    @JsonManagedReference
     private List<Task> tasks = new ArrayList<>();
 
     @Column
@@ -132,7 +132,20 @@ public class Project {
     }
 
     //Controller function
-    public void addTaskToProject(Task task) {tasks.add(task);}
+    public boolean addTaskToProject(Task task) {
+
+        for (Task i : tasks)
+        {
+            System.out.println(task.getTask());
+            if (i.getTask().equals(task.getTask()))
+            {
+                return true;
+            }
+        }
+        tasks.add(task);
+        return false;
+    }
+
 
 
 //	Relationship tables setters and getters
