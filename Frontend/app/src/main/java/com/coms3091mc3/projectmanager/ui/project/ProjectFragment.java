@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -199,6 +200,7 @@ public class ProjectFragment extends Fragment {
                         }
                         params.put("username", dialogInput.getText().toString());
                         // todo: post to add user
+                        addMemberRequest(params);
                     }
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -281,7 +283,26 @@ public class ProjectFragment extends Fragment {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
                 new JSONObject(query),
                 response -> {
+                    Log.d("project_debug", response.toString());
                     Toast.makeText(getContext(), "success", Toast.LENGTH_LONG).show();
+                },
+                error -> {
+                }
+        );
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    void addMemberRequest(Map<String, String> query){
+        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "addUser";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
+                new JSONObject(query),
+                response -> {
+                    try {
+                        Log.d("project_debug", response.getString("message"));
+                        Toast.makeText(getContext(), "success", Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 },
                 error -> {
                 }
