@@ -16,11 +16,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -41,6 +43,7 @@ import com.coms3091mc3.projectmanager.store.ProjectDataModel;
 import com.coms3091mc3.projectmanager.utils.Const;
 import com.coms3091mc3.projectmanager.view.AddTeamDialogFragment;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,6 +54,7 @@ import java.util.logging.Logger;
 
 public class ProjectFragment extends Fragment {
     private FragmentProjectBinding binding;
+    private JSONArray teamsArray = new JSONArray();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,6 +65,7 @@ public class ProjectFragment extends Fragment {
         int id = (Integer) getArguments().get("projectID");
         String url = Const.API_SERVER + "/project/" + id;
         String tasksUrl = url + "/tasks";
+        getTeams();
         Button button = view.findViewById(R.id.add_project);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +136,8 @@ public class ProjectFragment extends Fragment {
                     listTeams();
                 } else if (id == R.id.addMembers) {
                     addMember();
+                } else if (id == R.id.addTask) {
+                    addTask();
                 }
                 return true;
             }
@@ -138,6 +145,32 @@ public class ProjectFragment extends Fragment {
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.popup_project_menu, popup.getMenu());
         popup.show();
+    }
+
+    void getTeams() {
+        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "teams";
+        JsonArrayRequest teamsRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                teams -> {
+//                    teamsArray = teams;
+                    for (int i = 0; i < teams.length(); i++) {
+                        try {
+                            JSONObject object = teams.getJSONObject(i);
+                            int id = object.getInt("teamID");
+                            String name = object.getString("teamName");
+                            Team team = new Team(id, name);
+                            teamsArray.put(object);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                error -> {
+                    VolleyLog.d("project_debug", "Error: " + error.toString());
+                    error.printStackTrace();
+//                    Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                }
+        );
+        AppController.getInstance().addToRequestQueue(teamsRequest);
     }
 
     public void listTeams() {
@@ -278,6 +311,55 @@ public class ProjectFragment extends Fragment {
         alertBuilder.create().show();
     }
 
+    void addTask() {
+        if (teamsArray != null && teamsArray.length() > 0) {
+            int[] projectTeamsID = new int[teamsArray.length()];
+            String[] projectTeamsName = new String[teamsArray.length()];
+            Map<String, String> params = new HashMap<String, String>();
+
+            for (int i = 0; i < teamsArray.length(); i++) {
+                try {
+                    projectTeamsID[i] = teamsArray.getJSONObject(i).getInt("teamID");
+                    projectTeamsName[i] = teamsArray.getJSONObject(i).getString("teamName");
+                } catch (Exception e) {
+                    Log.e("project_debug", e.getMessage());
+                }
+            }
+            ArrayAdapter<String> teamNames = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, projectTeamsName);
+
+            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View addTaskView = inflater.inflate(R.layout.fragment_add_task, null);
+            EditText taskName = (EditText) addTaskView.findViewById(R.id.editTextTextTaskName);
+            Spinner teamList = (Spinner) addTaskView.findViewById(R.id.assignTeamSpinner);
+            teamList.setAdapter(teamNames);
+
+            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+
+            alertBuilder.setMessage("Add a Task");
+            alertBuilder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    if (taskName.getText().toString().length() < 4) { //at least 4 characters
+                        Toast.makeText(getContext(), "Project Name must be at least 4 characters", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    params.put("task", taskName.getText().toString()); //task name
+                    params.put("team_id", String.valueOf(projectTeamsID[teamList.getSelectedItemPosition()])); //team ID
+                    addTaskRequest(params);
+                }
+            })
+            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                    return;
+                }
+            });
+            // Create the AlertDialog object and return it
+            alertBuilder.create().show();
+        } else {
+            Toast.makeText(getContext(), "No teams exists in the project yet", Toast.LENGTH_LONG);
+        }
+    }
+
     void addTeamRequest(Map<String, String> query) {
         String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "addTeam";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
@@ -294,6 +376,24 @@ public class ProjectFragment extends Fragment {
 
     void addMemberRequest(Map<String, String> query){
         String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "addUser";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
+                new JSONObject(query),
+                response -> {
+                    try {
+                        Log.d("project_debug", response.getString("message"));
+                        Toast.makeText(getContext(), "success", Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                }
+        );
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    void addTaskRequest(Map<String, String> query){
+        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/addTask";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
                 new JSONObject(query),
                 response -> {
