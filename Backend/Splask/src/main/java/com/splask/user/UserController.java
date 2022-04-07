@@ -143,20 +143,37 @@ public class UserController {
         return responseBody;
     }
     @GetMapping("/user/{user_id}/projects")
-    JSONObject obtainUsersProject(@PathVariable Integer user_id)
+    JSONObject obtainProjects(@PathVariable Integer user_id)
     {
         User user = userRepository.getById(user_id);
-        JSONArray users = new JSONArray();
+        JSONArray projects = new JSONArray();
         JSONObject responseBody = new JSONObject();
 
-        users.addAll(user.getProject());
+        projects.addAll(user.getProject());
 
-        responseBody.put("users",users);
+        responseBody.put("users",projects);
         responseBody.put("status", 200);
-        responseBody.put("message", "Successfully retrieved all users from" + user.getUsername());
+        responseBody.put("message", "Successfully retrieved all projects from" + user.getUsername());
 
         return responseBody;
     }
+
+    @GetMapping("/user/{user_id}/teams")
+    JSONObject obtainTeams(@PathVariable Integer user_id)
+    {
+        User user = userRepository.getById(user_id);
+        JSONArray teams = new JSONArray();
+        JSONObject responseBody = new JSONObject();
+
+        teams.addAll(user.getTeam());
+
+        responseBody.put("users",teams);
+        responseBody.put("status", 200);
+        responseBody.put("message", "Successfully retrieved all teams from" + user.getUsername());
+
+        return responseBody;
+    }
+
 
 
 

@@ -140,9 +140,14 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 	//Controller Functions
 	public void addProjectToUser(Project project)
 	{
-		System.out.println(Arrays.toString(projects.toArray()));
+
 		projects.add(project);
-		System.out.println(Arrays.toString(projects.toArray()));
+
+	}
+
+	public void addTeamToUser(Team team)
+	{
+		teams.add(team);
 	}
 
 

@@ -81,7 +81,7 @@ public class TeamController {
         return responseBody;
     }
 //  Sets the user to the assigned team
-    @PutMapping("/team/{team_id}/addUser")
+    @PutMapping("/team/{teamID}/addUser")
     JSONObject enrollUserToTeam( //Gets the user then assigns the user to the team
                               @PathVariable Integer teamID,
                               @RequestBody JSONObject username
@@ -106,7 +106,9 @@ public class TeamController {
 
 
         team.enrollUser(user); //sends the passed user to the enrollUsers method
+        user.addTeamToUser(team);
         teamRepository.save(team);
+        userRepository.save(user);
         responseBody.put("status",200);
         responseBody.put("message", "User successfully added to Team");
 

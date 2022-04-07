@@ -151,6 +151,7 @@ public class ProjectController {
         JSONArray teams = new JSONArray();
         JSONObject responseBody = new JSONObject();
 
+
         teams.addAll(project.getTeams());
 
         responseBody.put("teams",teams);
@@ -205,7 +206,7 @@ public class ProjectController {
     JSONObject addTaskToProject(@PathVariable Integer project_id, @RequestBody JSONObject Object)
     {
         JSONObject responseBody = new JSONObject();
-        System.out.println(Object.toString() + "TEAM_ID AS JSON OBJECT");
+
 
 
         Project project = projectRepository.getById(project_id);
