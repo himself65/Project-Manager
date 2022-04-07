@@ -109,10 +109,9 @@ public class Project {
     //  Controller function
 	public void enrollUserToProject(User user)
     {
-        System.out.println(user.toString());
-        System.out.println(Arrays.toString(users.toArray()));
+
         users.add(user);
-        System.out.println(Arrays.toString(users.toArray()));
+
     }
 
     //Controller function
@@ -136,11 +135,13 @@ public class Project {
 
         for (Task i : tasks)
         {
-            System.out.println(task.getTask());
+
             if (i.getTask().equals(task.getTask()))
             {
                 return true;
+
             }
+            break;
         }
         tasks.add(task);
         return false;

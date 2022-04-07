@@ -189,7 +189,7 @@ public class UserController {
 
         responseBody.put("tasks",tasks);
         responseBody.put("status", 200);
-        responseBody.put("message", "Successfully retrieved all teams from" + user.getUsername());
+        responseBody.put("message", "Successfully retrieved all tasks from " + user.getUsername());
 
         return responseBody;
     }

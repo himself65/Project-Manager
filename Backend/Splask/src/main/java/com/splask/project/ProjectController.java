@@ -210,16 +210,17 @@ public class ProjectController {
 
 
         Project project = projectRepository.getById(project_id);
-        System.out.println(Object.get("task"));
+
 
         Task task = new Task();
         task.setTask(Object.getAsString("task"));
+        System.out.println(task.getTask());
         Team assignedTeam = teamRepository.getById((Integer) Object.getAsNumber("team_id"));
 
         if (!project.getTeams().contains(assignedTeam))
         {
             responseBody.put("status", 400);
-            responseBody.put("message", "Team does not exist");
+            responseBody.put("message", "Task does not exist");
             return responseBody;
         }
 
@@ -238,7 +239,6 @@ public class ProjectController {
         for (User i : assignedTeam.getUsers())
         {
             i.addTaskToUser(task);
-            userRepository.save(i);
         }
 
         taskRepository.save(task);
