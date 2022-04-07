@@ -1,8 +1,10 @@
 package com.splask.team;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.splask.project.Project;
 import com.splask.task.Task;
 import com.splask.user.User;
+import com.sun.istack.NotNull;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
@@ -27,73 +29,65 @@ class Team {
 
     @Column //TODO What is this suppose to be used for? isn't it just the relationship table instead of an object string 
     String teamUsers;
-
     
     
-    
-    
-    //Many teams to many Projects
+//    //Many teams to many Projects
 	@ManyToOne
-	@JsonIgnore
-	private List<Project> teamProject = new ArrayList<>();
-    
-    
-    
-//	Many Users to many Teams
-    @ManyToMany
+    @JoinColumn(name = "project_id")
+    @JsonBackReference
+	private Project teamProject;
+//    
+//    
+//    
+//  Many Users to many Teams
+    @ManyToMany(mappedBy = "teams")
     @JsonIgnore
-    private List<User> ttUsers = new ArrayList<>();
+    @NotNull
+    private List<User> users = new ArrayList<>();
 
-    
-    
-    
-    
-    
+
 //  One Team to many Tasks
-    @OneToMany(mappedBy = "team")
-    @JoinTable(
-            name = "Team_Tasks",
-            joinColumns = @JoinColumn(name = "team", referencedColumnName = "team_id"),
-            inverseJoinColumns = @JoinColumn(name = "task", referencedColumnName = "task_id")
-    )
+    @OneToMany(mappedBy = "taskTeam")
+    @NotNull
+    @JsonIgnore
     private List<Task> tasks;
     
-    
-    
-    
-    
-    
+
+
+
+
 
     
     public Integer getTeamID() {return teamID;}
     public void setTeamID(int id) {this.teamID = id;}
     
     public String getTeamName() {return teamName;}
-    public void setTeamID(String str) {this.teamName = str;}
-    
-    public List<User> getttUsers() {return ttUsers;}
-
-    public void setTeamUsers(List<User> users) {this.ttUsers = users;}
 
     
-//  Team Controller functions
-    public void enrollUser(User user) {ttUsers.add(user);} //adds the user we passed in to the set
+
+
     
-    
-    
+////  Team Controller functions
+    public void enrollUser(User user) {users.add(user);} //adds the user we passed in to the set
+
+
+//    
 //	Relationship tables setters and getters
-	public List<Task> getTasks() {return tasks;} //TODO this is a Set, do we want to change it to a List????
+	public List<Task> getTasks() {return tasks;}
 	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
-	
-	
-//  Task Controller functions
-	public void assignTeamToProject(Project project) {teamProject.add(project);}
-
-	
-	
-
-    
+//
+    public List<User> getUsers() {return users;}
+    public void setTeamUsers(List<User> users) {this.users = users;}
+//    
+////  Task Controller functions
+	public void assignTeamToProject(Project project) {teamProject = project;}
 
 
+    public Project getTeamProject() {
+        return teamProject;
+    }
 
+    public void assignTeamToTask(Task task) {
+        tasks.add(task);
+    }
 }

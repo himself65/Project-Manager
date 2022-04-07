@@ -1,5 +1,6 @@
 package com.splask.task;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.splask.project.Project;
 import com.splask.team.Team;
 import com.splask.user.User;
@@ -32,7 +33,7 @@ public class Task {
 
 	@NotNull
 	@Column (name = "status")
-	Boolean status;
+	Integer status;
 	
 	@NotNull
 	@Column
@@ -46,21 +47,27 @@ public class Task {
 	@Column (name = "dateCompleted")
 	String dateCompleted;
 
+	@NotNull
+	@Column(name = "completed_By")
+	private User completedBy;
+
 	
 //	Many task to many users
-	@ManyToMany
+	@ManyToMany(mappedBy = "tasks")
 	@JsonIgnore
-	private List<User> tUsers = new ArrayList<>();
-
+	private List<User> users = new ArrayList<>();
+//
 //	Many tasks to one Team
 	@ManyToOne
+	@JoinColumn(name = "team_id")
 	@JsonIgnore
-	private List<Team> taskTeam = new ArrayList<>();
-
-//  Many teams to many Projects
+	private Team taskTeam;
+//
+//  Many tasks to one Project
 	@ManyToOne
-	@JsonIgnore
-	private List<Project> taskProject = new ArrayList<>();
+	@JoinColumn(name = "project_id", nullable = false)
+	@JsonBackReference
+	private Project taskProject;
 
 	
 	
@@ -68,6 +75,7 @@ public class Task {
 	
 	public Task(){
 		dateCreated = LocalDateTime.now();
+		status = 0;
 
 	}
 
@@ -80,14 +88,21 @@ public class Task {
 
 	public void setTask(String taskName) {this.taskName = taskName;}
 
-	public Boolean getStatus() {return status;}
+	public Integer getComplete() {return status;}
 
-	public void setStatus(boolean status){ this.status = status;}
+	public void setComplete(User user) {
+
+
+		this.status = 1;
+		completedBy = user;
+	}
 
 	public String getDateCreated() {
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		return dateCreated.format(format);
 	}
+
+
 
 	public String getDeadLine() {return deadLine;}
 
@@ -96,22 +111,30 @@ public class Task {
 	public String getDateCompleted() {return dateCompleted;}
 
 	public void setDateCompleted(String dateCompleted) { this.dateCompleted = dateCompleted;}
-/*
-TODO
 
-	public void setUserTasks(Set<User> userTasks) {this.userTasks = userTasks;}
-*/
-
-	
-//  Task Controller functions
-	public void assignUser(User user) {
-		tUsers.add(user); //adds the user we passed in to the set
-		
+	public List<User> getUsers() {
+		return users;
 	}
-	
-	public void assignTaskToTeam(Team team) {taskTeam.add(team);}
+	public void setUsers(List<User> users)
+	{
+		this.users = users;
+	}
 
-	public void assignTaskToProject(Project project) {taskProject.add(project);}
+	public Project getTaskProject(){return taskProject;}
+	public void setTaskProject(Project project) {taskProject = project;}
+
+	public Team getTaskTeam(){return taskTeam;}
+	public void setTaskTeam(Team team) {taskTeam = team;}
+
+	//  Task Controller functions
+	public void assignUser(User user) {
+		users.add(user); //adds the user we passed in to the set
+
+	}
+
+	public void assignTaskToTeam(Team team) {taskTeam = team;}
+
+	public void assignTaskToProject(Project project) {taskProject = project;}
 
 
 
