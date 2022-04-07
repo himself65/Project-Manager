@@ -149,7 +149,7 @@ public class ProjectFragment extends Fragment {
     }
 
     void getTeams() {
-        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/teams";
+        String url = Const.API_SERVER + "/project/" + (Integer) getArguments().get("projectID") + "/teams";
         JsonObjectRequest teamsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
 //                    teamsArray = teams;
@@ -334,7 +334,8 @@ public class ProjectFragment extends Fragment {
         if (teamsArray != null && teamsArray.length() > 0) {
             int[] projectTeamsID = new int[teamsArray.length()];
             String[] projectTeamsName = new String[teamsArray.length()];
-            Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params1 = new HashMap<String, String>();
+            Map<String, Integer> params2 = new HashMap<String, Integer>();
 
             for (int i = 0; i < teamsArray.length(); i++) {
                 try {
@@ -361,9 +362,15 @@ public class ProjectFragment extends Fragment {
                         Toast.makeText(getContext(), "Task Name must be at least 4 characters", Toast.LENGTH_LONG).show();
                         return;
                     }
-                    params.put("task", taskName.getText().toString()); //task name
-                    params.put("team_id", String.valueOf(projectTeamsID[teamList.getSelectedItemPosition()])); //team ID
-                    addTaskRequest(params);
+                    params1.put("task",taskName.getText().toString()); //task name
+                    params2.put("team_id", projectTeamsID[teamList.getSelectedItemPosition()]); //team ID
+                    Log.d("params","Added task " + taskName.getText().toString());
+                    Log.d("params","Added team id " + String.valueOf(projectTeamsID[teamList.getSelectedItemPosition()]));
+                    try {
+                        addTaskRequest(params1, params2);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             })
             .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -417,10 +424,14 @@ public class ProjectFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(request);
     }
 
-    void addTaskRequest(Map<String, String> query){
+    void addTaskRequest(Map<String, String> params1, Map<String, Integer> params2) throws JSONException {
+        JSONObject query = new JSONObject();
+        query.put("task", params1.get("task"));
+        query.put("team_id", params2.get("team_id"));
+        Log.d("params",query.toString());
         String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/addTask/";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url,
-                new JSONObject(query),
+                query,
                 response -> {
                     try {
                         Log.d("project_debug", response.getString("message"));
