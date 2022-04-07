@@ -22,10 +22,10 @@ public class TeamController {
     
     @Autowired
     UserDB userRepository;
-    
+
     @Autowired
     TaskDB taskRepository;
-    
+
     @Autowired
     projectDB projectRepository;
 
@@ -71,14 +71,8 @@ public class TeamController {
         Team team= teamRepository.getById(teamID);
         JSONArray users = new JSONArray();
         JSONObject responseBody = new JSONObject();
-        /*
-        for (User i : project.getUsers())
-        {
-            users.add(i);
-        }
-         */
 
-        users.addAll(team.getttUsers());
+        users.addAll(team.getUsers());
         responseBody.put("users",users);
         responseBody.put("status", 200);
         responseBody.put("message", "Successfully retrieved all teams from" + team.getTeamName());
@@ -90,14 +84,20 @@ public class TeamController {
     @PutMapping("/team/{team_id}/addUser")
     JSONObject enrollUserToTeam( //Gets the user then assigns the user to the team
                               @PathVariable Integer teamID,
-                              @PathVariable Integer userID
+                              @RequestBody JSONObject username
     ) {
         JSONObject responseBody = new JSONObject();
 
         Team team = teamRepository.getById(teamID);
-        User user = userRepository.getById(userID);
+        User user = userRepository.findByUsername(username.getAsString("username")).get(0);
 
-        if (team.getttUsers().contains(user))
+        if (!team.getTeamProject().getUsers().contains(user)) {
+
+            responseBody.put("status",400);
+            responseBody.put("message","Invalid. User not in project");
+            return responseBody;
+        }
+        if (team.getUsers().contains(user))
         {
             responseBody.put("status",400);
             responseBody.put("message", "User already in Team");
@@ -112,30 +112,32 @@ public class TeamController {
 
         return  responseBody;
     }
-    
-    //TODO Waiting to be tested 
+
+    //TODO Waiting to be tested
     @PutMapping("/team/{team_id}/project/addProject")
     Team assignTaskToTeam(
     		@PathVariable Integer projectID,
     		@PathVariable Integer teamID
-    		
+
     ) {
-    	Project project = projectRepository.findById(projectID).get();
-    	Team team= teamRepository.findById(teamID).get();
+    	Project project = projectRepository.getById(projectID);
+    	Team team= teamRepository.getById(teamID);
     	team.assignTeamToProject(project);
     	return teamRepository.save(team);
     }
-    
 
 
-    
-    
-    
-    
-    
-    
-    
-    
+    // deletes project by id
+    @DeleteMapping("/team/{id}")
+    JSONObject deleteTeam(@PathVariable Integer id)
+    {
+        JSONObject responseBody = new JSONObject();
+        teamRepository.deleteById(id);
+        responseBody.put("status", 200);
+        responseBody.put("message", "Successfully Removed Team");
+
+        return responseBody;
+    }
     
 
 }

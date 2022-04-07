@@ -6,6 +6,8 @@ import com.splask.project.Project;
 import com.splask.project.projectDB;
 import com.splask.team.Team;
 import com.splask.team.teamDB;
+import com.splask.team.Team;
+
 import com.splask.user.User;
 import com.splask.user.UserDB;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +18,16 @@ import net.minidev.json.JSONObject;
 @RestController 
 public class TaskController {
 	
-    @Autowired
+
+	@Autowired
 	TaskDB taskRepository;
 
 	@Autowired
 	UserDB userRepository;
-	
+
 	@Autowired
 	teamDB teamRepository;
-	
+
 	@Autowired
 	projectDB projectRepository;
 	
@@ -89,6 +92,8 @@ public class TaskController {
 		return responseBody;
 	}
 
+	
+	
 //	TODO Waiting to be tested
 	@PutMapping("/{task_id}/users/{user_id}")
 	Task enrollUserToTask( //Gets the user then assigns the user to the task
@@ -100,7 +105,7 @@ public class TaskController {
 		task.assignUser(user); //sends the passed user to the assignUser method
 		return  taskRepository.save(task); //saves the new task to assigned user
 	}
-//  TODO Waiting to be tested 
+//  TODO Waiting to be tested
 //  Sets the task to the assigned team
     @PutMapping("/task/{task_id}/add")
     JSONObject assignTaskToTeam(
@@ -125,21 +130,22 @@ public class TaskController {
 		responseBody.put("message", "task successfully added to" + team.getTeamName());
     	return responseBody;
     }
-    
-    
-//  TODO Waiting to be tested 
+
+
+//  TODO Waiting to be tested
 //  Sets the task to the assigned project
     @PutMapping("/task/{task_id}/project/{project_id}")
     Task assignTaskToProject(
     		@PathVariable Integer taskID,
     		@PathVariable Integer projectID
     ) {
-    	Task task= taskRepository.findById(taskID).get();
-    	Project project = projectRepository.findById(projectID).get();
+    	Task task= taskRepository.getById(taskID);
+    	Project project = projectRepository.getById(projectID);
     	task.assignTaskToProject(project);
     	return taskRepository.save(task);
     }
-    
-    
+
+
+
 
 }
