@@ -91,6 +91,8 @@ public class UserController {
         for (User other : users) {
             if (other.equals(user)) {
                 user.setLoggedIn(1);
+                responseBody.put("user_id", user.getUserId());
+                responseBody.put("fullname", user.getFullName());
                 responseBody.put("status", 200);
                 responseBody.put("message", "Login Successful");
                 return responseBody;

@@ -37,6 +37,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -142,41 +143,65 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logout(MenuItem item) {
-//        uri = Uri.parse(Const.MOCK_SERVER + "/logout").buildUpon();
-        uri = Uri.parse(Const.API_SERVER + "/logout").buildUpon();
-        ProgressBar pBar = findViewById(R.id.progressBar);
         Map<String, String> params = new HashMap<String, String>();
         params.put("username", Const.username);
-        JsonObjectRequest logoutRequest;
-        logoutRequest = new JsonObjectRequest(Request.Method.POST, uri.build().toString(),
+        Log.d("logout_debug",Const.user.toString());
+        logoutRequest(params);
+//        JsonObjectRequest logoutRequest;
+//        logoutRequest = new JsonObjectRequest(Request.Method.PUT, uri.build().toString(),
+//                new JSONObject(params),
+//                new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        try {
+//
+//                            if (response.getInt("status") == 200) { //Logout Success
+//                                Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+//                                Intent intentLogout = new Intent(MainActivity.this, LoginActivity.class);
+//                                startActivity(intentLogout);
+//                                finish();
+//                            }
+//                        } catch (Exception e) {
+//                            Log.d("logout_debug", e.getMessage());
+////                            e.printStackTrace();
+//                        } finally {
+//                            pBar.setVisibility(View.INVISIBLE);
+//                        }
+//                    }
+//                }, new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        VolleyLog.d("logout_debug", "Error: " + error.toString());
+//                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+//                        // hide the progress dialog
+//                        pBar.setVisibility(View.INVISIBLE);
+//                    }
+//                });
+//        AppController.getInstance().addToRequestQueue(logoutRequest, "logout_request");
+    }
+
+    //NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
+    void logoutRequest(Map<String, String> params){
+        String url = Const.API_SERVER + "/logout/";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url,
                 new JSONObject(params),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if (response.getInt("status") == 200) { //Logout Success
-                                Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                                Intent intentLogout = new Intent(MainActivity.this, LoginActivity.class);
-                                startActivity(intentLogout);
-                                finish();
-                            }
-                        } catch (Exception e) {
-                            Log.d("logout_debug", e.getMessage());
-//                            e.printStackTrace();
-                        } finally {
-                            pBar.setVisibility(View.INVISIBLE);
-                        }
+                response -> {
+                    try {
+                        Log.d("logout_debug",response.getString("message"));
+                        Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                        Intent intentLogout = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intentLogout);
+                        finish();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyLog.d("logout_debug", "Error: " + error.toString());
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                        // hide the progress dialog
-                        pBar.setVisibility(View.INVISIBLE);
-                    }
-                });
-        AppController.getInstance().addToRequestQueue(logoutRequest, "logout_request");
+                },
+                error -> {
+                    VolleyLog.d("logout_debug", "Error: " + error.toString());
+                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                }
+        );
+        AppController.getInstance().addToRequestQueue(request);
     }
 
     public void listMembers(View v) {

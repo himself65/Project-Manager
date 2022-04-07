@@ -37,7 +37,7 @@ public class ProjectsFragment extends Fragment {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     try {
-                        JSONArray projects = response.getJSONArray("users"); //TODO: change key to projects
+                        JSONArray projects = response.getJSONArray("projects");
                         for (int i = 0; i < projects.length(); i++) {
                             JSONObject object = (JSONObject) projects.get(i);
                             Project project = new Project(

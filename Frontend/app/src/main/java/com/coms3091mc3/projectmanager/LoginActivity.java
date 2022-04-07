@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         params.put("userPassword", password.getText().toString());
 
         if(v.getTag().toString().equals("register")){ //Action Register
-            pBar.setVisibility(View.VISIBLE);
+//            pBar.setVisibility(View.VISIBLE);
             Log.d("login_debug", "Popup window");
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
             final EditText dialogInput = new EditText(this);
@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                                 return;
                             }
                             //insert input as full name parameter for register function
-                            params.put("fullname", dialogInput.getText().toString());
+                            params.put("full_name", dialogInput.getText().toString());
                             registerRequest(params);
                         }
                     })
