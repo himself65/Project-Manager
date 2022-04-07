@@ -1,6 +1,7 @@
 package com.splask.task;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.splask.project.Project;
 import com.splask.team.Team;
 import com.splask.user.User;
@@ -8,7 +9,7 @@ import com.splask.user.User;
 
 import javax.persistence.*;
 import com.sun.istack.NotNull;
-import net.minidev.json.annotate.JsonIgnore;
+
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -67,7 +68,7 @@ public class Task {
 //  Many tasks to one Project
 	@ManyToOne
 	@JoinColumn(name = "project_id", nullable = false)
-	@JsonBackReference
+	@JsonIgnore
 	private Project taskProject;
 
 	

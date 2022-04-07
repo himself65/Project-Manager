@@ -1,11 +1,12 @@
 package com.splask.team;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.splask.project.Project;
 import com.splask.task.Task;
 import com.splask.user.User;
 import com.sun.istack.NotNull;
-import net.minidev.json.annotate.JsonIgnore;
+
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ class Team {
 //    //Many teams to many Projects
 	@ManyToOne
     @JoinColumn(name = "project_id")
-    @JsonBackReference
+    @JsonIgnore
 	private Project teamProject;
 //    
 //    

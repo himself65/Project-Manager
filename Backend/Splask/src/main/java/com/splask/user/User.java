@@ -2,6 +2,7 @@
 package com.splask.user;
 
 //Class imports
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.splask.task.Task;
 import com.splask.team.Team;
@@ -9,7 +10,7 @@ import com.splask.project.Project;
 
 //Function imports
 import com.sun.istack.NotNull;
-import net.minidev.json.annotate.JsonIgnore;
+
 //import org.h2.util.Task;
 
 import java.time.LocalDateTime;
@@ -51,6 +52,7 @@ public class User{
 
 	@NotNull
 	@OneToMany(mappedBy = "completedBy")
+	@JsonIgnore
 	private List<Task> completedTasks = new ArrayList<>();
 
 
@@ -60,7 +62,7 @@ public class User{
 			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "project_id")
 	)
-	@JsonManagedReference
+	@JsonIgnore
 	private List<Project> projects = new ArrayList<>();
 ////
 	@ManyToMany(cascade = CascadeType.ALL)

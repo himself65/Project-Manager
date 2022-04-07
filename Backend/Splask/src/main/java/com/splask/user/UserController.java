@@ -155,9 +155,9 @@ public class UserController {
         projects.addAll(user.getProject());
 
 
-        responseBody.put("users",projects);
+        responseBody.put("projects",projects);
         responseBody.put("status", 200);
-        responseBody.put("message", "Successfully retrieved all projects from" + user.getUsername());
+        responseBody.put("message", "Successfully retrieved all projects from " + user.getUsername());
 
         return responseBody;
     }
@@ -173,7 +173,7 @@ public class UserController {
 
         responseBody.put("teams",teams);
         responseBody.put("status", 200);
-        responseBody.put("message", "Successfully retrieved all teams from" + user.getUsername());
+        responseBody.put("message", "Successfully retrieved all teams from " + user.getUsername());
 
         return responseBody;
     }

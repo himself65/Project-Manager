@@ -6,7 +6,6 @@ import com.splask.team.Team;
 import com.splask.user.User;
 import com.sun.istack.NotNull;
 import net.minidev.json.JSONObject;
-import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -30,20 +29,20 @@ public class Project {
 
     @ManyToMany(mappedBy = "projects")
     @NotNull
-    @JsonBackReference
+    @JsonIgnore
     private List<User> users = new ArrayList<>();
 
 
     //One project to Many Teams
     @OneToMany(mappedBy = "teamProject")
     @NotNull
-    @JsonManagedReference
+    @JsonIgnore
     private List<Team> teams = new ArrayList<>();
 
     //One project to Many Tasks
     @OneToMany(mappedBy = "taskProject")
     @NotNull
-    @JsonManagedReference
+    @JsonIgnore
     private List<Task> tasks = new ArrayList<>();
 
     @Column
