@@ -16,27 +16,27 @@ import net.minidev.json.JSONObject;
 
 @RestController 
 public class UserController {
-	
+
     @Autowired
-	UserDB userRepository;
+    UserDB userRepository;
 
-//  get user by ID
-	@GetMapping("/user/{id}")
-	User getUsername(@PathVariable Integer id) {
-		return userRepository.findById(id).orElseThrow(RuntimeException::new);
-	}
+    //  get user by ID
+    @GetMapping("/user/{id}")
+    User getUsername(@PathVariable Integer id) {
+        return userRepository.findById(id).orElseThrow(RuntimeException::new);
+    }
 
-//  get all the users
-	@RequestMapping("/user")
-	List<User> getAllUsers() {
-		return userRepository.findAll();
-	}
+    //  get all the users
+    @RequestMapping("/user")
+    List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
-// Registers user to the database and checks if there is an
+    // Registers user to the database and checks if there is an
 // existing user registered with the same username
-	@PostMapping("/register")
-	JSONObject registerUser(@RequestBody JSONObject object) {
-		JSONObject responseBody = new JSONObject();
+    @PostMapping("/register")
+    JSONObject registerUser(@RequestBody JSONObject object) {
+        JSONObject responseBody = new JSONObject();
 
         User newUser = new User();
 
@@ -56,7 +56,7 @@ public class UserController {
             }
         }
 
-        if(newUser.password.length() < 3){
+        if (newUser.password.length() < 3) {
             responseBody.put("status", 400);
             responseBody.put("message", "Password should be at least 3 characters long");
             return responseBody;
@@ -73,7 +73,7 @@ public class UserController {
         userRepository.save(newUser);
         responseBody.put("status", 200);
         responseBody.put("message", "Account successfully created!");
-        
+
         return responseBody;
     }
 
@@ -82,7 +82,7 @@ public class UserController {
         JSONObject responseBody = new JSONObject();
         List<User> users = userRepository.findAll();
 //      Updates user logged in status
-<<<<<<< HEAD
+
         for (User userInDB : users) {
 
             if (userInDB.equals(user)) {
@@ -91,118 +91,109 @@ public class UserController {
                 responseBody.put("user_id", userInDB.getUserId());
                 responseBody.put("fullname", userInDB.getFullName());
                 responseBody.put("username", userInDB.getUsername());
-=======
-        for (User other : users) {
-            if (other.equals(user)) {
-                user.setLoggedIn(1);
-                responseBody.put("user_id", user.getUserId());
-                responseBody.put("fullname", user.getFullName());
->>>>>>> alex-backup
-                responseBody.put("status", 200);
-                responseBody.put("message", "Login Successful");
-              userRepository.save(userInDB);
+                        responseBody.put("status", 200);
+                        responseBody.put("message", "Login Successful");
+                        userRepository.save(userInDB);
+                        return responseBody;
+                    }
+                }
+
+
+                responseBody.put("status", 400);
+                responseBody.put("message", "Login Failed");
                 return responseBody;
-            }
-        }
-
-
-        responseBody.put("status", 400);
-        responseBody.put("message", "Login Failed");
-        return responseBody;
     }
 
 //  Log out call
-    @PutMapping("/logout")
-    JSONObject logoutUser(@RequestBody User user) {
-        JSONObject responseBody = new JSONObject();
-        List<User> users = userRepository.findAll();
+        @PutMapping("/logout")
+        JSONObject logoutUser (@RequestBody User user){
+            JSONObject responseBody = new JSONObject();
+            List<User> users = userRepository.findAll();
 
-        for (User userInDB : users) {
-            if (userInDB.getUsername().equals(user.getUsername())) {
+            for (User userInDB : users) {
+                if (userInDB.getUsername().equals(user.getUsername())) {
 
-                userInDB.setLoggedIn(0);
+                    userInDB.setLoggedIn(0);
 
-                responseBody.put("status", 200);
-                responseBody.put("message", "User Successfully logged out");
+                    responseBody.put("status", 200);
+                    responseBody.put("message", "User Successfully logged out");
 
-                userRepository.save(userInDB);
-                return responseBody;
+                    userRepository.save(userInDB);
+                    return responseBody;
+                }
             }
+            responseBody.put("status", 400);
+            responseBody.put("message", "Failure to logout");
+            return responseBody;
         }
-        responseBody.put("status", 400);
-        responseBody.put("message", "Failure to logout");
-        return responseBody;
-    }
 
 //	 Delete user by id
-	@DeleteMapping("/user/{id}")
-	JSONObject deleteUser(@PathVariable Integer id) {
-        JSONObject responseBody = new JSONObject();
-		userRepository.deleteById(id);
-        responseBody.put("status", 200);
-        responseBody.put("message", "Successfully deleted user");
-		return responseBody;
-	}
+        @DeleteMapping("/user/{id}")
+        JSONObject deleteUser (@PathVariable Integer id){
+            JSONObject responseBody = new JSONObject();
+            userRepository.deleteById(id);
+            responseBody.put("status", 200);
+            responseBody.put("message", "Successfully deleted user");
+            return responseBody;
+        }
 
 //	Delete ALL users
-    @DeleteMapping("/user/all")
-    JSONObject deleteUsers() {
-        JSONObject responseBody = new JSONObject();
-    	userRepository.deleteAll();
-        responseBody.put("status", 200);
-        responseBody.put("message", "Successfully deleted all users");
-        return responseBody;
+        @DeleteMapping("/user/all")
+        JSONObject deleteUsers () {
+            JSONObject responseBody = new JSONObject();
+            userRepository.deleteAll();
+            responseBody.put("status", 200);
+            responseBody.put("message", "Successfully deleted all users");
+            return responseBody;
+        }
+        @GetMapping("/user/{user_id}/projects")
+        JSONObject obtainProjects (@PathVariable Integer user_id)
+        {
+            User user = userRepository.getById(user_id);
+            JSONArray projects = new JSONArray();
+            JSONObject responseBody = new JSONObject();
+
+            projects.addAll(user.getProject());
+
+
+            responseBody.put("projects", projects);
+            responseBody.put("status", 200);
+            responseBody.put("message", "Successfully retrieved all projects from " + user.getUsername());
+
+            return responseBody;
+        }
+
+        @GetMapping("/user/{user_id}/teams")
+        JSONObject obtainTeams(@PathVariable Integer user_id)
+        {
+            User user = userRepository.getById(user_id);
+            JSONArray teams = new JSONArray();
+            JSONObject responseBody = new JSONObject();
+
+            teams.addAll(user.getTeam());
+
+            responseBody.put("teams", teams);
+            responseBody.put("status", 200);
+            responseBody.put("message", "Successfully retrieved all teams from " + user.getUsername());
+
+            return responseBody;
+        }
+
+        @GetMapping("/user/{user_id}/tasks")
+        JSONObject obtainTasks (@PathVariable Integer user_id)
+        {
+            User user = userRepository.getById(user_id);
+            JSONArray tasks = new JSONArray();
+            JSONObject responseBody = new JSONObject();
+
+            tasks.addAll(user.getTasks());
+
+            responseBody.put("tasks", tasks);
+            responseBody.put("status", 200);
+            responseBody.put("message", "Successfully retrieved all tasks from " + user.getUsername());
+
+            return responseBody;
+        }
+
+
     }
-    @GetMapping("/user/{user_id}/projects")
-    JSONObject obtainProjects(@PathVariable Integer user_id)
-    {
-        User user = userRepository.getById(user_id);
-        JSONArray projects = new JSONArray();
-        JSONObject responseBody = new JSONObject();
-
-        projects.addAll(user.getProject());
-
-
-        responseBody.put("projects",projects);
-        responseBody.put("status", 200);
-        responseBody.put("message", "Successfully retrieved all projects from " + user.getUsername());
-
-        return responseBody;
-    }
-
-    @GetMapping("/user/{user_id}/teams")
-    JSONObject obtainTeams(@PathVariable Integer user_id)
-    {
-        User user = userRepository.getById(user_id);
-        JSONArray teams = new JSONArray();
-        JSONObject responseBody = new JSONObject();
-
-        teams.addAll(user.getTeam());
-
-        responseBody.put("teams",teams);
-        responseBody.put("status", 200);
-        responseBody.put("message", "Successfully retrieved all teams from " + user.getUsername());
-
-        return responseBody;
-    }
-
-    @GetMapping("/user/{user_id}/tasks")
-    JSONObject obtainTasks(@PathVariable Integer user_id)
-    {
-        User user = userRepository.getById(user_id);
-        JSONArray tasks = new JSONArray();
-        JSONObject responseBody = new JSONObject();
-
-        tasks.addAll(user.getTasks());
-
-        responseBody.put("tasks",tasks);
-        responseBody.put("status", 200);
-        responseBody.put("message", "Successfully retrieved all tasks from " + user.getUsername());
-
-        return responseBody;
-    }
-
-
-
-
-}
