@@ -27,7 +27,7 @@ public class UserController {
 	}
 
 //  get all the users
-	@RequestMapping("user")
+	@RequestMapping("/user")
 	List<User> getAllUsers() {
 		return userRepository.findAll();
 	}
@@ -42,8 +42,9 @@ public class UserController {
 
         newUser.setUsername(object.getAsString("username"));
         newUser.setUserPassword(object.getAsString("userPassword"));
-        newUser.setFullName(object.getAsString("fullname"));
-
+        newUser.setFullName(object.getAsString("full_name"));
+        System.out.println(newUser.getFullName());
+        System.out.println(newUser.getUserId());
 
 
         List<User> users = userRepository.findAll();
@@ -82,18 +83,18 @@ public class UserController {
     JSONObject loginUser(@RequestBody User user) {
         JSONObject responseBody = new JSONObject();
         List<User> users = userRepository.findAll();
-
 //      Updates user logged in status
-        for (User other : users) {
-            if (other.equals(user)) {
-                user.setLoggedIn(1);
+        for (User userInDB : users) {
 
-                responseBody.put("user_id", user.getUserId());
-                responseBody.put("fullname", user.getFullName());
-                responseBody.put("username", user.getUsername());
+            if (userInDB.equals(user)) {
+                userInDB.setLoggedIn(1);
+
+                responseBody.put("user_id", userInDB.getUserId());
+                responseBody.put("fullname", userInDB.getFullName());
+                responseBody.put("username", userInDB.getUsername());
                 responseBody.put("status", 200);
                 responseBody.put("message", "Login Successful");
-                userRepository.save(user);
+              userRepository.save(userInDB);
                 return responseBody;
             }
         }
@@ -110,12 +111,15 @@ public class UserController {
         JSONObject responseBody = new JSONObject();
         List<User> users = userRepository.findAll();
 
-        for (User other : users) {
-            if (other.username.equals(user.username)) {
-                user.setLoggedIn(0);
+        for (User userInDB : users) {
+            if (userInDB.equals(user)) {
+
+                userInDB.setLoggedIn(0);
+
                 responseBody.put("status", 200);
                 responseBody.put("message", "User Successfully logged out");
-                userRepository.save(user);
+
+                userRepository.save(userInDB);
                 return responseBody;
             }
         }

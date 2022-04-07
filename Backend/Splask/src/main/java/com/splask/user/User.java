@@ -27,7 +27,7 @@ public class User{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column (name = "user_id")
-	Integer userID;
+	private Integer userID;
 
 	@NotNull
 	@Column (name = "username")
@@ -43,10 +43,10 @@ public class User{
 
     @NotNull
 	@Column (name = "loggedIn")
-	Integer loggedIn = 0;
+	int loggedIn = 0;
 
 	@NotNull
-	@Column(name = "full_name")
+	@Column
 	private String fullName;
 
 	@NotNull
@@ -89,7 +89,7 @@ public class User{
 	
 //	public user(@NotBlank String userName, @NotBlank String userPassword) {
 //	public void user(String username, String password) { TODO (old) test
-public void user(String username, String password, Boolean loggedIn) { //TODO (new)test
+public void user(String username, String password) { //TODO (new)test
 
 		this.username = username;
 		this.password = password;
@@ -102,7 +102,7 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 	}
 
 	public Integer getUserId() {return userID;}
-	public void setUserId(int id) {this.userID = id;}
+	public void setUserId(Integer id) {this.userID = id;}
 	
 	public String getUsername() {return username;}
 	public void setUsername(String username) {this.username = username;}
@@ -118,7 +118,7 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 	
 
     public Integer isLoggedIn() {return loggedIn;}
-    public void setLoggedIn(Integer loggedIn) {this.loggedIn = loggedIn;}
+    public void setLoggedIn(int loggedIn) {this.loggedIn = loggedIn;}
 
     
 ////	Relationship tables setters and getters

@@ -66,9 +66,9 @@ public class TeamController {
     
 
     @GetMapping("/team/{team_id}/users")
-    JSONObject usersInTeam(@PathVariable Integer teamID)
+    JSONObject usersInTeam(@PathVariable Integer team_id)
     {
-        Team team= teamRepository.getById(teamID);
+        Team team= teamRepository.getById(team_id);
         JSONArray users = new JSONArray();
         JSONObject responseBody = new JSONObject();
 
@@ -126,6 +126,25 @@ public class TeamController {
     	Team team= teamRepository.getById(teamID);
     	team.assignTeamToProject(project);
     	return teamRepository.save(team);
+    }
+
+    //retrieves all teams from Project
+    @GetMapping("/team/{team_id}/tasks")
+    JSONObject tasksInProject(@PathVariable Integer team_id)
+    {
+        Team team = teamRepository.getById(team_id);
+        JSONArray tasks = new JSONArray();
+        JSONObject responseBody = new JSONObject();
+
+        tasks.addAll(team.getTasks());
+
+        responseBody.put("tasks",tasks);
+        responseBody.put("status", 200);
+        responseBody.put("message", "Successfully retrieved all tasks from" + team.getTeamName());
+
+
+
+        return responseBody;
     }
 
 
