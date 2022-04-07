@@ -52,21 +52,29 @@ public class ProjectController {
 
 // creates new project
     @PostMapping("/project")
-    JSONObject createProject(@RequestBody Project q) {
+    JSONObject createProject(@RequestBody JSONObject object){
         JSONObject responseBody = new JSONObject();
+
+        Project newProject = new Project();
+        newProject.setProjectName(object.getAsString("projectName"));
+        User user = userRepository.findByUsername(object.getAsString("username")).get(0);
+
 
         List<Project> projects = projectRepository.findAll();
 
         for (Project p : projects) {
-            if (p.projectName.equals(q.projectName))
+            if (p.projectName.equals(newProject.projectName))
             {
                 responseBody.put("status", 400);
                 responseBody.put("message", "Project Name in Use");
                 return responseBody;
             }
         }
+        newProject.enrollUserToProject(userRepository.findByUsername(object.getAsString("username")).get(0));
+        user.addProjectToUser(newProject);
+        projectRepository.save(newProject);
+        userRepository.save(user);
 
-        projectRepository.save(q);
         responseBody.put("status", 200);
         responseBody.put("message", "Project successfully created!");
         return responseBody;
