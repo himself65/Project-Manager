@@ -52,7 +52,7 @@ public class User{
 			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "project_id")
 	)
-	@JsonManagedReference
+	@JsonIgnore
 	private List<Project> projects = new ArrayList<>();
 ////
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -61,6 +61,7 @@ public class User{
 			joinColumns = @JoinColumn(name = "user", referencedColumnName = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "team", referencedColumnName = "team_id")
 	)
+	@JsonIgnore
 	private List<Team> teams = new ArrayList<>();
 //
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -69,7 +70,7 @@ public class User{
 			joinColumns = @JoinColumn(name = "user", referencedColumnName = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "task", referencedColumnName = "task_id")
 	)
-
+	@JsonIgnore
 	private List<Task> tasks = new ArrayList<>();
 
 //	TODO (DEMO 4) Set relationship with Roles

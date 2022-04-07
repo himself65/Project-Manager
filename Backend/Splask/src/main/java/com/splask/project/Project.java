@@ -6,6 +6,7 @@ import com.splask.team.Team;
 import com.splask.user.User;
 import com.sun.istack.NotNull;
 import net.minidev.json.JSONObject;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

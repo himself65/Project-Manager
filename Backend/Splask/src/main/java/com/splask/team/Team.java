@@ -49,6 +49,7 @@ class Team {
 //  One Team to many Tasks
     @OneToMany(mappedBy = "taskTeam")
     @NotNull
+    @JsonIgnore
     private List<Task> tasks;
     
 
@@ -86,4 +87,7 @@ class Team {
         return teamProject;
     }
 
+    public void assignTeamToTask(Task task) {
+        tasks.add(task);
+    }
 }

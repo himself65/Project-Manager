@@ -9,13 +9,16 @@ import com.splask.user.UserDB;
 import com.splask.task.TaskDB;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import net.minidev.json.annotate.JsonIgnore;
 import org.apache.coyote.Response;
+import org.hibernate.dialect.Ingres9Dialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 
@@ -191,12 +194,27 @@ public class ProjectController {
     }
 
     @PutMapping("/project/{project_id}/addTask")
-    JSONObject addTaskToProject(@PathVariable Integer project_id, @RequestBody Task task)
+    JSONObject addTaskToProject(@PathVariable Integer project_id, @RequestBody JSONObject Object)
     {
         JSONObject responseBody = new JSONObject();
+        System.out.println(Object.toString() + "TEAM_ID AS JSON OBJECT");
 
 
         Project project = projectRepository.getById(project_id);
+        System.out.println(Object.get("task"));
+
+        Task task = new Task();
+        task.setTask(Object.getAsString("task"));
+        Team assignedTeam = teamRepository.getById((Integer) Object.getAsNumber("team_id"));
+
+        if (!project.getTeams().contains(assignedTeam))
+        {
+            responseBody.put("status", 400);
+            responseBody.put("message", "Team does not exist");
+            return responseBody;
+        }
+
+
 
         if (project.addTaskToProject(task)){
 
@@ -206,9 +224,12 @@ public class ProjectController {
         }
 
         task.assignTaskToProject(project);
+        task.assignTaskToTeam(assignedTeam);
+        assignedTeam.assignTeamToTask(task);
 
         taskRepository.save(task);
         projectRepository.save(project);
+        teamRepository.save(assignedTeam);
         responseBody.put("status",200);
         responseBody.put("message", "Task successfully created");
 
