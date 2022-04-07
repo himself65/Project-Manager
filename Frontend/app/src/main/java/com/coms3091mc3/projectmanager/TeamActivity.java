@@ -45,7 +45,7 @@ public class TeamActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_team);
+        setContentView(R.layout.activity_team);
 
         //Set team name and team ID from parameters
         Intent prevIntent = getIntent();

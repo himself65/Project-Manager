@@ -19,7 +19,7 @@ public class DashboardDataModal {
 
     public DashboardDataModal(Context context) {
         this.context = context;
-        this.name = new ObservableField<>(Const.user.getFullname());
+        this.name = new ObservableField<>(Const.username);
         this.projectsAdapter = new ProjectAdapter(context, R.layout.fragment_item);
     }
 }

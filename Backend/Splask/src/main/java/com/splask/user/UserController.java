@@ -82,7 +82,6 @@ public class UserController {
         JSONObject responseBody = new JSONObject();
         List<User> users = userRepository.findAll();
 //      Updates user logged in status
-<<<<<<< HEAD
         for (User userInDB : users) {
 
             if (userInDB.equals(user)) {
@@ -91,13 +90,6 @@ public class UserController {
                 responseBody.put("user_id", userInDB.getUserId());
                 responseBody.put("fullname", userInDB.getFullName());
                 responseBody.put("username", userInDB.getUsername());
-=======
-        for (User other : users) {
-            if (other.equals(user)) {
-                user.setLoggedIn(1);
-                responseBody.put("user_id", user.getUserId());
-                responseBody.put("fullname", user.getFullName());
->>>>>>> alex-backup
                 responseBody.put("status", 200);
                 responseBody.put("message", "Login Successful");
               userRepository.save(userInDB);

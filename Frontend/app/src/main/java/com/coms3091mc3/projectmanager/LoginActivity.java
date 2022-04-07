@@ -25,10 +25,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.coms3091mc3.projectmanager.app.AppController;
-import com.coms3091mc3.projectmanager.data.User;
 import com.coms3091mc3.projectmanager.utils.Const;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -53,12 +51,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void submit(View v) {
+        uri = Uri.parse(Const.MOCK_SERVER + "/" + v.getTag().toString()).buildUpon();
+//        uri = Uri.parse(Const.API_SERVER + "/" + v.getTag().toString()).buildUpon();
+//        uri.appendQueryParameter("username", username.getText().toString());
+//        uri.appendQueryParameter("password", password.getText().toString());
+
         Map<String, String> params = new HashMap<String, String>();
         params.put("username", username.getText().toString());
         params.put("userPassword", password.getText().toString());
 
         if(v.getTag().toString().equals("register")){ //Action Register
-//            pBar.setVisibility(View.VISIBLE);
+            pBar.setVisibility(View.VISIBLE);
             Log.d("login_debug", "Popup window");
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
             final EditText dialogInput = new EditText(this);
@@ -76,8 +79,8 @@ public class LoginActivity extends AppCompatActivity {
                                 return;
                             }
                             //insert input as full name parameter for register function
-                            params.put("full_name", dialogInput.getText().toString());
-                            registerRequest(params);
+                            params.put("fullname", dialogInput.getText().toString());
+                            loginRequest(params, v);
                         }
                     })
                     .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -104,65 +107,52 @@ public class LoginActivity extends AppCompatActivity {
 
         if(v.getTag().toString().equals("login")) { //Action Login
             pBar.setVisibility(View.VISIBLE);
-            loginRequest(params);
+            loginRequest(params, v);
         }
 
     }
 
-    void loginRequest(Map<String, String> params){
-        //NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
-        String url = Const.API_SERVER + "/login/";
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url,
+    public void loginRequest(Map<String, String> params, View v){
+        JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST, uri.build().toString(),
                 new JSONObject(params),
-                response -> {
-                    try {
+                new Response.Listener<JSONObject>() {
+                    public void onResponse(JSONObject response) {
+                        Log.d("login_debug", response.toString());
                         btnLogin.setClickable(false);
                         btnRegister.setClickable(false);
-                        Log.d("login_debug",response.getString("message"));
-                        Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-
-                        Intent intentHome = new Intent(LoginActivity.this, MainActivity.class);
-                        Const.user = new User(response.getInt("user_id"), response.getString("username"), response.getString("fullname"));
-                        pBar.setVisibility(View.INVISIBLE);
-                        startActivity(intentHome);
-                        finish();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        try{
+                            Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                            if(response.getInt("status") == 200 && v.getTag().toString().equals("login")) { //Login Success
+                                Intent intentHome = new Intent(LoginActivity.this, MainActivity.class);
+                                Const.setUsername(username.getText().toString());
+                                pBar.setVisibility(View.INVISIBLE);
+                                startActivity(intentHome);
+                                finish();
+                            }
+                            if(response.getInt("status") == 200 && v.getTag().toString().equals("register")){ //Register Success
+                                Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_SHORT).show();
+                                pBar.setVisibility(View.INVISIBLE);
+                            }
+                        }
+                        catch(Exception e){
+                            Log.d("login_debug",e.getMessage());
+//                            e.printStackTrace();
+                        }
+                        finally{
+                            pBar.setVisibility(View.INVISIBLE);
+                            btnLogin.setClickable(true);
+                            btnRegister.setClickable(true);
+                        }
                     }
-                    finally{
-                        pBar.setVisibility(View.INVISIBLE);
-                        btnLogin.setClickable(true);
-                        btnRegister.setClickable(true);
-                    }
-
-                },
-                error -> {
-                    VolleyLog.d("login_debug_error", "Error: " + error.toString());
-                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                    // hide the progress dialog
-                    pBar.setVisibility(View.INVISIBLE);
-                }
-        );
-        AppController.getInstance().addToRequestQueue(request);
-    }
-
-    //NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
-    void registerRequest(Map<String, String> params) { //Register User
-        String url = Const.API_SERVER + "/register";
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
-                new JSONObject(params),
-                response -> {
-                    try {
-                        Log.d("register_debug",response.getString("message"));
-                        Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                },
-                error -> {
-
-                }
-        );
-        AppController.getInstance().addToRequestQueue(request);
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("login_debug_error", "Error: " + error.toString());
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                // hide the progress dialog
+                pBar.setVisibility(View.INVISIBLE);
+            }
+        });
+        AppController.getInstance().addToRequestQueue(loginRequest, tag_login_req);
     }
 }

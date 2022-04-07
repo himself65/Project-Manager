@@ -15,20 +15,18 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.coms3091mc3.projectmanager.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard">
+        tools:layout="@layout/fragment_dashboard" >
         <action
             android:id="@+id/action_navigation_dashboard_to_navigation_project"
             app:destination="@id/navigation_project">
-            <argument
-                android:name="projectID"
-                app:argType="integer" />
+            <argument android:name="projectID" app:argType="integer"/>
         </action>
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_projects"
+        android:id="@+id/navigation_notifications"
         android:name="com.coms3091mc3.projectmanager.ui.projects.ProjectsFragment"
-        android:label="@string/title_projects"
+        android:label="@string/title_notifications"
         tools:layout="@layout/fragment_projects" />
 
     <fragment
@@ -41,43 +39,5 @@
         android:id="@+id/navigation_project"
         android:name="com.coms3091mc3.projectmanager.ui.project.ProjectFragment"
         android:label="Project"
-        tools:layout="@layout/fragment_project">
-        <action
-            android:id="@+id/action_navigation_project_to_navigation_task"
-            app:destination="@id/navigation_task">
-            <argument
-                android:name="taskID"
-                app:argType="integer" />
-            <argument
-                android:name="projectID"
-                app:argType="integer" />
-        </action>
-        <action
-            android:id="@+id/action_navigation_project_to_navigation_team"
-            app:destination="@id/navigation_team">
-            <argument
-                android:name="teamID"
-                app:argType="integer" />
-        </action>
-    </fragment>
-
-    <fragment
-        android:id="@+id/navigation_task"
-        android:name="com.coms3091mc3.projectmanager.ui.task.TaskFragment"
-        android:label="Task"
-        tools:layout="@layout/fragment_task">
-<!--        <action-->
-<!--            android:id="@+id/action_navigation_task_to_navigation_project"-->
-<!--            app:destination="@id/navigation_project">-->
-<!--            <argument-->
-<!--                android:name="projectID"-->
-<!--                app:argType="integer" />-->
-<!--        </action>-->
-    </fragment>
-
-    <fragment
-        android:id="@+id/navigation_team"
-        android:name="com.coms3091mc3.projectmanager.ui.team.TeamFragment"
-        android:label="Team"
-        tools:layout="@layout/fragment_team" />
+        tools:layout="@layout/fragment_project" />
 </navigation>

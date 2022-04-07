@@ -10,14 +10,12 @@ import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.data.Project;
 import com.coms3091mc3.projectmanager.databinding.FragmentProjectsBinding;
 import com.coms3091mc3.projectmanager.store.ProjectsDataModel;
 import com.coms3091mc3.projectmanager.utils.Const;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,11 +31,10 @@ public class ProjectsFragment extends Fragment {
         binding = FragmentProjectsBinding.inflate(inflater, container, false);
         binding.setModal(new ProjectsDataModel(getContext()));
         View root = binding.getRoot();
-        String url = Const.API_SERVER + "/user/" + Const.user.getUserID() + "/projects";
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                response -> {
+        String url = Const.API_SERVER + "/project";
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                projects -> {
                     try {
-                        JSONArray projects = response.getJSONArray("projects");
                         for (int i = 0; i < projects.length(); i++) {
                             JSONObject object = (JSONObject) projects.get(i);
                             Project project = new Project(
@@ -51,7 +48,7 @@ public class ProjectsFragment extends Fragment {
                         e.printStackTrace();
                     }
                 },
-                error -> Logger.getLogger("projects_fragment_debug").log(Level.INFO, error.toString())
+                error -> Logger.getLogger("json").log(Level.INFO, error.toString())
         );
 
         AppController.getInstance().addToRequestQueue(request);
