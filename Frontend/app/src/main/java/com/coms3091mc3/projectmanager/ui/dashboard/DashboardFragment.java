@@ -134,7 +134,7 @@ public class DashboardFragment extends Fragment {
                 String url = Const.API_SERVER + "/project";
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("projectName", project.getName());
-                params.put("username", Const.username);
+                params.put("username", Const.user.getUsername());
 
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
                         new JSONObject(params),

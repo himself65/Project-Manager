@@ -104,9 +104,9 @@ public class TaskFragment extends Fragment {
     }
 
     void completeTaskRequest(int taskID) {
-        String url = Const.API_SERVER + "/task/" + taskID + "/complete";
+        String url = Const.API_SERVER + "/task/" + taskID + "/complete/";
         Map<String, String> params = new HashMap<String, String>();
-        params.put("username", Const.username);
+        params.put("username", Const.user.getUsername());
 
         //NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
         JsonObjectRequest taskRequest = new JsonObjectRequest(Request.Method.PUT, url,
