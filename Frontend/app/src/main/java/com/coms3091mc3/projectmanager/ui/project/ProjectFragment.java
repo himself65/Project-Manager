@@ -64,7 +64,7 @@ public class ProjectFragment extends Fragment {
         View view = binding.getRoot();
         int id = (Integer) getArguments().get("projectID");
         String url = Const.API_SERVER + "/project/" + id;
-        String tasksUrl = url + "/tasks";
+        String tasksUrl = Const.API_SERVER + "/user/" + Const.user.getUserID() + "/tasks";
         getTeams();
         Button button = view.findViewById(R.id.add_project);
         button.setOnClickListener(new View.OnClickListener() {
@@ -84,14 +84,15 @@ public class ProjectFragment extends Fragment {
             }
         });
 
-        JsonArrayRequest tasksRequest = new JsonArrayRequest(Request.Method.GET, tasksUrl, null,
-                tasks -> {
+        JsonObjectRequest tasksRequest = new JsonObjectRequest(Request.Method.GET, tasksUrl, null,
+                response -> {
                     try {
+                        JSONArray tasks = response.getJSONArray("tasks");
                         for (int i = 0; i < tasks.length(); i++) {
                             JSONObject object = (JSONObject) tasks.get(i);
                             Task task = new Task(
-                                    object.getInt("taskID"),
-                                    object.getString("taskName")
+                                    object.getInt("id"),
+                                    object.getString("task")
                             );
                             binding.getModal().tasksAdapter.add(task);
                         }
@@ -357,7 +358,7 @@ public class ProjectFragment extends Fragment {
             alertBuilder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     if (taskName.getText().toString().length() < 4) { //at least 4 characters
-                        Toast.makeText(getContext(), "Project Name must be at least 4 characters", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Task Name must be at least 4 characters", Toast.LENGTH_LONG).show();
                         return;
                     }
                     params.put("task", taskName.getText().toString()); //task name

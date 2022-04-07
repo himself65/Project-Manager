@@ -29,10 +29,10 @@
                 android:id="@+id/textTaskStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/design_default_color_error"
+                android:background="@{modal.task.status == 0 ? @color/design_default_color_error : @color/teal_700}"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="@{modal.task.status == 0 ? `unfinished` : `finihsed`}"
+                android:text="@{modal.task.status == 0 ? `INCOMPLETE` : `COMPLETE`}"
                 android:textAlignment="viewStart"
                 android:textColor="@color/white"
                 android:textSize="20sp"/>

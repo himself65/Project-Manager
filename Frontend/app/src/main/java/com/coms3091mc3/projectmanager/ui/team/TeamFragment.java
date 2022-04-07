@@ -47,7 +47,6 @@ public class TeamFragment extends Fragment {
     FragmentTeamBinding binding;
 
     ListView lv;
-    private JSONArray usersArray = new JSONArray();
 
     @Nullable
     @Override
@@ -126,19 +125,19 @@ public class TeamFragment extends Fragment {
 
     void getMembersRequest(int id){ //get list of users
         String url = Const.API_SERVER + "/team/" + id + "/users";
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
-                users -> {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
                     try {
+                        JSONArray users = response.getJSONArray("users");
                         List<String> userNameList = new ArrayList<String>();
                         for (int i = 0; i < users.length(); i++) {
                             JSONObject object = (JSONObject) users.get(i);
                             User user = new User(
-                                    object.getInt("user_id"),
+                                    object.getInt("userId"),
                                     object.getString("username"),
-                                    object.getString("fullname")
+                                    object.getString("fullName")
                             );
-                            usersArray.put(object);
-                            userNameList.add(object.getString("fullname"));
+                            userNameList.add(object.getString("fullName"));
 //                            binding.getModal().team.
                             Log.d("project_debug",object.toString());
                         }

@@ -68,9 +68,10 @@ public class DashboardFragment extends Fragment {
         String url = Const.API_SERVER + "/user/" + Const.user.getUserID() + "/projects";
 
         //get user projects
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
-                projects -> {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
                     try {
+                        JSONArray projects = response.getJSONArray("projects");
                         for (int i = 0; i < projects.length(); i++) {
                             JSONObject object = (JSONObject) projects.get(i);
                             Project project = new Project(

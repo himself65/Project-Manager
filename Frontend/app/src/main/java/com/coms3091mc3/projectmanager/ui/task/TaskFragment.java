@@ -72,11 +72,11 @@ public class TaskFragment extends Fragment {
                 object -> {
                     try {
                         Task task = new Task(
-                                object.getInt("taskID"),
-                                object.getString("taskName")
+                                object.getInt("id"),
+                                object.getString("task")
                         );
-                        task.setStatus(object.getInt("status"));
-                        task.setTeamName(object.getString("teamName"));
+                        task.setStatus(object.getInt("complete"));
+//                        task.setTeamName(object.getString("teamName"));
                         binding.getModal().task.set(task);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -86,12 +86,12 @@ public class TaskFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(taskRequest);
     }
 
-    void completeTask(int id){
+    void completeTask(int taskID){
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
         alertBuilder.setTitle("Confirm to complete task?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        completeTaskRequest(id);
+                        completeTaskRequest(taskID);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener(){
@@ -103,8 +103,8 @@ public class TaskFragment extends Fragment {
         alertBuilder.create().show();
     }
 
-    void completeTaskRequest(int id) {
-        String url = Const.API_SERVER + "/task/" + id + "/complete";
+    void completeTaskRequest(int taskID) {
+        String url = Const.API_SERVER + "/task/" + taskID + "/complete";
         Map<String, String> params = new HashMap<String, String>();
         params.put("username", Const.username);
 

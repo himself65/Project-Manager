@@ -51,7 +51,7 @@ public class ProjectsFragment extends Fragment {
                         e.printStackTrace();
                     }
                 },
-                error -> Logger.getLogger("json").log(Level.INFO, error.toString())
+                error -> Logger.getLogger("projects_fragment_debug").log(Level.INFO, error.toString())
         );
 
         AppController.getInstance().addToRequestQueue(request);
