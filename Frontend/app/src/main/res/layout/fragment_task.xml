@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="modal"
+            type="com.coms3091mc3.projectmanager.store.TaskDataModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.task.TaskFragment">
+
+        <LinearLayout
+            android:layout_width="347dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/task_border"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+            <TextView
+                android:id="@+id/textTaskStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@{modal.task.status == 0 ? @color/design_default_color_error : @color/teal_700}"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@{modal.task.status == 0 ? `INCOMPLETE` : `COMPLETE`}"
+                android:textAlignment="viewStart"
+                android:textColor="@color/white"
+                android:textSize="20sp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/taskName"
+            android:layout_width="115dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="268dp"
+            android:text="@{modal.task.taskName}"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/team_icon"
+            android:layout_width="64dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="92dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toEndOf="@+id/taskName"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_people_alt_24" />
+
+        <TextView
+            android:id="@+id/teamName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="44dp"
+            android:text="@{modal.task.teamName}"
+            app:layout_constraintStart_toEndOf="@+id/team_icon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="347dp"
+            android:layout_height="118dp"
+            android:layout_marginTop="52dp"
+            android:background="@drawable/task_border"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/team_icon">
+
+            <TextView
+                android:id="@+id/descriptionTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/purple_500"
+                android:drawableEnd="@drawable/ic_baseline_edit_24"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Description"
+                android:textAlignment="viewStart"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/taskDescription"
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                android:layout_marginTop="10dp"
+                android:paddingHorizontal="10dp"
+                android:text="task_description"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnCompleteTask"
+            android:layout_width="80dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:text="Complete"
+            android:textSize="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/teamName" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
