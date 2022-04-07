@@ -39,9 +39,19 @@ public class UserController {
 // Registers user to the database and checks if there is an
 // existing user registered with the same username
 	@PostMapping("/register")
-	public JSONObject registerUser(@RequestBody User newUser) {
+	JSONObject registerUser(@RequestBody JSONObject object) {
 		JSONObject responseBody = new JSONObject();
-		List<User> users = userRepository.findAll();
+
+        User newUser = new User();
+
+        newUser.setUsername(object.getAsString("username"));
+        newUser.setUserPassword(object.getAsString("userPassword"));
+        newUser.setFullName(object.getAsString("fullname"));
+
+
+
+        List<User> users = userRepository.findAll();
+
 
         for (User user : users) {
             if (user.username.equals(newUser.username)) {
@@ -51,13 +61,19 @@ public class UserController {
             }
         }
 
-//      Checks length, upper, lower case, numeric value and special character of the input password
-        User user = new User();
-        if (user.isAllPresent(user.password) != true){ //Checks if the password meets the safety criteria
+        if(newUser.password.length() < 3){
             responseBody.put("status", 400);
-            responseBody.put("message", "Please enter a valid password of at least 4 characters containing uppercase, lowercase\n" +
-                    "\t// special character & numeric value");
+            responseBody.put("message", "Password should be at least 3 characters long");
+            return responseBody;
         }
+
+//      Checks length, upper, lower case, numeric value and special character of the input password
+
+//        if (!newUser.isAllPresent(newUser.password)){ //Checks if the password meets the safety criteria
+//            responseBody.put("status", 400);
+//            responseBody.put("message", "Please enter a valid password of at least 4 characters containing uppercase, lowercase\n" +
+//                    "\t// special character & numeric value");
+//        }
 
         userRepository.save(newUser);
         responseBody.put("status", 200);
@@ -67,14 +83,14 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public JSONObject loginUser(@RequestBody User user) {
+    JSONObject loginUser(@RequestBody User user) {
         JSONObject responseBody = new JSONObject();
         List<User> users = userRepository.findAll();
 
 //      Updates user logged in status
         for (User other : users) {
             if (other.equals(user)) {
-                user.setLoggedIn(true);
+                user.setLoggedIn(1);
                 responseBody.put("status", 200);
                 responseBody.put("message", "Login Successful");
                 return responseBody;
@@ -88,13 +104,13 @@ public class UserController {
 
 //  Log out call
     @PostMapping("/logout")
-    public JSONObject logoutUser(@RequestBody User user) {
+    JSONObject logoutUser(@RequestBody User user) {
         JSONObject responseBody = new JSONObject();
         List<User> users = userRepository.findAll();
 
         for (User other : users) {
             if (other.username.equals(user.username)) {
-                user.setLoggedIn(false);
+                user.setLoggedIn(0);
                 responseBody.put("status", 200);
                 responseBody.put("message", "User Successfully logged out");
                 return responseBody;
@@ -117,7 +133,7 @@ public class UserController {
 
 //	Delete ALL users
     @DeleteMapping("/user/all")
-    public JSONObject deleteUsers() {
+    JSONObject deleteUsers() {
         JSONObject responseBody = new JSONObject();
     	userRepository.deleteAll();
         responseBody.put("status", 200);

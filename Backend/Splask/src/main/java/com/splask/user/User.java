@@ -2,6 +2,7 @@
 package com.splask.user;
 
 //Class imports
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.splask.task.Task;
 import com.splask.team.Team;
 import com.splask.project.Project;
@@ -20,7 +21,7 @@ import javax.persistence.*;
 
 @Entity
 @Table (name = "User")
-public class User {
+public class User{
 
 //  Primary key
 	@Id
@@ -36,37 +37,44 @@ public class User {
 	@Column (name = "password")
 	String password;
 
-	@NotNull
+//	@NotNull
 	@Column
 	LocalDateTime dateCreated;
 
-	@NotNull
+    @NotNull
 	@Column (name = "loggedIn")
-	Boolean loggedIn = false;
+	Integer loggedIn = 0;
+
+	@NotNull
+	@Column(name = "full_name")
+	private String fullName;
 
 
-	@ManyToMany(mappedBy = "pUsers")
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
-			name = "users_projects",
-			joinColumns = @JoinColumn(name = "user", referencedColumnName = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "project", referencedColumnName = "project_id")
+			name = "user_project",
+			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "project_id")
 	)
+	@JsonIgnore
 	private List<Project> projects = new ArrayList<>();
-
-	@ManyToMany(mappedBy = "ttUsers")
+////
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
-			name = "users_teams",
+			name = "user_team",
 			joinColumns = @JoinColumn(name = "user", referencedColumnName = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "team", referencedColumnName = "team_id")
 	)
+	@JsonIgnore
 	private List<Team> teams = new ArrayList<>();
-
-	@ManyToMany(mappedBy = "tUsers")
+//
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
-			name = "users_tasks",
+			name = "user_task",
 			joinColumns = @JoinColumn(name = "user", referencedColumnName = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "task", referencedColumnName = "task_id")
 	)
+	@JsonIgnore
 	private List<Task> tasks = new ArrayList<>();
 
 //	TODO (DEMO 4) Set relationship with Roles
@@ -81,7 +89,7 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 
 		this.username = username;
 		this.password = password;
-		this.loggedIn = false;
+		this.loggedIn = 0;
 	}
 
 	User(){
@@ -104,25 +112,35 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 		return dateCreated.format(format);
 	}
 	
-//	TODO Delete???
-//	public Project getAuthor() {return projectsCreated;}
-//	public void setAuthor(Project author) {this.projectsCreated = author;}
-//	
-    public boolean isLoggedIn() {return loggedIn;}
-    public void setLoggedIn(boolean loggedIn) {this.loggedIn = loggedIn;}
+
+    public Integer isLoggedIn() {return loggedIn;}
+    public void setLoggedIn(Integer loggedIn) {this.loggedIn = loggedIn;}
 
     
-//	Relationship tables setters and getters
-	public List<Project> getProjectUsers() {return projects;}
-	public void setProjectUsers(List<Project> projects) {this.projects = projects;}
+////	Relationship tables setters and getters
+//	public List<Project> getProject() {return projects;}
+//	public void setProject(List<Project> projects) {this.projects = projects;}
 
 
 	public List<Team> getTeam() {return teams;}
 	public void setTeams(List<Team> teams) {this.teams = teams;}
 
-	
-	public List<Task> getTasks() {return tasks;} //TODO this is a Set, do we want to change it to a List????
+
+	public List<Task> getTasks() {return tasks;}
 	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
+
+
+	public String getFullName() {return fullName;}
+	public void setFullName(String i) {fullName = i;}
+
+	//Controller Functions
+	public void addProjectToUser(Project project)
+	{
+		System.out.println(Arrays.toString(projects.toArray()));
+		projects.add(project);
+		System.out.println(Arrays.toString(projects.toArray()));
+	}
+
 
 
 
