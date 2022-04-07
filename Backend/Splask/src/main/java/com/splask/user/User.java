@@ -60,7 +60,7 @@ public class User{
 			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "project_id")
 	)
-	@JsonIgnore
+	@JsonManagedReference
 	private List<Project> projects = new ArrayList<>();
 ////
 	@ManyToMany(cascade = CascadeType.ALL)

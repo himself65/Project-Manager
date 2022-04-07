@@ -43,8 +43,6 @@ public class UserController {
         newUser.setUsername(object.getAsString("username"));
         newUser.setUserPassword(object.getAsString("userPassword"));
         newUser.setFullName(object.getAsString("full_name"));
-        System.out.println(newUser.getFullName());
-        System.out.println(newUser.getUserId());
 
 
         List<User> users = userRepository.findAll();
@@ -112,7 +110,7 @@ public class UserController {
         List<User> users = userRepository.findAll();
 
         for (User userInDB : users) {
-            if (userInDB.equals(user)) {
+            if (userInDB.getUsername().equals(user.getUsername())) {
 
                 userInDB.setLoggedIn(0);
 
