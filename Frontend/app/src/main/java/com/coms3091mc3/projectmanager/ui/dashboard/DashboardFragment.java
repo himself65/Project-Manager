@@ -65,11 +65,13 @@ public class DashboardFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         Context context = getContext();
-        String url = Const.API_SERVER + "/project";
+        String url = Const.API_SERVER + "/user/" + Const.user.getUserID() + "/projects";
 
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
-                projects -> {
+        //get user projects
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
                     try {
+                        JSONArray projects = response.getJSONArray("projects");
                         for (int i = 0; i < projects.length(); i++) {
                             JSONObject object = (JSONObject) projects.get(i);
                             Project project = new Project(
@@ -132,6 +134,8 @@ public class DashboardFragment extends Fragment {
                 String url = Const.API_SERVER + "/project";
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("projectName", project.getName());
+                params.put("username", Const.username);
+
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
                         new JSONObject(params),
                         response -> {
