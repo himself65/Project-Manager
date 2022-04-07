@@ -9,8 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.splask</groupId>
-	<artifactId>project</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>Splask</artifactId>
+<!--	<version>0.0.1-SNAPSHOT</version>-->
 	<name>project</name>
 	<description>project Database</description>
 	<properties>
