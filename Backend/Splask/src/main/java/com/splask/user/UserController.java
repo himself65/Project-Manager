@@ -8,13 +8,7 @@ import com.splask.team.Team;
 
 import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 //import com.sun.org.apache.xerces.internal.util.URI;
 
@@ -84,7 +78,7 @@ public class UserController {
         return responseBody;
     }
 
-    @PostMapping("/login")
+    @PutMapping("/login")
     JSONObject loginUser(@RequestBody User user) {
         JSONObject responseBody = new JSONObject();
         List<User> users = userRepository.findAll();
@@ -111,7 +105,7 @@ public class UserController {
     }
 
 //  Log out call
-    @PostMapping("/logout")
+    @PutMapping("/logout")
     JSONObject logoutUser(@RequestBody User user) {
         JSONObject responseBody = new JSONObject();
         List<User> users = userRepository.findAll();
@@ -121,6 +115,7 @@ public class UserController {
                 user.setLoggedIn(0);
                 responseBody.put("status", 200);
                 responseBody.put("message", "User Successfully logged out");
+                userRepository.save(user);
                 return responseBody;
             }
         }
