@@ -49,6 +49,10 @@ public class User{
 	@Column(name = "full_name")
 	private String fullName;
 
+	@NotNull
+	@OneToMany(mappedBy = "completedBy")
+	private List<Task> completedTasks = new ArrayList<>();
+
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
@@ -211,6 +215,13 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 
 		return containsAll;
 	}
-	
-	
+
+
+	public List<Task> getCompletedTasks() {
+		return completedTasks;
+	}
+
+	public void setCompletedTasks(List<Task> completedTasks) {
+		this.completedTasks = completedTasks;
+	}
 }

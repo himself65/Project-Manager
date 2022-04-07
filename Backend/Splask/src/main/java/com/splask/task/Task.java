@@ -48,7 +48,8 @@ public class Task {
 	String dateCompleted;
 
 	@NotNull
-	@Column(name = "completed_By")
+	@ManyToOne()
+	@JoinColumn(name = "user_id")
 	private User completedBy;
 
 	
