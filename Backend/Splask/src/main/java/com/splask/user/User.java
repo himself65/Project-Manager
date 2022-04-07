@@ -122,8 +122,8 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 
     
 ////	Relationship tables setters and getters
-//	public List<Project> getProject() {return projects;}
-//	public void setProject(List<Project> projects) {this.projects = projects;}
+	public List<Project> getProject() {return projects;}
+	public void setProject(List<Project> projects) {this.projects = projects;}
 
 
 	public List<Team> getTeam() {return teams;}
@@ -144,6 +144,8 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 		projects.add(project);
 		System.out.println(Arrays.toString(projects.toArray()));
 	}
+
+
 
 
 

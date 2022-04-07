@@ -3,8 +3,10 @@ package com.splask.user;
 
 import java.util.List;
 
+import com.splask.project.Project;
 import com.splask.team.Team;
 
+import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -140,6 +142,22 @@ public class UserController {
         responseBody.put("message", "Successfully deleted all users");
         return responseBody;
     }
+    @GetMapping("/user/{user_id}/projects")
+    JSONObject obtainUsersProject(@PathVariable Integer user_id)
+    {
+        User user = userRepository.getById(user_id);
+        JSONArray users = new JSONArray();
+        JSONObject responseBody = new JSONObject();
+
+        users.addAll(user.getProject());
+
+        responseBody.put("users",users);
+        responseBody.put("status", 200);
+        responseBody.put("message", "Successfully retrieved all users from" + user.getUsername());
+
+        return responseBody;
+    }
+
 
 
 }
