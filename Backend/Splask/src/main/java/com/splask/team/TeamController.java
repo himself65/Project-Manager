@@ -2,6 +2,7 @@ package com.splask.team;
 
 import com.splask.project.Project;
 import com.splask.project.projectDB;
+import com.splask.task.Task;
 import com.splask.task.TaskDB;
 import com.splask.user.User;
 import com.splask.user.UserDB;
@@ -41,7 +42,7 @@ public class TeamController {
 
         return teamRepository.findAll();}
 
-
+    //method used for testing a creation of a class
     @PostMapping("/team")
     JSONObject createTeam(@RequestBody Team t) {
         JSONObject responseBody = new JSONObject();
@@ -63,8 +64,12 @@ public class TeamController {
         return responseBody;
 
     }
-    
 
+    /**
+     * retreives all users in a team
+     * @param team_id
+     * @return responseBody with a JSON Array of users in a team
+     */
     @GetMapping("/team/{team_id}/users")
     JSONObject usersInTeam(@PathVariable Integer team_id)
     {
@@ -80,7 +85,13 @@ public class TeamController {
 
         return responseBody;
     }
-//  Sets the user to the assigned team
+
+    /**
+     * Adds a new user to a team in the project
+     * @param teamID
+     * @param username
+     * @return JSON Object that hold success or fail statuses and messages
+     */
     @PutMapping("/team/{teamID}/addUser")
     JSONObject enrollUserToTeam( //Gets the user then assigns the user to the team
                               @PathVariable Integer teamID,
@@ -103,7 +114,13 @@ public class TeamController {
             responseBody.put("message", "User already in Team");
             return responseBody;
         }
-
+        for(Task teamTasks : team.getTasks())
+        {
+            if(!user.getTasks().contains(teamTasks))
+            {
+                user.addTaskToUser(teamTasks);
+            }
+        }
 
         team.enrollUser(user); //sends the passed user to the enrollUsers method
         user.addTeamToUser(team);
@@ -115,7 +132,12 @@ public class TeamController {
         return  responseBody;
     }
 
-    //TODO Waiting to be tested
+    /**
+     * Testing method of assigning a project to a team
+     * @param projectID
+     * @param teamID
+     * @return
+     */
     @PutMapping("/team/{team_id}/project/addProject")
     Team assignTaskToTeam(
     		@PathVariable Integer projectID,
@@ -128,9 +150,13 @@ public class TeamController {
     	return teamRepository.save(team);
     }
 
-    //retrieves all teams from Project
+    /**
+     * retrieves all tasks that is assigned in a team
+     * @param team_id
+     * @return JSON responsebody containing status codes and a JSON array of tasks
+     */
     @GetMapping("/team/{team_id}/tasks")
-    JSONObject tasksInProject(@PathVariable Integer team_id)
+    JSONObject tasksInTeam(@PathVariable Integer team_id)
     {
         Team team = teamRepository.getById(team_id);
         JSONArray tasks = new JSONArray();

@@ -111,8 +111,13 @@ public class ProjectController {
         return responseBody;
     }
 
-    //TODO Waiting to be tested
-//  Sets the user to the assigned project
+
+    /**
+     * Adds existing users in database to a project by username
+     * @param project_id
+     * @param username
+     * @return JSON Response body of status codes
+     */
     @PutMapping("/project/{project_id}/addUser")
     JSONObject enrollUserToProject( //Gets the user then assigns the user to the project
                               @PathVariable Integer project_id,
@@ -214,7 +219,7 @@ public class ProjectController {
 
         Task task = new Task();
         task.setTask(Object.getAsString("task"));
-        System.out.println(task.getTask());
+
         Team assignedTeam = teamRepository.getById((Integer) Object.getAsNumber("team_id"));
 
         if (!project.getTeams().contains(assignedTeam))
