@@ -31,9 +31,9 @@ autoDeploy:
   script:
     - cd Backend/Splask
     - mvn package
-    - sudo mv target/*.jar /target/Splask.jar
-    - sudo systemctl stop Splask
-    - sudo systemctl start Splask
+    - sudo mv target/*.jar /target/web-demo.jar
+    - sudo systemctl stop system-web-demo
+    - sudo systemctl start system-web-demo
 
 android-build:
   image: gjandres/android-ci:latest
