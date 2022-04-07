@@ -235,10 +235,16 @@ public class ProjectController {
         task.assignTaskToProject(project);
         task.assignTaskToTeam(assignedTeam);
         assignedTeam.assignTeamToTask(task);
+        for (User i : assignedTeam.getUsers())
+        {
+            i.addTaskToUser(task);
+            userRepository.save(i);
+        }
 
         taskRepository.save(task);
         projectRepository.save(project);
         teamRepository.save(assignedTeam);
+
         responseBody.put("status",200);
         responseBody.put("message", "Task successfully created");
 

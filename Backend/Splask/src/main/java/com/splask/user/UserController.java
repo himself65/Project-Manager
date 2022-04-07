@@ -93,11 +93,17 @@ public class UserController {
         for (User other : users) {
             if (other.equals(user)) {
                 user.setLoggedIn(1);
+
+                responseBody.put("user_id", user.getUserId());
+                responseBody.put("fullname", user.getFullName());
+                responseBody.put("username", user.getUsername());
                 responseBody.put("status", 200);
                 responseBody.put("message", "Login Successful");
+                userRepository.save(user);
                 return responseBody;
             }
         }
+
 
         responseBody.put("status", 400);
         responseBody.put("message", "Login Failed");
@@ -150,6 +156,7 @@ public class UserController {
         JSONObject responseBody = new JSONObject();
 
         projects.addAll(user.getProject());
+
 
         responseBody.put("users",projects);
         responseBody.put("status", 200);

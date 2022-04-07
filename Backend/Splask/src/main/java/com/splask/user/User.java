@@ -150,6 +150,11 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 		teams.add(team);
 	}
 
+	public void addTaskToUser(Task task)
+	{
+		tasks.add(task);
+	}
+
 
 
 
