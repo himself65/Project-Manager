@@ -45,7 +45,7 @@ public class TaskController {
 	
 //	Creates a new task
 	@PostMapping("/task")
-	public JSONObject createTask(@RequestBody Task newTask) {
+	JSONObject createTask(@RequestBody Task newTask) {
 		JSONObject responseBody = new JSONObject();
 		List<Task> tasks = taskRepository.findAll();
 
@@ -144,6 +144,20 @@ public class TaskController {
     	task.assignTaskToProject(project);
     	return taskRepository.save(task);
     }
+
+	@PutMapping("/task/{task_id}/complete")
+	JSONObject setComplete(@PathVariable Integer task_id, @RequestBody JSONObject request)
+	{
+		JSONObject responseBody = new JSONObject();
+		Task task = taskRepository.getById(task_id);
+		task.setComplete(userRepository.findByUsername(request.getAsString("username")).get(0));
+
+		taskRepository.save(task);
+		responseBody.put("status", 200);
+		responseBody.put("message", task.getTask() + " Successfully Completed!");
+
+		return responseBody;
+	}
 
 
 

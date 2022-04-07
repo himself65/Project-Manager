@@ -39,9 +39,19 @@ public class UserController {
 // Registers user to the database and checks if there is an
 // existing user registered with the same username
 	@PostMapping("/register")
-	public JSONObject registerUser(@RequestBody User newUser) {
+	JSONObject registerUser(@RequestBody JSONObject object) {
 		JSONObject responseBody = new JSONObject();
-		List<User> users = userRepository.findAll();
+
+        User newUser = new User();
+
+        newUser.setUsername(object.getAsString("username"));
+        newUser.setUserPassword(object.getAsString("userPassword"));
+        newUser.setFullName(object.getAsString("fullname"));
+
+
+
+        List<User> users = userRepository.findAll();
+
 
         for (User user : users) {
             if (user.username.equals(newUser.username)) {
@@ -73,7 +83,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public JSONObject loginUser(@RequestBody User user) {
+    JSONObject loginUser(@RequestBody User user) {
         JSONObject responseBody = new JSONObject();
         List<User> users = userRepository.findAll();
 
@@ -94,7 +104,7 @@ public class UserController {
 
 //  Log out call
     @PostMapping("/logout")
-    public JSONObject logoutUser(@RequestBody User user) {
+    JSONObject logoutUser(@RequestBody User user) {
         JSONObject responseBody = new JSONObject();
         List<User> users = userRepository.findAll();
 
@@ -123,7 +133,7 @@ public class UserController {
 
 //	Delete ALL users
     @DeleteMapping("/user/all")
-    public JSONObject deleteUsers() {
+    JSONObject deleteUsers() {
         JSONObject responseBody = new JSONObject();
     	userRepository.deleteAll();
         responseBody.put("status", 200);

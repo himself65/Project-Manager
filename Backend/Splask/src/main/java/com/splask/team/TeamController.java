@@ -43,7 +43,7 @@ public class TeamController {
 
 
     @PostMapping("/team")
-    public JSONObject createTeam(@RequestBody Team t) {
+    JSONObject createTeam(@RequestBody Team t) {
         JSONObject responseBody = new JSONObject();
         List<Team> teams = teamRepository.findAll();
 

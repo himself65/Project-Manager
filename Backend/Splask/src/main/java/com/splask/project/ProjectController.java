@@ -40,7 +40,7 @@ public class ProjectController {
 
     @GetMapping("/project/{id}")
     //should be JSONObject
-    public Project getProject(@PathVariable Integer id)
+    Project getProject(@PathVariable Integer id)
     {
         return projectRepository.findById(id).
                 orElseThrow(RuntimeException::new);
@@ -52,7 +52,7 @@ public class ProjectController {
 
 // creates new project
     @PostMapping("/project")
-    public JSONObject createProject(@RequestBody Project q) {
+    JSONObject createProject(@RequestBody Project q) {
         JSONObject responseBody = new JSONObject();
 
         List<Project> projects = projectRepository.findAll();

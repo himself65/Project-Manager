@@ -47,9 +47,9 @@ public class Task {
 	@Column (name = "dateCompleted")
 	String dateCompleted;
 
-//	@NotNull
-//	@Column(name = "completed_By")
-//	private User completedBy;
+	@NotNull
+	@Column(name = "completed_By")
+	private User completedBy;
 
 	
 //	Many task to many users
@@ -94,7 +94,7 @@ public class Task {
 
 
 		this.status = 1;
-//		completedBy = user;
+		completedBy = user;
 	}
 
 	public String getDateCreated() {

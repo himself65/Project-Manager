@@ -45,6 +45,10 @@ public class User{
 	@Column (name = "loggedIn")
 	Integer loggedIn = 0;
 
+	@NotNull
+	@Column(name = "full_name")
+	private String fullName;
+
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
@@ -126,6 +130,8 @@ public void user(String username, String password, Boolean loggedIn) { //TODO (n
 	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
 
 
+	public String getFullName() {return fullName;}
+	public void setFullName(String i) {fullName = i;}
 
 	//Controller Functions
 	public void addProjectToUser(Project project)
