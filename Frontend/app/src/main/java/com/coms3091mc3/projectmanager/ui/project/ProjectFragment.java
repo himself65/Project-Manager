@@ -148,10 +148,16 @@ public class ProjectFragment extends Fragment {
     }
 
     void getTeams() {
-        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "teams";
-        JsonArrayRequest teamsRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                teams -> {
+        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/teams";
+        JsonObjectRequest teamsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
 //                    teamsArray = teams;
+                    JSONArray teams = null;
+                    try {
+                        teams = response.getJSONArray("teams");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     for (int i = 0; i < teams.length(); i++) {
                         try {
                             JSONObject object = teams.getJSONObject(i);
@@ -176,8 +182,14 @@ public class ProjectFragment extends Fragment {
     public void listTeams() {
         String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "teams";
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
-        JsonArrayRequest teamsRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                teams -> {
+        JsonObjectRequest teamsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    JSONArray teams = null;
+                    try {
+                        teams = response.getJSONArray("teams");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     alertBuilder.setTitle("List of Teams");
                     TeamsAdapter adapter = new TeamsAdapter(getContext(), R.layout.fragment_task_item);
                     for (int i = 0; i < teams.length(); i++) {
@@ -249,8 +261,14 @@ public class ProjectFragment extends Fragment {
     public void listMembers() {
         String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "users";
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
-        JsonArrayRequest usersRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                users -> {
+        JsonObjectRequest usersRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    JSONArray users = null;
+                    try {
+                        users = response.getJSONArray("users");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     alertBuilder.setTitle("List of Members")
                             .setPositiveButton("BACK", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
@@ -297,7 +315,7 @@ public class ProjectFragment extends Fragment {
                             Toast.makeText(context, "Name must be at least 4 characters", Toast.LENGTH_LONG).show();
                             return;
                         }
-                        params.put("username", dialogInput.getText().toString());
+                        params.put("teamName", dialogInput.getText().toString());
                         addTeamRequest(params);
                     }
                 })
@@ -361,27 +379,14 @@ public class ProjectFragment extends Fragment {
     }
 
     void addTeamRequest(Map<String, String> query) {
-        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "addTeam";
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
+        //NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
+        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/addTeam/";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url,
                 new JSONObject(query),
                 response -> {
                     Log.d("project_debug", response.toString());
-                    Toast.makeText(getContext(), "success", Toast.LENGTH_LONG).show();
-                },
-                error -> {
-                }
-        );
-        AppController.getInstance().addToRequestQueue(request);
-    }
-
-    void addMemberRequest(Map<String, String> query){
-        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "addUser";
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
-                new JSONObject(query),
-                response -> {
                     try {
-                        Log.d("project_debug", response.getString("message"));
-                        Toast.makeText(getContext(), "success", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -392,9 +397,28 @@ public class ProjectFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(request);
     }
 
+    void addMemberRequest(Map<String, String> query){
+        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "addUser/";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url,
+                new JSONObject(query),
+                response -> {
+                    try {
+                        Log.d("project_debug", response.getString("message"));
+                        Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    Toast.makeText(getContext(), "Unexpected error", Toast.LENGTH_LONG).show();
+                }
+        );
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
     void addTaskRequest(Map<String, String> query){
-        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/addTask";
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
+        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/addTask/";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url,
                 new JSONObject(query),
                 response -> {
                     try {

@@ -156,9 +156,10 @@ public class TeamFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(request);
     }
 
+    //NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
     void addMemberRequest(Map<String, String> params) { //add member to team
-        String url = Const.API_SERVER + "/team/" + binding.getModal().team.get().getTeamID() +"/addUser";
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
+        String url = Const.API_SERVER + "/team/" + binding.getModal().team.get().getTeamID() +"/addUser/";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url,
                 new JSONObject(params),
                 response -> {
                     try {

@@ -142,8 +142,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logout(MenuItem item) {
-        uri = Uri.parse(Const.MOCK_SERVER + "/logout").buildUpon();
-//        uri = Uri.parse(Const.API_SERVER + "/logout").buildUpon();
+//        uri = Uri.parse(Const.MOCK_SERVER + "/logout").buildUpon();
+        uri = Uri.parse(Const.API_SERVER + "/logout").buildUpon();
         ProgressBar pBar = findViewById(R.id.progressBar);
         Map<String, String> params = new HashMap<String, String>();
         params.put("username", Const.username);
@@ -168,14 +168,14 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("logout_debug", "Error: " + error.toString());
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                // hide the progress dialog
-                pBar.setVisibility(View.INVISIBLE);
-            }
-        });
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.d("logout_debug", "Error: " + error.toString());
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                        // hide the progress dialog
+                        pBar.setVisibility(View.INVISIBLE);
+                    }
+                });
         AppController.getInstance().addToRequestQueue(logoutRequest, "logout_request");
     }
 

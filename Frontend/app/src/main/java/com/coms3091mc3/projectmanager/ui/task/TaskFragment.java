@@ -108,6 +108,7 @@ public class TaskFragment extends Fragment {
         Map<String, String> params = new HashMap<String, String>();
         params.put("username", Const.username);
 
+        //NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
         JsonObjectRequest taskRequest = new JsonObjectRequest(Request.Method.PUT, url,
                 new JSONObject(params),
                 response -> {
