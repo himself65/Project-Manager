@@ -174,7 +174,23 @@ public class UserController {
 
         teams.addAll(user.getTeam());
 
-        responseBody.put("users",teams);
+        responseBody.put("teams",teams);
+        responseBody.put("status", 200);
+        responseBody.put("message", "Successfully retrieved all teams from" + user.getUsername());
+
+        return responseBody;
+    }
+
+    @GetMapping("/user/{user_id}/tasks")
+    JSONObject obtainTasks(@PathVariable Integer user_id)
+    {
+        User user = userRepository.getById(user_id);
+        JSONArray tasks = new JSONArray();
+        JSONObject responseBody = new JSONObject();
+
+        tasks.addAll(user.getTasks());
+
+        responseBody.put("tasks",tasks);
         responseBody.put("status", 200);
         responseBody.put("message", "Successfully retrieved all teams from" + user.getUsername());
 
