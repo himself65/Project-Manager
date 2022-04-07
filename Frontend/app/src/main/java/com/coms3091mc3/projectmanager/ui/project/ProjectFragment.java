@@ -79,7 +79,7 @@ public class ProjectFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Task task = binding.getModal().tasksAdapter.getItem(i);
-                ProjectFragmentDirections.ActionNavigationProjectToNavigationTask action = ProjectFragmentDirections.actionNavigationProjectToNavigationTask(task.getTaskID());
+                ProjectFragmentDirections.ActionNavigationProjectToNavigationTask action = ProjectFragmentDirections.actionNavigationProjectToNavigationTask(task.getTaskID(), id);
                 Navigation.findNavController(view).navigate(action);
             }
         });
@@ -332,7 +332,6 @@ public class ProjectFragment extends Fragment {
             EditText taskName = (EditText) addTaskView.findViewById(R.id.editTextTextTaskName);
             Spinner teamList = (Spinner) addTaskView.findViewById(R.id.assignTeamSpinner);
             teamList.setAdapter(teamNames);
-            teamList.
 
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
             alertBuilder.setView(addTaskView);

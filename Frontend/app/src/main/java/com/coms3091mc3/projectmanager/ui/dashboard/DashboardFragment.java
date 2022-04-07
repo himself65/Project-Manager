@@ -129,7 +129,7 @@ public class DashboardFragment extends Fragment {
         AddProjectDialogFragment fragment = new AddProjectDialogFragment(new AddProjectDialogFragment.AddProjectDialogListener() {
             @Override
             public void onDialogPositiveClick(Project project) {
-                String url = Const.API_SERVER + "/projects";
+                String url = Const.API_SERVER + "/project";
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("projectName", project.getName());
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,

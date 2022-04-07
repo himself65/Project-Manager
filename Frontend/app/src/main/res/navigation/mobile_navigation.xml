@@ -48,6 +48,9 @@
             <argument
                 android:name="taskID"
                 app:argType="integer" />
+            <argument
+                android:name="projectID"
+                app:argType="integer" />
         </action>
         <action
             android:id="@+id/action_navigation_project_to_navigation_team"
@@ -62,7 +65,15 @@
         android:id="@+id/navigation_task"
         android:name="com.coms3091mc3.projectmanager.ui.task.TaskFragment"
         android:label="Task"
-        tools:layout="@layout/fragment_task" />
+        tools:layout="@layout/fragment_task">
+<!--        <action-->
+<!--            android:id="@+id/action_navigation_task_to_navigation_project"-->
+<!--            app:destination="@id/navigation_project">-->
+<!--            <argument-->
+<!--                android:name="projectID"-->
+<!--                app:argType="integer" />-->
+<!--        </action>-->
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_team"
