@@ -38,19 +38,60 @@ public class ProjectController {
     TaskDB taskRepository;
 
 
+    /**
+     *
+     * @param id
+     * id is an integer that matches a project in the database
+     * @return responseBody, if found returns the project object and a success status,
+     *         if Failed to find sends a fail message.
+     */
     @GetMapping("/project/{id}")
-    //should be JSONObject
-    Project getProject(@PathVariable Integer id)
+    JSONObject getProject(@PathVariable Integer id)
     {
-        return projectRepository.findById(id).
-                orElseThrow(RuntimeException::new);
-    }
-// returns all Projects from database
-    //should be JSONObject
-    @RequestMapping("/project")
-    List<Project> hello(){return projectRepository.findAll();}
+        JSONObject responseBody = new JSONObject();
+        if (!projectRepository.existsById(id))
+        {
+            responseBody.put("status", 400);
+            responseBody.put("message", "Project does not exist");
+        }
 
-// creates new project
+        responseBody.put("project",projectRepository.findById(id));
+        responseBody.put("status", 200);
+        responseBody.put("message", "Projects successfully retrieved");
+
+        return responseBody;
+    }
+
+    /**
+     *
+     * @return A JSONObject with a response code and a JSON array contain all
+     *         projects in the database.
+     */
+    @RequestMapping("/project")
+    JSONObject getAllProjects(){
+        JSONObject responseBody = new JSONObject();
+        JSONArray projectsArray = new JSONArray();
+
+        projectsArray.addAll(projectRepository.findAll());
+
+        responseBody.put("projects", projectsArray);
+        responseBody.put("status", 200);
+        responseBody.put("message", "Project successfully retrieved");
+
+        return responseBody;
+    }
+
+    /**
+     * Creates a new Project and adds the project into the repository
+     * as well as adding the user who created the project
+     *
+     * @param object
+     *        receive a JSONObject from the frontend with data to instantiate
+     *        a new project Object
+     *
+     * @return A success code to tell if the project successfully is created,
+     *         A fail code if the project name is already in use.
+     */
     @PostMapping("/project")
     JSONObject createProject(@RequestBody JSONObject object){
         JSONObject responseBody = new JSONObject();
@@ -80,7 +121,12 @@ public class ProjectController {
         return responseBody;
     }
 
-// deletes project by id
+    /**
+     *
+     * @param id
+     * Integer of the project id needing to be deleted.
+     * @return responseBody of a successful deletion
+     */
     @DeleteMapping("/project/{id}")
     JSONObject deleteProject(@PathVariable Integer id)
     {
@@ -91,10 +137,15 @@ public class ProjectController {
 
         return responseBody;
     }
-    
 
 
-    // returns all users in the project
+    /**
+     * retrieves all users in a project
+     * @param project_id
+     * Integer id of the project
+     * @return responseBody containing a JSONArray of users from the project,
+     *         and a success code
+     */
     @GetMapping("/project/{project_id}/users")
     JSONObject usersInProject(@PathVariable Integer project_id)
     {
@@ -115,8 +166,11 @@ public class ProjectController {
     /**
      * Adds existing users in database to a project by username
      * @param project_id
+     * Integer id of the project
      * @param username
-     * @return JSON Response body of status codes
+     * A JSON object containing a username of a User
+     * @return JSON Response body of status codes, success if added
+     *         fail code if user is already in project.
      */
     @PutMapping("/project/{project_id}/addUser")
     JSONObject enrollUserToProject( //Gets the user then assigns the user to the project
@@ -148,7 +202,12 @@ public class ProjectController {
     }
 
 
-    //retrieves all teams from Project
+    /**
+     * retrieves all teams from a project
+     * @param project_id
+     * Integer id of the project
+     * @return JSON Response Body that contains JSONArray of teams and a status code
+     */
     @GetMapping("/project/{project_id}/teams")
     JSONObject teamsInProject(@PathVariable Integer project_id)
     {
@@ -165,12 +224,26 @@ public class ProjectController {
 
         return responseBody;
     }
+
+
+    /**
+     * adds a new Team to a project
+     * @param project_id
+     * Integer id of the Project
+     * @param object
+     * A JSONObject carrying code that allows a team Object to be instantiated
+     *
+     * @return responseBody with a success code or fail code if team name is already in use
+     *         in the project.
+     */
     @PutMapping("/project/{project_id}/addTeam")
-    JSONObject addTeamToProject(@PathVariable Integer project_id, @RequestBody Team team)
+    JSONObject addTeamToProject(@PathVariable Integer project_id, @RequestBody JSONObject object)
     {
         JSONObject responseBody = new JSONObject();
 
         Project project = projectRepository.getById(project_id);
+        Team team = new Team();
+        team.setTeamName(object.getAsString("teamName"));
 
         if (project.addTeamToProject(team)){
             responseBody.put("status",400);
@@ -188,7 +261,12 @@ public class ProjectController {
         return responseBody;
     }
 
-    //retrieves all teams from Project
+    /**
+     * retrieves all tasks a project
+     * @param project_id
+     * Integer id of the project
+     * @return responseBody with a JSONArray containing all Tasks in the project and a success code.
+     */
     @GetMapping("/project/{project_id}/tasks")
     JSONObject tasksInProject(@PathVariable Integer project_id)
     {
@@ -207,8 +285,18 @@ public class ProjectController {
         return responseBody;
     }
 
+    /**
+     * Adds a new Task to a project
+     * @param project_id
+     * Integer id of the Project
+     * @param object
+     * A JSONObject carrying code that allows a task Object to be instantiated
+     *
+     * @return responseBody with a success code or fail code if task already exists or is already in use
+     *         in the project.
+     */
     @PutMapping("/project/{project_id}/addTask")
-    JSONObject addTaskToProject(@PathVariable Integer project_id, @RequestBody JSONObject Object)
+    JSONObject addTaskToProject(@PathVariable Integer project_id, @RequestBody JSONObject object)
     {
         JSONObject responseBody = new JSONObject();
 
@@ -218,9 +306,9 @@ public class ProjectController {
 
 
         Task task = new Task();
-        task.setTask(Object.getAsString("task"));
+        task.setTask(object.getAsString("task"));
 
-        Team assignedTeam = teamRepository.getById((Integer) Object.getAsNumber("team_id"));
+        Team assignedTeam = teamRepository.getById((Integer) object.getAsNumber("team_id"));
 
         if (!project.getTeams().contains(assignedTeam))
         {

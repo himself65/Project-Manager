@@ -52,17 +52,17 @@ class Team {
     @NotNull
     @JsonIgnore
     private List<Task> tasks;
-    
 
 
-
-
-
-    
+    /**
+     *
+     * @return the Integer id of
+     */
     public Integer getTeamID() {return teamID;}
     public void setTeamID(int id) {this.teamID = id;}
     
     public String getTeamName() {return teamName;}
+    public void setTeamName(String name) {teamName = name;}
 
     
 
