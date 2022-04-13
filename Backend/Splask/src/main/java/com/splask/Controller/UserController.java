@@ -1,11 +1,10 @@
-package com.splask.user;
+package com.splask.Controller;
 
 
 import java.util.List;
 
-import com.splask.project.Project;
-import com.splask.team.Team;
-
+import com.splask.Models.User;
+import com.splask.Repositories.UserDB;
 import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -52,14 +51,14 @@ public class UserController {
         List<User> users = userRepository.findAll();
 
         for (User user : users) {
-            if (user.username.equals(newUser.username)) {
+            if (user.getUsername().equals(newUser.getUsername())) {
                 responseBody.put("status", 400);
                 responseBody.put("message", "User Already Exists!");
                 return responseBody;
             }
         }
 
-        if (newUser.password.length() < 3) {
+        if (newUser.getUserPassword().length() < 3) {
             responseBody.put("status", 400);
             responseBody.put("message", "Password should be at least 3 characters long");
             return responseBody;

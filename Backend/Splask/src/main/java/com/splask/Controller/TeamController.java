@@ -1,11 +1,13 @@
-package com.splask.team;
+package com.splask.Controller;
 
-import com.splask.project.Project;
-import com.splask.project.projectDB;
-import com.splask.task.Task;
-import com.splask.task.TaskDB;
-import com.splask.user.User;
-import com.splask.user.UserDB;
+import com.splask.Models.Project;
+import com.splask.Models.Team;
+import com.splask.Repositories.projectDB;
+import com.splask.Models.Task;
+import com.splask.Repositories.TaskDB;
+import com.splask.Models.User;
+import com.splask.Repositories.teamDB;
+import com.splask.Repositories.UserDB;
 
 
 import net.minidev.json.JSONArray;

@@ -1,20 +1,12 @@
-package com.splask.team;
+package com.splask.Models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.splask.project.Project;
-import com.splask.task.Task;
-import com.splask.user.User;
 import com.sun.istack.NotNull;
 
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import org.springframework.stereotype.Repository;
 
 @Entity
 @Table (name = "Team")

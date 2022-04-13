@@ -1,13 +1,13 @@
-package com.splask.user;
+package com.splask.Services;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class UserApplication {
+public class TeamApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(UserApplication.class, args);
+		SpringApplication.run(TeamApplication.class, args);
 	}
 
 }

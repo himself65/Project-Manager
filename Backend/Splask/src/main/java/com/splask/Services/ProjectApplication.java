@@ -1,15 +1,13 @@
-package com.splask.task;
+package com.splask.Services;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.splask.project.ProjectApplication;
-
 @SpringBootApplication
-public class TaskApplication {
-	
+public class ProjectApplication {
+
 	public static void main(String[] args) {
-		SpringApplication.run(TaskApplication.class, args);
+		SpringApplication.run(ProjectApplication.class, args);
 	}
 
 }

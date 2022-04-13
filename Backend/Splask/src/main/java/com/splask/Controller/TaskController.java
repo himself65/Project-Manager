@@ -1,15 +1,16 @@
-package com.splask.task;
+package com.splask.Controller;
 
 import java.util.List;
 
-import com.splask.project.Project;
-import com.splask.project.projectDB;
-import com.splask.team.Team;
-import com.splask.team.teamDB;
-import com.splask.team.Team;
+import com.splask.Models.Project;
+import com.splask.Models.Task;
+import com.splask.Repositories.projectDB;
+import com.splask.Models.Team;
+import com.splask.Repositories.TaskDB;
+import com.splask.Repositories.teamDB;
 
-import com.splask.user.User;
-import com.splask.user.UserDB;
+import com.splask.Models.User;
+import com.splask.Repositories.UserDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import net.minidev.json.JSONObject;
@@ -33,7 +34,7 @@ public class TaskController {
 	
 	
 //	returns task by id from the database
-	@GetMapping("/task/{id}")  
+	@GetMapping("/task/{id}")
 	Task getTask(@PathVariable Integer id) {
 		return taskRepository.findById(id).get();	
 	}
@@ -52,7 +53,7 @@ public class TaskController {
 
 //		Checks if task name already exists
 		for (Task t : tasks) {
-			if (newTask.taskName.equals(newTask.taskName)){
+			if (newTask.getTask().equals(t.getTask())){
 				responseBody.put("status", 400);
 				responseBody.put("message", "Task Already Exists!");
 				return responseBody;
@@ -60,7 +61,7 @@ public class TaskController {
 		}
 
 //      Checks length of Task name
-		if(newTask.taskName.length() < 1) {
+		if(newTask.getTask().length() < 1) {
 			responseBody.put("status", 400);
 			responseBody.put("message", "Task Name Too Short!");
 			return responseBody;

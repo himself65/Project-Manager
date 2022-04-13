@@ -1,26 +1,20 @@
-package com.splask.project;
+package com.splask.Controller;
 
-import com.github.therapi.runtimejavadoc.RetainJavadoc;
-import com.splask.task.Task;
-import com.splask.team.Team;
-import com.splask.team.teamDB;
-import com.splask.user.User;
-import com.splask.user.UserDB;
+import com.splask.Models.Project;
+import com.splask.Models.Task;
+import com.splask.Models.Team;
+import com.splask.Repositories.projectDB;
+import com.splask.Repositories.teamDB;
+import com.splask.Models.User;
+import com.splask.Repositories.UserDB;
 
-import com.splask.task.TaskDB;
+import com.splask.Repositories.TaskDB;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
-import net.minidev.json.annotate.JsonIgnore;
-import org.apache.coyote.Response;
-import org.hibernate.dialect.Ingres9Dialect;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
 
 
 @RestController
@@ -106,7 +100,7 @@ public class ProjectController {
         List<Project> projects = projectRepository.findAll();
 
         for (Project p : projects) {
-            if (p.projectName.equals(newProject.projectName))
+            if (p.getProjectName().equals(newProject.getProjectName()))
             {
                 responseBody.put("status", 400);
                 responseBody.put("message", "Project Name in Use");

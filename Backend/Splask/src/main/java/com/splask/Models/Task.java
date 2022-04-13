@@ -1,10 +1,6 @@
-package com.splask.task;
+package com.splask.Models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.splask.project.Project;
-import com.splask.team.Team;
-import com.splask.user.User;
 
 
 import javax.persistence.*;
@@ -14,9 +10,7 @@ import com.sun.istack.NotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table (name = "Task")
@@ -30,23 +24,23 @@ public class Task {
 	
 	@NotNull
 	@Column (name = "task")
-	String taskName;
+	private String taskName;
 
 	@NotNull
 	@Column (name = "status")
-	Integer status;
+	private Integer status;
 	
 	@NotNull
 	@Column
-	LocalDateTime dateCreated;
+	private final LocalDateTime dateCreated;
 	
 	@NotNull
 	@Column (name = "deadLine")
-	String deadLine;
+	private String deadLine;
 	
 	@NotNull
 	@Column (name = "dateCompleted")
-	String dateCompleted;
+	private String dateCompleted;
 
 	@NotNull
 	@ManyToOne()

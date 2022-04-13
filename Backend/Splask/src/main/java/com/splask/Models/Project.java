@@ -1,12 +1,7 @@
-package com.splask.project;
+package com.splask.Models;
 
 import com.fasterxml.jackson.annotation.*;
-import com.github.therapi.runtimejavadoc.RetainJavadoc;
-import com.splask.task.Task;
-import com.splask.team.Team;
-import com.splask.user.User;
 import com.sun.istack.NotNull;
-import net.minidev.json.JSONObject;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -24,7 +19,7 @@ public class Project {
     private Integer projectID;
 
     @Column
-    String projectName;
+    private String projectName;
 
 
 
@@ -59,7 +54,7 @@ public class Project {
     LocalDateTime dateCreated;
 
 
-    Project() {
+    public Project() {
 
         dateCreated = LocalDateTime.now();
         status = 0;

@@ -1,12 +1,8 @@
 
-package com.splask.user;
+package com.splask.Models;
 
 //Class imports
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.splask.task.Task;
-import com.splask.team.Team;
-import com.splask.project.Project;
 
 //Function imports
 import com.sun.istack.NotNull;
@@ -32,11 +28,11 @@ public class User{
 
 	@NotNull
 	@Column (name = "username")
-	String username;
+	private String username;
 
 	@NotNull
 	@Column (name = "password")
-	String password;
+	private String password;
 
 //	@NotNull
 	@Column
@@ -94,7 +90,7 @@ public void user(String username, String password) {
 		this.loggedIn = 0;
 	}
 
-	User(){
+	public User(){
 		dateCreated = LocalDateTime.now();
 //		teams = new ArrayList<>();
 	}
@@ -191,7 +187,7 @@ public void user(String username, String password) {
 	public List<Task> getTasks() {return tasks;}
 	/**
 	 * 
-	 * @param teams
+	 * @param tasks
 	 * new list of Task given to User
 	 */
 	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
