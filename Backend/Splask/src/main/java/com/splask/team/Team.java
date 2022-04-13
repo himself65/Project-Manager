@@ -52,42 +52,90 @@ class Team {
     @NotNull
     @JsonIgnore
     private List<Task> tasks;
-    
 
 
-
-
-
-    
+    /**
+     *
+     * @return the Integer id of the team
+     */
     public Integer getTeamID() {return teamID;}
+
+    /**
+     *
+     * @param id
+     * new id for the user to be set as
+     */
     public void setTeamID(int id) {this.teamID = id;}
-    
+
+    /**
+     *
+     * @return the teamName of the project
+     */
     public String getTeamName() {return teamName;}
 
-    
+    /**
+     * sets a new name for the team
+     * @param name
+     * new name of the team
+     */
+    public void setTeamName(String name) {teamName = name;}
 
 
-    
-////  Team Controller functions
+    /**
+     * Adds a new user to a team
+     * @param user
+     * user to be added
+     */
     public void enrollUser(User user) {users.add(user);} //adds the user we passed in to the set
 
 
-//    
-//	Relationship tables setters and getters
+    /**
+     *
+     * @return the teams list of Tasks
+     */
 	public List<Task> getTasks() {return tasks;}
+
+    /**
+     * updates whole task list
+     * @param tasks
+     * new list of Tasks given to team
+     */
 	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
-//
+
+    /**
+     *
+     * @return the Teams list of Users in the team
+     */
     public List<User> getUsers() {return users;}
+
+    /**
+     * changes the list of users in the team
+     * @param users
+     * new user list
+     */
     public void setTeamUsers(List<User> users) {this.users = users;}
 //    
-////  Task Controller functions
+
+    /**
+     * Assigns the team to the given project
+     * @param project
+     * project that the team is being assigned to
+     */
 	public void assignTeamToProject(Project project) {teamProject = project;}
 
-
+    /**
+     *
+     * @return the project that the Team is in
+     */
     public Project getTeamProject() {
         return teamProject;
     }
 
+    /**
+     * assigns a new task to the team
+     * @param task
+     * task to be assigned
+     */
     public void assignTeamToTask(Task task) {
         tasks.add(task);
     }
