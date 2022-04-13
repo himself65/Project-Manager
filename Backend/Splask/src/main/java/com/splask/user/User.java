@@ -191,7 +191,7 @@ public void user(String username, String password) {
 	public List<Task> getTasks() {return tasks;}
 	/**
 	 * 
-	 * @param teams
+	 * @param tasks
 	 * new list of Task given to User
 	 */
 	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
