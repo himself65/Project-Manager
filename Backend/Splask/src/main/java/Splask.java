@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 
-@SpringBootApplication(scanBasePackages = {"com.splask"})
+@SpringBootApplication(scanBasePackages = {"com.splask.Services"})
 @OpenAPIDefinition
 public class Splask {
 
