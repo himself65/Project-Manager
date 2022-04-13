@@ -227,7 +227,7 @@ public class ProjectController {
 
 
     /**
-     * adds a new Team to a project
+     * creates a new Team to a project
      * @param project_id
      * Integer id of the Project
      * @param object
