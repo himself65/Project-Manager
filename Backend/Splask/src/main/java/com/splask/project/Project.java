@@ -1,6 +1,7 @@
 package com.splask.project;
 
 import com.fasterxml.jackson.annotation.*;
+import com.github.therapi.runtimejavadoc.RetainJavadoc;
 import com.splask.task.Task;
 import com.splask.team.Team;
 import com.splask.user.User;
@@ -100,21 +101,37 @@ public class Project {
     }
 */
 
+    /**
+     * formats the date that was made on instantiated
+     * @return a formatted date
+     */
     public String getDateCreated()
     {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return dateCreated.format(format);
     }
 
-    //  Controller function
-	public void enrollUserToProject(User user)
+
+    /**
+     * Adds new user to Project
+     * @param user
+     *
+     */
+
+    public void enrollUserToProject(User user)
     {
 
         users.add(user);
 
     }
 
-    //Controller function
+    /**
+     * Adds new Team to a project while also checking if the team is already in the project
+     * @param team
+     * @return true if team is already in the project,
+     *         false if the team is not in the project, and adds team in the project
+     *
+     */
     public boolean addTeamToProject(Team team) {
 
         for (Team i : teams)
@@ -130,7 +147,11 @@ public class Project {
         return false;
     }
 
-    //Controller function
+    /**
+     * Adds new Task to a project while also checking if the task is already in the prject
+     * @param task
+     * @return true if task is in project, false if it is not in project as well as adding the task to the project
+     */
     public boolean addTaskToProject(Task task) {
 
         for (Task i : tasks)
@@ -148,16 +169,27 @@ public class Project {
     }
 
 
-
-//	Relationship tables setters and getters
+    /**
+     *
+     * @return list of users in project
+     */
     public List<User> getUsers() {
         return users;}
 
+
     public void setUsers(List<User> users) {this.users = users;}
 
+    /**
+     *
+     * @return list of teams in project
+     */
 	public List<Team> getTeams() {return teams;}
 	public void setTeams(List<Team> teams) {this.teams = teams;}
 
+    /**
+     *
+     * @return list of tasks in project
+     */
 	public List<Task> getTasks() {return tasks;}
 	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
 
