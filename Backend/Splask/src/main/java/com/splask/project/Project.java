@@ -1,6 +1,7 @@
 package com.splask.project;
 
 import com.fasterxml.jackson.annotation.*;
+import com.github.therapi.runtimejavadoc.RetainJavadoc;
 import com.splask.task.Task;
 import com.splask.team.Team;
 import com.splask.user.User;
@@ -116,6 +117,7 @@ public class Project {
      * @param user
      *
      */
+
     public void enrollUserToProject(User user)
     {
 
