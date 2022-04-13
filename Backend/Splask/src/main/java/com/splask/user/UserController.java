@@ -20,20 +20,25 @@ public class UserController {
     @Autowired
     UserDB userRepository;
 
-    //  get user by ID
+//  Gets user by ID from the database
     @GetMapping("/user/{id}")
     User getUsername(@PathVariable Integer id) {
         return userRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
-    //  get all the users
+//  Get all the users from the database
     @RequestMapping("/user")
     List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    // Registers user to the database and checks if there is an
-// existing user registered with the same username
+    /**
+     * Registers user to the database and checks if there is an
+     * existing user registered with the same username
+     * @param object
+     * @returnJSON Object that hold success or fail statuses and messages
+     * 
+     */
     @PostMapping("/register")
     JSONObject registerUser(@RequestBody JSONObject object) {
         JSONObject responseBody = new JSONObject();
@@ -44,9 +49,7 @@ public class UserController {
         newUser.setUserPassword(object.getAsString("userPassword"));
         newUser.setFullName(object.getAsString("full_name"));
 
-
         List<User> users = userRepository.findAll();
-
 
         for (User user : users) {
             if (user.username.equals(newUser.username)) {
@@ -77,11 +80,16 @@ public class UserController {
         return responseBody;
     }
 
+    /**
+     * Updates user log status
+     * @param user
+     * @return JSON Object that hold success or fail statuses and messages
+     * 
+     */
     @PutMapping("/login")
     JSONObject loginUser(@RequestBody User user) {
         JSONObject responseBody = new JSONObject();
         List<User> users = userRepository.findAll();
-//      Updates user logged in status
 
         for (User userInDB : users) {
 
@@ -104,7 +112,11 @@ public class UserController {
                 return responseBody;
     }
 
-//  Log out call
+    /**
+     * Updates user log status
+     * @param user
+     * @return JSON Object that hold success or fail statuses and messages
+     */
         @PutMapping("/logout")
         JSONObject logoutUser (@RequestBody User user){
             JSONObject responseBody = new JSONObject();
@@ -127,7 +139,7 @@ public class UserController {
             return responseBody;
         }
 
-//	 Delete user by id
+//	 	Delete user by id
         @DeleteMapping("/user/{id}")
         JSONObject deleteUser (@PathVariable Integer id){
             JSONObject responseBody = new JSONObject();
@@ -137,7 +149,7 @@ public class UserController {
             return responseBody;
         }
 
-//	Delete ALL users
+//		Delete ALL users
         @DeleteMapping("/user/all")
         JSONObject deleteUsers () {
             JSONObject responseBody = new JSONObject();
@@ -146,6 +158,12 @@ public class UserController {
             responseBody.put("message", "Successfully deleted all users");
             return responseBody;
         }
+        
+        /**
+         * Gets all the projects that the user is enrolled in  
+         * @param user_id
+         * @return JSON Object that hold success or fail statuses and messages
+         */
         @GetMapping("/user/{user_id}/projects")
         JSONObject obtainProjects (@PathVariable Integer user_id)
         {
@@ -155,7 +173,6 @@ public class UserController {
 
             projects.addAll(user.getProject());
 
-
             responseBody.put("projects", projects);
             responseBody.put("status", 200);
             responseBody.put("message", "Successfully retrieved all projects from " + user.getUsername());
@@ -163,6 +180,11 @@ public class UserController {
             return responseBody;
         }
 
+        /**
+         * Gets all the teams that the user is enrolled in
+         * @param user_id
+         * @return JSON Object that hold success or fail statuses and messages
+         */
         @GetMapping("/user/{user_id}/teams")
         JSONObject obtainTeams(@PathVariable Integer user_id)
         {
@@ -178,7 +200,12 @@ public class UserController {
 
             return responseBody;
         }
-
+        
+        /**
+         * Gets all the tasks that the user is enrolled in
+         * @param user_id
+         * @return JSON Object that hold success or fail statuses and messages
+         */
         @GetMapping("/user/{user_id}/tasks")
         JSONObject obtainTasks (@PathVariable Integer user_id)
         {

@@ -64,7 +64,7 @@ public class User{
 	)
 	@JsonIgnore
 	private List<Project> projects = new ArrayList<>();
-////
+
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "user_team",
@@ -73,7 +73,7 @@ public class User{
 	)
 	@JsonIgnore
 	private List<Team> teams = new ArrayList<>();
-//
+
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "user_task",
@@ -87,11 +87,7 @@ public class User{
 //	
 	
 	
-	
-	
-//	public user(@NotBlank String userName, @NotBlank String userPassword) {
-//	public void user(String username, String password) { TODO (old) test
-public void user(String username, String password) { //TODO (new)test
+public void user(String username, String password) {
 
 		this.username = username;
 		this.password = password;
@@ -103,68 +99,140 @@ public void user(String username, String password) { //TODO (new)test
 //		teams = new ArrayList<>();
 	}
 
+	/**
+	 * 
+	 * @return Integer id of the user
+	 */
 	public Integer getUserId() {return userID;}
+	/**
+	 * 
+	 * @param id
+	 * sets the User id
+	 */
 	public void setUserId(Integer id) {this.userID = id;}
 	
+	/**
+	 * 
+	 * @return String username of the user
+	 */
 	public String getUsername() {return username;}
+	/**
+	 * 
+	 * @param username
+	 * sets the username to the user
+	 */
 	public void setUsername(String username) {this.username = username;}
 	
+	/**
+	 * 
+	 * @return String password of the user
+	 */
 	public String getUserPassword() {return password;}
+	/**
+	 * 
+	 * @param password
+	 * Sets the passoword to the user
+	 */
 	public void setUserPassword(String password) {this.password = password;}
 
+	/**
+	 * 
+	 * @return Date that the user was created
+	 */
 	public String getDateCreated()
 	{
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		return dateCreated.format(format);
 	}
 	
-
+	/**
+	 * 
+	 * @return Integer loggin of the user 
+	 */
     public Integer isLoggedIn() {return loggedIn;}
+    /**
+     * 
+     * @param loggedIn
+     * Sets the loggin status of the user 
+     */
     public void setLoggedIn(int loggedIn) {this.loggedIn = loggedIn;}
 
     
-////	Relationship tables setters and getters
+//	Relationship tables setters and getters
+    
+    /**
+     * 
+     * @return user list of Projects
+     */
 	public List<Project> getProject() {return projects;}
+	/**
+	 * 
+	 * @param projects
+	 * new list of Project given to User
+	 */
 	public void setProject(List<Project> projects) {this.projects = projects;}
-
-
+	
+	/**
+	 * 
+	 * @return user list of Team
+	 */
 	public List<Team> getTeam() {return teams;}
+	/**
+	 * 
+	 * @param teams
+	 * new list of Team given to User
+	 */
 	public void setTeams(List<Team> teams) {this.teams = teams;}
 
-
+	/**
+	 * 
+	 * @return user list of Task
+	 */
 	public List<Task> getTasks() {return tasks;}
+	/**
+	 * 
+	 * @param teams
+	 * new list of Task given to User
+	 */
 	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
 
 
+	/**
+	 * 
+	 * @return Full name of the user including fist and last name
+	 */
 	public String getFullName() {return fullName;}
+	/**
+	 * 
+	 * @param i
+	 * Sets the fullname of the user
+	 */
 	public void setFullName(String i) {fullName = i;}
 
+	
 	//Controller Functions
-	public void addProjectToUser(Project project)
-	{
-
-		projects.add(project);
-
-	}
-
-	public void addTeamToUser(Team team)
-	{
-		teams.add(team);
-	}
-
-	public void addTaskToUser(Task task)
-	{
-		tasks.add(task);
-	}
-
-
-
-
-
-
 	
-	
-	
+	/**
+	 * Assigns a new Project to the User
+	 * @param project
+	 * Project to be assigned
+	 */
+	public void addProjectToUser(Project project) {projects.add(project);}
+	/**
+	 * Assigns a new Team to the User
+	 * @param team
+	 * Team to be assigned
+	 */
+	public void addTeamToUser(Team team) {teams.add(team);}
+	/**
+	 * Assigns a new Task to the User
+	 * @param task
+	 * Task to be assigned
+	 */
+	public void addTaskToUser(Task task) {tasks.add(task);}
+
+
+
 
 //	to compare an object passed to the program with an object from our database.
     @Override
@@ -194,12 +262,12 @@ public void user(String username, String password) { //TODO (new)test
                 '}';
     }
 
-	// Function that checks if string contains uppercase, lowercase
+	// Function that checks if string contains upper case, lower case
 	// special character & numeric value
 	public static boolean isAllPresent(String str) {
 
 		boolean containsAll = false;
-		// ReGex to check if a string contains uppercase, lowercase
+		// ReGex to check if a string contains upper case, lower case
 		// special character & numeric value
 		String regex = "^(?=.*[a-z])(?=."
 				+ "*[A-Z])(?=.*\\d)"
@@ -231,11 +299,7 @@ public void user(String username, String password) { //TODO (new)test
 	}
 
 
-	public List<Task> getCompletedTasks() {
-		return completedTasks;
-	}
+	public List<Task> getCompletedTasks() {return completedTasks;}
 
-	public void setCompletedTasks(List<Task> completedTasks) {
-		this.completedTasks = completedTasks;
-	}
+	public void setCompletedTasks(List<Task> completedTasks) {this.completedTasks = completedTasks;}
 }

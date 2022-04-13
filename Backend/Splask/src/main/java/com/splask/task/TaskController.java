@@ -31,19 +31,20 @@ public class TaskController {
 	@Autowired
 	projectDB projectRepository;
 	
-//	Get task by id
+	
+//	returns task by id from the database
 	@GetMapping("/task/{id}")  
 	Task getTask(@PathVariable Integer id) {
 		return taskRepository.findById(id).get();	
 	}
 
-//  Get all the tasks
+//	returns all the tasks from the database
 	@RequestMapping("task")
 	List<Task> getAllTasks() {
 		return taskRepository.findAll();
 	}
-	
-//	Creates a new task
+
+//	Creates a new task in the database
 	@PostMapping("/task")
 	JSONObject createTask(@RequestBody Task newTask) {
 		JSONObject responseBody = new JSONObject();
@@ -72,7 +73,7 @@ public class TaskController {
 		return responseBody;
 	}
 
-	// Delete Task by id
+//	Delete Task by id from the database
 	@DeleteMapping("/task/{id}")
 	JSONObject deleteTask(@PathVariable Integer id) {
 		JSONObject responseBody = new JSONObject();
@@ -82,7 +83,8 @@ public class TaskController {
 		return responseBody;
 	}
 
-//	Delete ALL Tasks
+
+//	Delete ALL Tasks from the database
 	@DeleteMapping("/task")
 	JSONObject deleteTasks() {
 		JSONObject responseBody = new JSONObject();
@@ -93,20 +95,29 @@ public class TaskController {
 	}
 
 	
-	
-//	TODO Waiting to be tested
+	/**
+	 * Sets the task to the assigned user
+	 * @param taskID
+	 * @param userID
+	 * @return JSON Object that hold success or fail statuses and messages
+	 */
 	@PutMapping("/{task_id}/users/{user_id}")
-	Task enrollUserToTask( //Gets the user then assigns the user to the task
-						   @PathVariable Integer taskID, /*TODO if error, change variable name to task_id and test */
+	Task enrollUserToTask( 
+						   @PathVariable Integer taskID,
 						   @PathVariable Integer userID
 	) {
 		Task task = taskRepository.findById(taskID).get();
 		User user = userRepository.findById(userID).get();
-		task.assignUser(user); //sends the passed user to the assignUser method
-		return  taskRepository.save(task); //saves the new task to assigned user
+		task.assignUser(user);
+		return taskRepository.save(task); //saves the new task to assigned user;  
 	}
-//  TODO Waiting to be tested
-//  Sets the task to the assigned team
+
+	/**
+	 * Sets the task to the assigned team
+	 * @param taskID
+	 * @param teamID
+	 * @return JSON Object that hold success or fail statuses and messages
+	 */
     @PutMapping("/task/{task_id}/add")
     JSONObject assignTaskToTeam(
     		@PathVariable Integer taskID,
@@ -131,9 +142,12 @@ public class TaskController {
     	return responseBody;
     }
 
-
-//  TODO Waiting to be tested
-//  Sets the task to the assigned project
+    /**
+     * Sets the task to the assigned project
+     * @param taskID
+     * @param projectID
+     * @return  
+     */
     @PutMapping("/task/{task_id}/project/{project_id}")
     Task assignTaskToProject(
     		@PathVariable Integer taskID,
@@ -145,6 +159,12 @@ public class TaskController {
     	return taskRepository.save(task);
     }
 
+    /**
+     * Sets the task to completed 
+     * @param task_id
+     * @param request
+     * @return JSON Object that hold success or fail statuses and messages
+     */
 	@PutMapping("/task/{task_id}/complete")
 	JSONObject setComplete(@PathVariable Integer task_id, @RequestBody JSONObject request)
 	{
