@@ -24,12 +24,33 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type Task activity.
+ */
 public class TaskActivity extends AppCompatActivity {
 
+    /**
+     * The Btn complete task.
+     */
     Button btnCompleteTask;
+    /**
+     * The Uri.
+     */
     Uri.Builder uri = new Uri.Builder();
+    /**
+     * The Tag task req.
+     */
     String tag_task_req = "task_req";
-    TextView task_name, team_name, task_description;
+    /**
+     * The Task name.
+     */
+    TextView task_name, /**
+     * The Team name.
+     */
+    team_name, /**
+     * The Task description.
+     */
+    task_description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +71,9 @@ public class TaskActivity extends AppCompatActivity {
         task_description = findViewById(R.id.taskDescription);
     }
 
+    /**
+     * Load task.
+     */
     public void loadTask(){
         Map<String, String> params = new HashMap<String, String>();
 //        params.put("id", id); //pass in task id
@@ -57,6 +81,11 @@ public class TaskActivity extends AppCompatActivity {
         taskRequest(params, "load");
     }
 
+    /**
+     * Complete task.
+     *
+     * @param v the v
+     */
     public void completeTask(View v){
         Map<String, String> params = new HashMap<String, String>();
 //        params.put("id", id); //pass in task id
@@ -64,6 +93,12 @@ public class TaskActivity extends AppCompatActivity {
         taskRequest(params, "complete");
     }
 
+    /**
+     * Task request.
+     *
+     * @param params the params
+     * @param tag    the tag
+     */
     public void taskRequest(Map<String, String> params, String tag){
         uri = Uri.parse(Const.MOCK_SERVER + "/project/task/" + tag).buildUpon();
 //        uri = Uri.parse(Const.API_SERVER + "/project/" + tag).buildUpon();

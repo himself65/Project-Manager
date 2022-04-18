@@ -34,11 +34,35 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type Login activity.
+ */
 public class LoginActivity extends AppCompatActivity {
+    /**
+     * The Tag login req.
+     */
     String tag_login_req = "login_req";
-    EditText username, password;
-    Button btnLogin, btnRegister;
+    /**
+     * The Username.
+     */
+    EditText username, /**
+     * The Password.
+     */
+    password;
+    /**
+     * The Btn login.
+     */
+    Button btnLogin, /**
+     * The Btn register.
+     */
+    btnRegister;
+    /**
+     * The P bar.
+     */
     ProgressBar pBar;
+    /**
+     * The Uri.
+     */
     Uri.Builder uri = new Uri.Builder();
 
     @Override
@@ -52,6 +76,11 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
     }
 
+    /**
+     * Submit.
+     *
+     * @param v the v
+     */
     public void submit(View v) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("username", username.getText().toString());
@@ -109,6 +138,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Login request.
+     *
+     * @param params the params
+     */
     void loginRequest(Map<String, String> params){
         //NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
         String url = Const.API_SERVER + "/login/";
@@ -146,7 +180,12 @@ public class LoginActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(request);
     }
 
-    //NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
+    /**
+     * Register request.
+     *
+     * @param params the params
+     */
+//NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
     void registerRequest(Map<String, String> params) { //Register User
         String url = Const.API_SERVER + "/register";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,

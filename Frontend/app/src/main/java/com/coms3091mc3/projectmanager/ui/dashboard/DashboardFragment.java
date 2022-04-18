@@ -47,6 +47,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The type Dashboard fragment.
+ */
 public class DashboardFragment extends Fragment {
     private FragmentDashboardBinding binding;
 
@@ -109,6 +112,11 @@ public class DashboardFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Show menu.
+     *
+     * @param v the v
+     */
     public void showMenu(View v) {
         PopupMenu popup = new PopupMenu(getContext(), v);
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -126,6 +134,9 @@ public class DashboardFragment extends Fragment {
         popup.show();
     }
 
+    /**
+     * Add project.
+     */
     public void addProject() {
         FragmentManager fragmentManager = getChildFragmentManager();
         AddProjectDialogFragment fragment = new AddProjectDialogFragment(new AddProjectDialogFragment.AddProjectDialogListener() {

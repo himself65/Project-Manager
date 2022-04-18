@@ -17,6 +17,9 @@ import com.coms3091mc3.projectmanager.R;
 import com.coms3091mc3.projectmanager.databinding.FragmentHomeBinding;
 import com.coms3091mc3.projectmanager.utils.Const;
 
+/**
+ * The type Home fragment.
+ */
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
