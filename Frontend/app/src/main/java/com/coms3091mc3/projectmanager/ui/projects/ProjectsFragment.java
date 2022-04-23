@@ -24,6 +24,9 @@ import org.json.JSONObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The type Projects fragment.
+ */
 public class ProjectsFragment extends Fragment {
 
     private FragmentProjectsBinding binding;

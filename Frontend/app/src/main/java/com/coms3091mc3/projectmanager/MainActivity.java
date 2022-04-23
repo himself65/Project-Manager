@@ -43,15 +43,36 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type Main activity.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    /**
+     * The Uri.
+     */
     Uri.Builder uri = new Uri.Builder();
+    /**
+     * The Tag project req.
+     */
     String tag_project_req = "project_req";
+    /**
+     * The Teams.
+     */
     JSONArray teams;
+    /**
+     * The View add.
+     */
     boolean viewAdd = false;
+    /**
+     * The Project id.
+     */
     int projectID;
 
+    /**
+     * The App bar configuration.
+     */
     AppBarConfiguration appBarConfiguration;
 
     @Override
@@ -84,6 +105,11 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
+    /**
+     * Dropdown menu.
+     *
+     * @param v the v
+     */
     public void dropdownMenu(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -109,6 +135,11 @@ public class MainActivity extends AppCompatActivity {
         popup.show();
     }
 
+    /**
+     * Project menu.
+     *
+     * @param v the v
+     */
     public void projectMenu(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -142,6 +173,11 @@ public class MainActivity extends AppCompatActivity {
         popup.show();
     }
 
+    /**
+     * Logout.
+     *
+     * @param item the item
+     */
     public void logout(MenuItem item) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("username", Const.username);
@@ -180,7 +216,12 @@ public class MainActivity extends AppCompatActivity {
 //        AppController.getInstance().addToRequestQueue(logoutRequest, "logout_request");
     }
 
-    //NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
+    /**
+     * Logout request.
+     *
+     * @param params the params
+     */
+//NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
     void logoutRequest(Map<String, String> params){
         String url = Const.API_SERVER + "/logout/";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url,
@@ -204,6 +245,11 @@ public class MainActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(request);
     }
 
+    /**
+     * List members.
+     *
+     * @param v the v
+     */
     public void listMembers(View v) {
         Map<String, String> params = new HashMap<String, String>();
 //        params.put("id", username.getText().toString()); //pass project id
@@ -212,6 +258,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Add members.
+     *
+     * @param v the v
+     */
     public void addMembers(View v) {
         Map<String, String> params = new HashMap<String, String>();
 
@@ -245,12 +296,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Gets teams.
+     *
+     * @param v the v
+     */
     public void getTeams(View v) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("project", String.valueOf(5)); //pass project ID
         projectRequest(params, v, "teams"); //get list of teams
     }
 
+    /**
+     * Add team.
+     *
+     * @param v the v
+     */
     public void addTeam(View v) {
         Map<String, String> params = new HashMap<String, String>();
 //        params.put("id", username.getText().toString()); //pass project id
@@ -283,6 +344,11 @@ public class MainActivity extends AppCompatActivity {
         alertBuilder.create().show();
     }
 
+    /**
+     * Add task.
+     *
+     * @param v the v
+     */
     public void addTask(View v) {
         if (teams != null && teams.length() > 0) {
             int[] projectTeamsID = new int[teams.length()];
@@ -333,6 +399,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Project request.
+     *
+     * @param params the params
+     * @param v      the v
+     * @param tag    the tag
+     */
     public void projectRequest(Map<String, String> params, View v, String tag) {
         uri = Uri.parse(Const.API_SERVER + "/project/" + "projectID" + "/" + tag).buildUpon();
 //        uri = Uri.parse(Const.API_SERVER + "/project/" + tag).buildUpon();
