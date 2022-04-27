@@ -187,14 +187,14 @@ public class ProjectController {
             return responseBody;
         }
 
-        project.enrollUserToProject(user); //sends the passed user to the enrollUsers method
+        project.enrollUserToProject(user); //sends the passed user to the enrollUserToProject method
         user.addProjectToUser(project);
         projectRepository.save(project);
         userRepository.save(user);
 
         responseBody.put("status", 200);
         responseBody.put("message", "User successfully added to " + project.getProjectName());
-        return  responseBody; //saves the new user to assigned team
+        return  responseBody; //saves the new user to assigned project
     }
 
 
