@@ -11,7 +11,16 @@ import androidx.annotation.NonNull;
 
 import com.coms3091mc3.projectmanager.data.Task;
 
+/**
+ * The type Tasks adapter.
+ */
 public class TasksAdapter extends ArrayAdapter<Task> {
+    /**
+     * Instantiates a new Tasks adapter.
+     *
+     * @param context  the context
+     * @param resource the resource
+     */
     public TasksAdapter(@NonNull Context context, int resource) {
         super(context, resource);
     }

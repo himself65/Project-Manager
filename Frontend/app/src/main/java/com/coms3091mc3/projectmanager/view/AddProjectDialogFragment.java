@@ -18,13 +18,32 @@ import com.coms3091mc3.projectmanager.data.Project;
 
 import java.util.Date;
 
+/**
+ * The type Add project dialog fragment.
+ */
 public class AddProjectDialogFragment extends DialogFragment {
+    /**
+     * The interface Add project dialog listener.
+     */
     public interface AddProjectDialogListener {
+        /**
+         * On dialog positive click.
+         *
+         * @param projectName the project name
+         */
         public void onDialogPositiveClick(Project projectName);
     }
 
+    /**
+     * The Listener.
+     */
     AddProjectDialogListener listener;
 
+    /**
+     * Instantiates a new Add project dialog fragment.
+     *
+     * @param listener the listener
+     */
     public AddProjectDialogFragment(AddProjectDialogListener listener) {
         this.listener = listener;
     }

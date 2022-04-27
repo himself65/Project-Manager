@@ -17,13 +17,32 @@ import android.widget.EditText;
 import com.coms3091mc3.projectmanager.R;
 import com.coms3091mc3.projectmanager.data.Team;
 
+/**
+ * The type Add team dialog fragment.
+ */
 public class AddTeamDialogFragment extends DialogFragment {
+    /**
+     * The interface Add team dialog listener.
+     */
     public interface AddTeamDialogListener {
+        /**
+         * On dialog positive click.
+         *
+         * @param team the team
+         */
         public void onDialogPositiveClick(Team team);
     }
 
+    /**
+     * The Listener.
+     */
     AddTeamDialogFragment.AddTeamDialogListener listener;
 
+    /**
+     * Instantiates a new Add team dialog fragment.
+     *
+     * @param listener the listener
+     */
     public AddTeamDialogFragment(AddTeamDialogFragment.AddTeamDialogListener listener) {
         this.listener = listener;
     }

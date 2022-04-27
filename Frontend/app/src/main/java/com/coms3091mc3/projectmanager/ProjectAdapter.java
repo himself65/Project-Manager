@@ -11,7 +11,16 @@ import androidx.annotation.NonNull;
 
 import com.coms3091mc3.projectmanager.data.Project;
 
+/**
+ * The type Project adapter.
+ */
 public class ProjectAdapter extends ArrayAdapter<Project> {
+    /**
+     * Instantiates a new Project adapter.
+     *
+     * @param context  the context
+     * @param resource the resource
+     */
     public ProjectAdapter(@NonNull Context context, int resource) {
         super(context, resource);
     }

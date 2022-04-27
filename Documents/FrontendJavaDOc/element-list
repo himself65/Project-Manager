@@ -1,0 +1,14 @@
+com.coms3091mc3.projectmanager
+com.coms3091mc3.projectmanager.app
+com.coms3091mc3.projectmanager.data
+com.coms3091mc3.projectmanager.placeholder
+com.coms3091mc3.projectmanager.store
+com.coms3091mc3.projectmanager.ui.dashboard
+com.coms3091mc3.projectmanager.ui.home
+com.coms3091mc3.projectmanager.ui.project
+com.coms3091mc3.projectmanager.ui.projects
+com.coms3091mc3.projectmanager.ui.settings
+com.coms3091mc3.projectmanager.ui.task
+com.coms3091mc3.projectmanager.ui.team
+com.coms3091mc3.projectmanager.utils
+com.coms3091mc3.projectmanager.view
