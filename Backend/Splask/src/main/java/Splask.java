@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages = {"com.splask"})
 @ComponentScan({"com.splask"})
-@EntityScan("com.splask.Models")
-@EnableJpaRepositories("com.splask.Repositories")
+@EntityScan(basePackages = "com.splask")
+@EnableJpaRepositories(basePackages = "com.splask")
 @OpenAPIDefinition
 public class Splask {
 
