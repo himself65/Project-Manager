@@ -14,9 +14,6 @@ import com.coms3091mc3.projectmanager.databinding.FragmentHomeBinding;
 import com.coms3091mc3.projectmanager.databinding.FragmentSettingsBinding;
 import com.coms3091mc3.projectmanager.ui.home.HomeViewModel;
 
-/**
- * The type Settings fragment.
- */
 public class SettingsFragment extends Fragment {
     private FragmentSettingsBinding binding;
 

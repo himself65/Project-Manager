@@ -40,9 +40,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * The type Task fragment.
- */
 public class TaskFragment extends Fragment {
     private FragmentTaskBinding binding;
     private int projectID;
@@ -67,11 +64,6 @@ public class TaskFragment extends Fragment {
         return binding.getRoot();
     }
 
-    /**
-     * Task request.
-     *
-     * @param id the id
-     */
     void taskRequest(int id) {
         String url = Const.API_SERVER + "/task/" + id;
 
@@ -94,11 +86,6 @@ public class TaskFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(taskRequest);
     }
 
-    /**
-     * Complete task.
-     *
-     * @param taskID the task id
-     */
     void completeTask(int taskID){
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
         alertBuilder.setTitle("Confirm to complete task?")
@@ -116,11 +103,6 @@ public class TaskFragment extends Fragment {
         alertBuilder.create().show();
     }
 
-    /**
-     * Complete task request.
-     *
-     * @param taskID the task id
-     */
     void completeTaskRequest(int taskID) {
         String url = Const.API_SERVER + "/task/" + taskID + "/complete/";
         Map<String, String> params = new HashMap<String, String>();
