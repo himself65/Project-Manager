@@ -145,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     void loginRequest(Map<String, String> params){
         //NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
-        String url = Const.API_SERVER + "/login/";
+        String url = Const.API_SERVER + "/login";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url,
                 new JSONObject(params),
                 response -> {
@@ -172,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
                 },
                 error -> {
                     VolleyLog.d("login_debug_error", "Error: " + error.toString());
-                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), error.getMessage() + "", Toast.LENGTH_LONG).show();
                     // hide the progress dialog
                     pBar.setVisibility(View.INVISIBLE);
                 }
