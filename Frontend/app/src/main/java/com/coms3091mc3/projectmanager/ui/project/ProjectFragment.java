@@ -52,9 +52,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * The type Project fragment.
- */
 public class ProjectFragment extends Fragment {
     private FragmentProjectBinding binding;
     private JSONArray teamsArray = new JSONArray();
@@ -126,11 +123,6 @@ public class ProjectFragment extends Fragment {
         return view;
     }
 
-    /**
-     * Show menu.
-     *
-     * @param v the v
-     */
     public void showMenu(View v) {
         PopupMenu popup = new PopupMenu(getContext(), v);
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -156,9 +148,6 @@ public class ProjectFragment extends Fragment {
         popup.show();
     }
 
-    /**
-     * Gets teams.
-     */
     void getTeams() {
         String url = Const.API_SERVER + "/project/" + (Integer) getArguments().get("projectID") + "/teams";
         JsonObjectRequest teamsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -191,9 +180,6 @@ public class ProjectFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(teamsRequest);
     }
 
-    /**
-     * List teams.
-     */
     public void listTeams() {
         String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "teams";
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
@@ -238,9 +224,6 @@ public class ProjectFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(teamsRequest);
     }
 
-    /**
-     * Add member.
-     */
     public void addMember() {
         Map<String, String> params = new HashMap<String, String>();
         Context context = getContext();
@@ -276,9 +259,6 @@ public class ProjectFragment extends Fragment {
         alertBuilder.create().show();
     }
 
-    /**
-     * List members.
-     */
     public void listMembers() {
         String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "users";
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
@@ -318,9 +298,6 @@ public class ProjectFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(usersRequest);
     }
 
-    /**
-     * Add team.
-     */
     public void addTeam() {
         Map<String, String> params = new HashMap<String, String>();
         Context context = getContext();
@@ -353,9 +330,6 @@ public class ProjectFragment extends Fragment {
         alertBuilder.create().show();
     }
 
-    /**
-     * Add task.
-     */
     void addTask() {
         if (teamsArray != null && teamsArray.length() > 0) {
             int[] projectTeamsID = new int[teamsArray.length()];
@@ -412,11 +386,6 @@ public class ProjectFragment extends Fragment {
         }
     }
 
-    /**
-     * Add team request.
-     *
-     * @param query the query
-     */
     void addTeamRequest(Map<String, String> query) {
         //NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
         String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/addTeam/";
@@ -436,11 +405,6 @@ public class ProjectFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(request);
     }
 
-    /**
-     * Add member request.
-     *
-     * @param query the query
-     */
     void addMemberRequest(Map<String, String> query){
         String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "addUser/";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url,
@@ -460,13 +424,6 @@ public class ProjectFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(request);
     }
 
-    /**
-     * Add task request.
-     *
-     * @param params1 the params 1
-     * @param params2 the params 2
-     * @throws JSONException the json exception
-     */
     void addTaskRequest(Map<String, String> params1, Map<String, Integer> params2) throws JSONException {
         JSONObject query = new JSONObject();
         query.put("task", params1.get("task"));
