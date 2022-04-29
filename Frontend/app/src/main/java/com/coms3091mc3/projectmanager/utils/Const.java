@@ -14,7 +14,7 @@ public class Const {
      * The constant API_SERVER.
      */
 //    public static final String API_SERVER = "https://bd9f22ed-10c9-4c41-a415-b951634333f6.mock.pstmn.io";
-    public static final String API_SERVER = "http://coms-309-007.class.las.iastate.edu:8080";
+    public static final String API_SERVER = "https://bd9f22ed-10c9-4c41-a415-b951634333f6.mock.pstmn.io";
     /**
      * The constant username.
      */
