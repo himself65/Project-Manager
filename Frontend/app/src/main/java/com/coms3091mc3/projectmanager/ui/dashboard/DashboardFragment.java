@@ -64,12 +64,18 @@ public class DashboardFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @Override
+    public void onDestroy() {
+        AppController.getInstance().cancelPendingRequests("DashboardFragment");
+        super.onDestroy();
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         Context context = getContext();
         String url = Const.API_SERVER + "/user/" + Const.user.getUserID() + "/projects";
-
+        binding.setModal(new DashboardDataModal(context));
         //get user projects
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
@@ -90,8 +96,7 @@ public class DashboardFragment extends Fragment {
                 },
                 error -> Logger.getLogger("json").log(Level.INFO, error.toString())
         );
-        AppController.getInstance().addToRequestQueue(request);
-        binding.setModal(new DashboardDataModal(context));
+        AppController.getInstance().addToRequestQueue(request, "DashboardFragment");
         View view = binding.getRoot();
         Button button = view.findViewById(R.id.add_project);
         GridView gridView = view.findViewById(R.id.dashboard_grid_layout);

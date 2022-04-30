@@ -32,6 +32,12 @@ public class ProjectsFragment extends Fragment {
 
     private FragmentProjectsBinding binding;
 
+    @Override
+    public void onDestroy() {
+        AppController.getInstance().cancelPendingRequests("ProjectsFragment");
+        super.onDestroy();
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentProjectsBinding.inflate(inflater, container, false);
@@ -61,7 +67,7 @@ public class ProjectsFragment extends Fragment {
                 error -> Logger.getLogger("projects_fragment_debug").log(Level.INFO, error.toString())
         );
 
-        AppController.getInstance().addToRequestQueue(request);
+        AppController.getInstance().addToRequestQueue(request, "ProjectsFragment");
         return root;
     }
 
