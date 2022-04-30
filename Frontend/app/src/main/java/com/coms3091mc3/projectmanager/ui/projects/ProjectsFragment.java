@@ -14,6 +14,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.data.Project;
 import com.coms3091mc3.projectmanager.databinding.FragmentProjectsBinding;
+import com.coms3091mc3.projectmanager.store.ProjectDataModel;
 import com.coms3091mc3.projectmanager.store.ProjectsDataModel;
 import com.coms3091mc3.projectmanager.utils.Const;
 
@@ -48,7 +49,10 @@ public class ProjectsFragment extends Fragment {
                                     object.getString("projectName"),
                                     object.getString("dateCreated")
                             );
-                            binding.getModal().projectsAdapter.add(project);
+                            ProjectsDataModel modal = binding.getModal();
+                            if (modal != null) {
+                                modal.projectsAdapter.add(project);
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

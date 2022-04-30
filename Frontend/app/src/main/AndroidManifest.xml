@@ -14,18 +14,7 @@
         android:theme="@style/Theme.ProjectManager"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".TeamActivity"
-            android:exported="false">
-<!--                <intent-filter>-->
-<!--                    <action android:name="android.intent.action.MAIN" />-->
-
-<!--                    <category android:name="android.intent.category.LAUNCHER" />-->
-<!--                </intent-filter>-->
-        </activity>
-        <activity
-            android:name=".TaskActivity"
-            android:exported="false" />
-        <activity
+            android:configChanges="uiMode"
             android:name=".MainActivity"
             android:exported="false" />
         <activity
