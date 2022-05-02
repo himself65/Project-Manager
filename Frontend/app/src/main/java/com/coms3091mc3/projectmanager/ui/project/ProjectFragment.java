@@ -52,12 +52,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * The type Project fragment.
- */
 public class ProjectFragment extends Fragment {
     private FragmentProjectBinding binding;
     private JSONArray teamsArray = new JSONArray();
+    private int projectID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,8 +63,9 @@ public class ProjectFragment extends Fragment {
         binding = FragmentProjectBinding.inflate(inflater, container, false);
         binding.setModal(new ProjectDataModel(getContext()));
         View view = binding.getRoot();
-        int id = (Integer) getArguments().get("projectID");
-        String url = Const.API_SERVER + "/project/" + id;
+        projectID = (Integer) getArguments().get("projectID");
+        Log.d("project_debug","Entered project with id : " + projectID);
+        String url = Const.API_SERVER + "/project/" + projectID;
         String tasksUrl = Const.API_SERVER + "/user/" + Const.user.getUserID() + "/tasks";
         getTeams();
         Button button = view.findViewById(R.id.add_project);
@@ -82,7 +81,7 @@ public class ProjectFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Task task = binding.getModal().tasksAdapter.getItem(i);
-                ProjectFragmentDirections.ActionNavigationProjectToNavigationTask action = ProjectFragmentDirections.actionNavigationProjectToNavigationTask(task.getTaskID(), id);
+                ProjectFragmentDirections.ActionNavigationProjectToNavigationTask action = ProjectFragmentDirections.actionNavigationProjectToNavigationTask(task.getTaskID(), projectID);
                 Navigation.findNavController(view).navigate(action);
             }
         });
@@ -97,40 +96,43 @@ public class ProjectFragment extends Fragment {
                                     object.getInt("id"),
                                     object.getString("task")
                             );
+                            task.setStatus(object.getInt("complete"));
                             binding.getModal().tasksAdapter.add(task);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 },
-                error -> Logger.getLogger("json").log(Level.INFO, error.toString())
+                error -> {
+                    Log.d("task_debug", "Task Request Eror: " + error.getMessage());
+                }
         );
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 project -> {
                     try {
+                        JSONObject projectDetails = project.getJSONObject("project");
                         binding.getModal().project.set(
                                 new Project(
-                                        project.getInt("projectID"),
-                                        project.getString("projectName"),
-                                        project.getString("dateCreated")
+                                        projectDetails.getInt("projectID"),
+                                        projectDetails.getString("projectName"),
+                                        projectDetails.getString("dateCreated")
                                 )
                         );
                     } catch (JSONException e) {
+                        Log.d("project_debug", "get project error: " +e.getMessage());
                         e.printStackTrace();
                     }
                 },
-                error -> Logger.getLogger("json").log(Level.INFO, error.toString()));
+                error -> {
+                    Logger.getLogger("json").log(Level.INFO, error.toString());
+                    Log.d("project_debug","Get project error: " + error.getMessage());
+                });
         AppController.getInstance().addToRequestQueue(request);
         AppController.getInstance().addToRequestQueue(tasksRequest);
         return view;
     }
 
-    /**
-     * Show menu.
-     *
-     * @param v the v
-     */
     public void showMenu(View v) {
         PopupMenu popup = new PopupMenu(getContext(), v);
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -156,11 +158,8 @@ public class ProjectFragment extends Fragment {
         popup.show();
     }
 
-    /**
-     * Gets teams.
-     */
     void getTeams() {
-        String url = Const.API_SERVER + "/project/" + (Integer) getArguments().get("projectID") + "/teams";
+        String url = Const.API_SERVER + "/project/" + projectID + "/teams";
         JsonObjectRequest teamsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
 //                    teamsArray = teams;
@@ -191,11 +190,9 @@ public class ProjectFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(teamsRequest);
     }
 
-    /**
-     * List teams.
-     */
     public void listTeams() {
-        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "teams";
+//        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "teams";
+        String url = Const.API_SERVER + "/project/" + projectID + "/" + "teams";
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
         JsonObjectRequest teamsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
@@ -230,7 +227,7 @@ public class ProjectFragment extends Fragment {
                     alertBuilder.create().show();
                 },
                 error -> {
-                    VolleyLog.d("project_debug", "Error: " + error.toString());
+                    Log.d("project_debug", "Error: " + error.getMessage());
                     error.printStackTrace();
                     Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                 }
@@ -238,9 +235,6 @@ public class ProjectFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(teamsRequest);
     }
 
-    /**
-     * Add member.
-     */
     public void addMember() {
         Map<String, String> params = new HashMap<String, String>();
         Context context = getContext();
@@ -276,9 +270,6 @@ public class ProjectFragment extends Fragment {
         alertBuilder.create().show();
     }
 
-    /**
-     * List members.
-     */
     public void listMembers() {
         String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "users";
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
@@ -318,9 +309,6 @@ public class ProjectFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(usersRequest);
     }
 
-    /**
-     * Add team.
-     */
     public void addTeam() {
         Map<String, String> params = new HashMap<String, String>();
         Context context = getContext();
@@ -353,9 +341,6 @@ public class ProjectFragment extends Fragment {
         alertBuilder.create().show();
     }
 
-    /**
-     * Add task.
-     */
     void addTask() {
         if (teamsArray != null && teamsArray.length() > 0) {
             int[] projectTeamsID = new int[teamsArray.length()];
@@ -412,35 +397,27 @@ public class ProjectFragment extends Fragment {
         }
     }
 
-    /**
-     * Add team request.
-     *
-     * @param query the query
-     */
     void addTeamRequest(Map<String, String> query) {
         //NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
-        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/addTeam/";
+//        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/addTeam/";
+        String url = Const.API_SERVER + "/project/" + projectID + "/addTeam/";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url,
                 new JSONObject(query),
                 response -> {
-                    Log.d("project_debug", response.toString());
                     try {
                         Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                        Log.d("project_debug","Team added : "+ response.getString("message"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 },
                 error -> {
+                    Log.d("project_debug",error.getMessage());
                 }
         );
         AppController.getInstance().addToRequestQueue(request);
     }
 
-    /**
-     * Add member request.
-     *
-     * @param query the query
-     */
     void addMemberRequest(Map<String, String> query){
         String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/" + "addUser/";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url,
@@ -460,13 +437,6 @@ public class ProjectFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(request);
     }
 
-    /**
-     * Add task request.
-     *
-     * @param params1 the params 1
-     * @param params2 the params 2
-     * @throws JSONException the json exception
-     */
     void addTaskRequest(Map<String, String> params1, Map<String, Integer> params2) throws JSONException {
         JSONObject query = new JSONObject();
         query.put("task", params1.get("task"));

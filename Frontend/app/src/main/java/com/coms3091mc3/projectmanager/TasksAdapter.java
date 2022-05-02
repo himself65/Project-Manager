@@ -1,6 +1,8 @@
 package com.coms3091mc3.projectmanager;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +13,7 @@ import androidx.annotation.NonNull;
 
 import com.coms3091mc3.projectmanager.data.Task;
 
-/**
- * The type Tasks adapter.
- */
 public class TasksAdapter extends ArrayAdapter<Task> {
-    /**
-     * Instantiates a new Tasks adapter.
-     *
-     * @param context  the context
-     * @param resource the resource
-     */
     public TasksAdapter(@NonNull Context context, int resource) {
         super(context, resource);
     }
@@ -38,6 +31,8 @@ public class TasksAdapter extends ArrayAdapter<Task> {
         // Populate the data into the template view using the data object
         taskID.setText(String.valueOf(task.getTaskID()));
         taskName.setText(task.getTaskName());
+        taskName.setTextColor( task.getStatus() == 0 ? Color.rgb(255, 0, 0) : Color.rgb(0, 255, 0));
+
         // Return the completed view to render on screen
         return convertView;
     }

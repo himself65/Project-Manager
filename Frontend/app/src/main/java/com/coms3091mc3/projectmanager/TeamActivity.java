@@ -32,38 +32,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The type Team activity.
- */
 public class TeamActivity extends AppCompatActivity {
 
-    /**
-     * The Uri.
-     */
     Uri.Builder uri = new Uri.Builder();
-    /**
-     * The Btn add user.
-     */
     Button btnAddUser;
-    /**
-     * The List user.
-     */
     ListView listUser;
-    /**
-     * The User list.
-     */
     List<String> userList = new ArrayList<String>();
-    /**
-     * The Team details.
-     */
     JSONObject teamDetails = new JSONObject();
-    /**
-     * The Tag team req.
-     */
     String tag_team_req = "team_tag";
-    /**
-     * The Team id.
-     */
     int teamID;
 
     @Override
@@ -96,11 +72,6 @@ public class TeamActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Add user.
-     *
-     * @param v the v
-     */
     public void addUser(View v){
         Map<String, String> params = new HashMap<String, String>();
 //        params.put("username", username.getText().toString()); //insert team id here
@@ -134,12 +105,6 @@ public class TeamActivity extends AppCompatActivity {
         alertBuilder.create().show();
     }
 
-    /**
-     * Team request.
-     *
-     * @param params the params
-     * @param tag    the tag
-     */
     public void teamRequest(Map<String, String> params, String tag){
         uri = Uri.parse(Const.MOCK_SERVER + "/team/" + tag).buildUpon();
 //        uri = Uri.parse(Const.API_SERVER + "/" + v.getTag().toString()).buildUpon();
@@ -181,11 +146,6 @@ public class TeamActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(teamRequest, tag_team_req);
     }
 
-    /**
-     * Return to project.
-     *
-     * @param v the v
-     */
     public void returnToProject(View v){
         Intent intentReturn = new Intent(TeamActivity.this, MainActivity.class);
         startActivity(intentReturn);

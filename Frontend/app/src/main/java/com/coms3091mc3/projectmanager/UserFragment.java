@@ -8,15 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * The type User fragment.
- */
 public class UserFragment extends Fragment {
 
 
-    /**
-     * Instantiates a new User fragment.
-     */
     public UserFragment() {
         // Required empty public constructor
     }

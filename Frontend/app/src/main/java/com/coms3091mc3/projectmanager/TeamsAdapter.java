@@ -12,16 +12,7 @@ import androidx.annotation.NonNull;
 import com.coms3091mc3.projectmanager.data.Task;
 import com.coms3091mc3.projectmanager.data.Team;
 
-/**
- * The type Teams adapter.
- */
 public class TeamsAdapter extends ArrayAdapter<Team> {
-    /**
-     * Instantiates a new Teams adapter.
-     *
-     * @param context  the context
-     * @param resource the resource
-     */
     public TeamsAdapter(@NonNull Context context, int resource) {
         super(context, resource);
     }

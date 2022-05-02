@@ -43,18 +43,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * The type Team fragment.
- */
 public class TeamFragment extends Fragment {
-    /**
-     * The Binding.
-     */
     FragmentTeamBinding binding;
 
-    /**
-     * The Lv.
-     */
     ListView lv;
 
     @Nullable
@@ -76,11 +67,6 @@ public class TeamFragment extends Fragment {
         return view;
     }
 
-    /**
-     * Gets team request.
-     *
-     * @param id the id
-     */
     void getTeamRequest(int id) {
         String url = Const.API_SERVER + "/team/" + id;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -103,9 +89,6 @@ public class TeamFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(request);
     }
 
-    /**
-     * Add member.
-     */
     void addMember() {
         Map<String, String> params = new HashMap<String, String>();
         Context context = getContext();
@@ -140,11 +123,6 @@ public class TeamFragment extends Fragment {
         alertBuilder.create().show();
     }
 
-    /**
-     * Get members request.
-     *
-     * @param id the id
-     */
     void getMembersRequest(int id){ //get list of users
         String url = Const.API_SERVER + "/team/" + id + "/users";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -177,12 +155,7 @@ public class TeamFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(request);
     }
 
-    /**
-     * Add member request.
-     *
-     * @param params the params
-     */
-//NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
+    //NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
     void addMemberRequest(Map<String, String> params) { //add member to team
         String url = Const.API_SERVER + "/team/" + binding.getModal().team.get().getTeamID() +"/addUser/";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url,
