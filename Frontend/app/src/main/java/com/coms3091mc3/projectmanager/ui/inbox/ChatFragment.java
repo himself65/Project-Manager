@@ -52,7 +52,7 @@ public class ChatFragment extends Fragment {
         btnMsg.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Telephony.Mms.Draft[] drafts = {
+                Draft[] drafts = {
                         new Draft_6455()
                 };
 
@@ -69,8 +69,8 @@ public class ChatFragment extends Fragment {
                         @Override
                         public void onMessage(String message) {
                             Log.d("", "run() returned: " + message);
-                            String s = t1.getText().toString();
-                            t1.setText(s + "\nServer:" + message);
+//                            String s = t1.getText().toString();
+//                            t1.setText(s + "\nServer:" + message);
                         }
 
                         @Override

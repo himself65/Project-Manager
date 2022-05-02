@@ -21,6 +21,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.coms3091mc3.projectmanager.R;
 import com.coms3091mc3.projectmanager.databinding.FragmentSettingsBinding;
 import com.coms3091mc3.projectmanager.store.SettingDataModal;
+import com.coms3091mc3.projectmanager.utils.Const;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,6 +52,7 @@ public class SettingsFragment extends Fragment {
                         }
                         JSONObject data = new JSONObject();
                         data.put("image", array);
+                        data.put("id", Const.user.getUserID());
                         JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, "someAPI", data,
                                 response -> {
                                     // todo
