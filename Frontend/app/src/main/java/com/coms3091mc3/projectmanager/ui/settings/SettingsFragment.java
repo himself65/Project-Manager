@@ -10,9 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.coms3091mc3.projectmanager.databinding.FragmentHomeBinding;
 import com.coms3091mc3.projectmanager.databinding.FragmentSettingsBinding;
-import com.coms3091mc3.projectmanager.ui.home.HomeViewModel;
 
 public class SettingsFragment extends Fragment {
     private FragmentSettingsBinding binding;
