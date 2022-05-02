@@ -22,11 +22,12 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:text="Username"
-            app:layout_constraintStart_toEndOf="@+id/imageButton"
+            app:layout_constraintStart_toEndOf="@+id/avatar"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/avatar"
+            android:scaleType="fitCenter"
             android:layout_width="88dp"
             android:layout_height="88dp"
             android:layout_marginStart="16dp"
