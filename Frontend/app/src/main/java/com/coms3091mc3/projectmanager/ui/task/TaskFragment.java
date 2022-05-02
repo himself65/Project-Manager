@@ -50,6 +50,7 @@ public class TaskFragment extends Fragment {
         binding.setModal(new TaskDataModel());
         View view = binding.getRoot();
         int id = (Integer) getArguments().get("taskID");
+
         projectID = (Integer) getArguments().get("projectID");
         taskRequest(id);
 
@@ -81,7 +82,9 @@ public class TaskFragment extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    Log.d("TASK_FRAGMENT",binding.getModal().task.get().getDescription() + "");
                 }, error -> {
+            Log.d("task_fragment","Task request error : " + error.getMessage());
         });
         AppController.getInstance().addToRequestQueue(taskRequest);
     }

@@ -8,6 +8,7 @@
         <variable
             name="modal"
             type="com.coms3091mc3.projectmanager.store.TaskDataModel" />
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,6 +67,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="44dp"
             android:text="@{modal.task.teamName}"
+            android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/team_icon"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -106,6 +108,7 @@
 
         <Button
             android:id="@+id/btnCompleteTask"
+            android:visibility="@{modal.task.status == 0 ? View.VISIBLE : View.GONE}"
             android:layout_width="80dp"
             android:layout_height="34dp"
             android:layout_marginTop="16dp"

@@ -5,6 +5,7 @@ public class Task {
     String taskName;
     int status;
     String teamName;
+    String description;
 
     public Task(int taskID, String taskName) {
         this.taskID = taskID;
@@ -42,5 +43,13 @@ public class Task {
 
     public void setTaskName(String taskName) {
         this.taskName = taskName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
