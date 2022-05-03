@@ -340,5 +340,19 @@ public class ProjectController {
         return responseBody;
     }
 
+    @PutMapping("project/{id}/complete")
+    JSONObject setComplete(@PathVariable Integer id, @RequestBody JSONObject request)
+    {
+        JSONObject responseBody = new JSONObject();
+        Project project = projectRepository.getById(id);
+        project.completeProject();
+
+        projectRepository.save(project);
+        responseBody.put("status", 200);
+        responseBody.put("message", project.getProjectName() + " Successfully Completed!");
+
+        return responseBody;
+    }
+
 
 }

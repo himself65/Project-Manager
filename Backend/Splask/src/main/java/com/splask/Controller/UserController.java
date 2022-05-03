@@ -88,7 +88,7 @@ public class UserController {
 
     /**
      * Updates user log status
-     * @param user 
+     * @param user
      * @return JSON Object that hold success or fail statuses and messages
      * 
      */
