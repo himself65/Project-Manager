@@ -250,9 +250,9 @@ public class UserController {
 
 
     @PutMapping("user/{id}/image")
-    public JSONObject uploadImage(@PathVariable Integer id, @RequestBody JSONObject object) throws IOException {
+    public JSONObject uploadImage(@PathVariable Integer id, @RequestBody JSONObject request) throws IOException {
         JSONObject responseBody = new JSONObject();
-        JSONArray imageTemp = (JSONArray) object.get("image");
+        JSONArray imageTemp = (JSONArray) request.get("image");
 
         byte[] image = new byte[imageTemp.size()];
         for (int i = 0; i < imageTemp.size(); i++)
