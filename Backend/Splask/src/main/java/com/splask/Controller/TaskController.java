@@ -35,8 +35,21 @@ public class TaskController {
 	
 //	returns task by id from the database
 	@GetMapping("/task/{id}")
-	Task getTask(@PathVariable Integer id) {
-		return taskRepository.findById(id).get();	
+	 JSONObject getTask(@PathVariable Integer id) {
+		JSONObject responseBody = new JSONObject();
+		if (!taskRepository.existsById(id))
+		{
+			responseBody.put("status", 400);
+			responseBody.put("message", "Task does not exist");
+		}
+
+		responseBody.put("teamId", taskRepository.getById(id).getTaskTeam());
+		responseBody.put("projectId",taskRepository.getById(id).getTaskProject());
+		responseBody.put("status",200);
+		responseBody.put("message", "Successfully retrieved task");
+
+
+		return responseBody;
 	}
 
 //	returns all the tasks from the database
