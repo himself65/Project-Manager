@@ -56,7 +56,7 @@ public class Task {
 //	Many tasks to one Team
 	@ManyToOne
 	@JoinColumn(name = "team_id")
-	@JsonIgnore
+//	@JsonIgnore
 	private Team taskTeam;
 
 //  Many tasks to one Project
@@ -64,6 +64,13 @@ public class Task {
 	@JoinColumn(name = "project_id", nullable = false)
 	@JsonIgnore
 	private Project taskProject;
+
+	@NotNull
+	@Column (name = "description")
+	private String taskDescription;
+
+	public String getTaskDescription(){ return taskDescription;}
+	public void setTaskDescription(String description){this.taskDescription = description;}
 
 	
 	public Task(){
