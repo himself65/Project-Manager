@@ -34,11 +34,7 @@ autoDeploy:
     - sudo mv target/*.jar /target/web-demo.jar
     - sudo systemctl stop system-web-demo
     - sudo systemctl start system-web-demo
-  only: 
-    refs: 
-      - main
-    changes:
-      - Backend/**/*
+  
 
 android-build:
   image: gjandres/android-ci:latest
