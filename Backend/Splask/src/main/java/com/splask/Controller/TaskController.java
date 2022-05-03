@@ -43,8 +43,8 @@ public class TaskController {
 			responseBody.put("message", "Task does not exist");
 		}
 
-		responseBody.put("teamId", taskRepository.getById(id).getTaskTeam());
-		responseBody.put("projectId",taskRepository.getById(id).getTaskProject());
+		responseBody.put("task", taskRepository.getById(id));
+		responseBody.put("team", taskRepository.getById(id).getTaskTeam());
 		responseBody.put("status",200);
 		responseBody.put("message", "Successfully retrieved task");
 
@@ -183,7 +183,7 @@ public class TaskController {
 	{
 		JSONObject responseBody = new JSONObject();
 		Task task = taskRepository.getById(task_id);
-		task.setComplete(userRepository.findByUsername(request.getAsString("username")).get(0));
+		task.setStatus(userRepository.findByUsername(request.getAsString("username")).get(0));
 
 		taskRepository.save(task);
 		responseBody.put("status", 200);

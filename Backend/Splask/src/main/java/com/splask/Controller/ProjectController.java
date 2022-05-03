@@ -276,7 +276,7 @@ public class ProjectController {
 
         responseBody.put("tasks",tasks);
         responseBody.put("status", 200);
-        responseBody.put("message", "Successfully retrieved all tasks from" + project.getProjectName());
+        responseBody.put("message", "Successfully retrieved all tasks from " + project.getProjectName());
 
 
 
