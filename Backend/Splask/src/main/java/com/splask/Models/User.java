@@ -79,7 +79,6 @@ public class User{
 	@JsonIgnore
 	private List<Task> tasks = new ArrayList<>();
 
-//	TODO (DEMO 4) Set relationship with Roles
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
