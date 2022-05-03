@@ -193,6 +193,26 @@ public class TaskController {
 		return responseBody;
 	}
 
+	@PutMapping("task/{task_id}/description")
+	JSONObject setDescription(
+			@PathVariable Integer taskID,
+			@RequestBody JSONObject request
+	)
+	{
+		JSONObject responseBody = new JSONObject();
+		Task task = taskRepository.getById(taskID);
+		task.setTaskDescription(request.getAsString("description"));
+
+		taskRepository.save(task);
+		responseBody.put("status", 200);
+		responseBody.put("message", " Successfully Saved Task Description!" + task.getTaskDescription() );
+
+		return responseBody;
+	}
+
+
+
+
 
 
 

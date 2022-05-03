@@ -42,7 +42,7 @@ public class Project {
     private List<Task> tasks = new ArrayList<>();
 
     @Column
-    String deadline;
+    User admin;
 
     @Column
     Integer status;
@@ -62,6 +62,9 @@ public class Project {
 
     public String getProjectName(){return projectName;}
     public void setProjectName(String newName){projectName = newName;}
+
+    public User getAdmin(){return admin;}
+    public void setAdmin(User user){this.admin = user;}
 
     public Integer getStatus() {return status;}
 

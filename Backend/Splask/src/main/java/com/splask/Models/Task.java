@@ -64,6 +64,9 @@ public class Task {
 	@JoinColumn(name = "project_id", nullable = false)
 	private Project taskProject;
 
+	@Column
+	private String taskDescription;
+
 	
 	public Task(){
 		dateCreated = LocalDateTime.now();
@@ -178,6 +181,13 @@ public class Task {
 	 * @param team sets the Task to the Team
 	 */
 	public void setTaskTeam(Team team) {taskTeam = team;}
+
+	public String getTaskDescription(){return taskDescription;}
+
+	public void setTaskDescription(String description)
+	{
+		this.taskDescription= description;
+	}
 
 	
 	
