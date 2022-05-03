@@ -11,6 +11,7 @@ import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,7 +65,7 @@ public class ProjectFragment extends Fragment {
         binding.setModal(new ProjectDataModel(getContext()));
         View view = binding.getRoot();
         projectID = (Integer) getArguments().get("projectID");
-        Log.d("project_debug","Entered project with id : " + projectID);
+        Log.d("project_debug","Entered project with id : " + projectID + " and admin " + binding.getModal().project.get().getAdmin());
         String url = Const.API_SERVER + "/project/" + projectID;
         String tasksUrl = Const.API_SERVER + "/user/" + Const.user.getUserID() + "/tasks";
         getTeams();
@@ -96,7 +97,11 @@ public class ProjectFragment extends Fragment {
                                     object.getInt("id"),
                                     object.getString("task")
                             );
-                            task.setStatus(object.getInt("complete"));
+                            JSONObject task_project = object.getJSONObject("taskProject");
+                            if(task_project.getInt("projectID") != projectID)
+                                continue;
+                            task.setStatus(object.getInt("status"));
+//                            Log.d("task_debug", "Task Request: " + task_project.toString());
                             binding.getModal().tasksAdapter.add(task);
                         }
                     } catch (JSONException e) {
@@ -119,6 +124,8 @@ public class ProjectFragment extends Fragment {
                                         projectDetails.getString("dateCreated")
                                 )
                         );
+                        binding.getModal().project.get().setAdmin(projectDetails.getInt("admin"));
+                        Log.d("PROJECT_FRAGMENT","PROJECT DEBUG: ADMIN - " + binding.getModal().project.get().getAdmin());
                     } catch (JSONException e) {
                         Log.d("project_debug", "get project error: " +e.getMessage());
                         e.printStackTrace();
@@ -155,6 +162,15 @@ public class ProjectFragment extends Fragment {
         });
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.popup_project_menu, popup.getMenu());
+
+        Menu menu = popup.getMenu();
+//        Log.d("project_menu",menu.findItem(R.id.addMembers).setEnabled(false) + "");
+        if(binding.getModal().project.get().getAdmin() != Const.user.getUserID()){
+            menu.findItem(R.id.addMembers).setVisible(false);
+            menu.findItem(R.id.addTeam).setVisible(false);
+            menu.findItem(R.id.addTask).setVisible(false);
+        }
+
         popup.show();
     }
 

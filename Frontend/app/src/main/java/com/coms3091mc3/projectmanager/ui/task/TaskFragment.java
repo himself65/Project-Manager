@@ -3,6 +3,7 @@ package com.coms3091mc3.projectmanager.ui.task;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -87,17 +88,21 @@ public class TaskFragment extends Fragment {
                 null,
                 object -> {
                     try {
+                        JSONObject taskObject = object.getJSONObject("task");
                         Task task = new Task(
-                                object.getInt("id"),
-                                object.getString("task")
+                                taskObject.getInt("id"),
+                                taskObject.getString("task")
                         );
-                        task.setStatus(object.getInt("complete"));
-//                        task.setTeamName(object.getString("teamName"));
+                        Log.d("TASK_FRAGMENT",object.toString());
+                        task.setStatus(taskObject.getInt("status"));
+//                        JSONObject project = object.getJSONObject()
+                        task.setTeamName(object.getJSONObject("team").getString("teamName"));
+                        task.setDescription(taskObject.getString("taskDescription"));
                         binding.getModal().task.set(task);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Log.d("TASK_FRAGMENT",binding.getModal().task.get().getDescription() + "");
+//                    Log.d("TASK_FRAGMENT",binding.getModal().task.get().getDescription() + "");
                 }, error -> {
             Log.d("task_fragment","Task request error : " + error.getMessage());
         });
@@ -133,6 +138,8 @@ public class TaskFragment extends Fragment {
                     try {
                         Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                         Log.d("task_debug", response.toString());
+                        binding.textTaskStatus.setText("COMPLETE");
+                        binding.textTaskStatus.setBackgroundColor(Color.rgb(0,255,0));
 //                        TaskFragmentDirections.ActionNavigationTaskToNavigationProject action = TaskFragmentDirections.actionNavigationTaskToNavigationProject(projectID);
 //                        Navigation.findNavController(getView()).navigate(action);
                     } catch (JSONException e) {
@@ -162,7 +169,8 @@ public class TaskFragment extends Fragment {
                 .setPositiveButton("EDIT", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         params.put("description", dialogInput.getText().toString());
-                        editDescRequest(taskID, params);
+                        Log.d("task_debug","Edit desc: " + dialogInput.getText().toString());
+                        editDescRequest(taskID, params, dialogInput.getText().toString());
                     }
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -176,18 +184,18 @@ public class TaskFragment extends Fragment {
         Log.d("task_fragment","Edit Description clicked : " + taskID);
     }
 
-    void editDescRequest(int id, Map<String, String> params){
+    void editDescRequest(int id, Map<String, String> params, String desc){
         String url = Const.API_SERVER + "/task/" + id + "/description/";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url,
                 new JSONObject(params),
                 response -> {
                     Log.d("task_fragment","Edit Description Request: " + response.toString());
                     try{
-                        binding.taskDescription.setText(response.getString("description"));
+                        binding.taskDescription.setText(desc);
                         Toast.makeText(getContext(),"Successfully editted description",Toast.LENGTH_SHORT).show();
                     }
-                    catch(JSONException e){
-                        Log.d("task_fragment","Edit Description JSON Error : " + e.getMessage());
+                    catch(Exception e){
+                        Log.d("task_fragment","Edit Description Error : " + e.getMessage());
                         Toast.makeText(getContext(),"Error editing description: " + e.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 },
