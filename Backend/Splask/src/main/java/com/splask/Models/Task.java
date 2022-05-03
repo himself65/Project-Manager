@@ -62,7 +62,6 @@ public class Task {
 //  Many tasks to one Project
 	@ManyToOne
 	@JoinColumn(name = "project_id", nullable = false)
-	@JsonIgnore
 	private Project taskProject;
 
 	

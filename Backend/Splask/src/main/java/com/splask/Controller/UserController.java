@@ -1,14 +1,18 @@
 package com.splask.Controller;
 
 
+import java.awt.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
 import com.splask.Models.User;
 import com.splask.Repositories.UserDB;
+import com.splask.Services.ImageService;
 import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 //import com.sun.org.apache.xerces.internal.util.URI;
 
 import net.minidev.json.JSONObject;
@@ -18,6 +22,9 @@ public class UserController {
 
     @Autowired
     UserDB userRepository;
+
+    @Autowired
+    ImageService service;
 
 //  Gets user by ID from the database
     @GetMapping("/user/{id}")
@@ -222,4 +229,46 @@ public class UserController {
         }
 
 
+    /**
+     * gets Image uploaded from the user
+     *
+     */
+    @GetMapping("user/{id}/image")
+    public JSONObject getImageById(@PathVariable Integer id) throws IOException {
+        JSONObject responseBody = new JSONObject();
+        JSONArray image = new JSONArray();
+
+        image.add(service.getUserImageById(id));
+
+
+        responseBody.put("image",image);
+        responseBody.put("status",200);
+        responseBody.put("message","Successfully retrieved image");
+
+        return responseBody;
     }
+
+
+    @PutMapping("user/{id}/image")
+    public JSONObject uploadImage(@PathVariable Integer id, @RequestBody JSONObject request) throws IOException {
+        JSONObject responseBody = new JSONObject();
+        JSONArray imageTemp = (JSONArray) request.get("image");
+
+        byte[] image = new byte[imageTemp.size()];
+        for (int i = 0; i < imageTemp.size(); i++)
+        {
+            image[i] = (byte) ((int) imageTemp.get(i));
+        }
+
+        service.uploadNewUserImage(id, image);
+        responseBody.put("status",200);
+        responseBody.put("message","Successfully changed image");
+
+
+        return responseBody;
+
+
+    }
+
+
+}
