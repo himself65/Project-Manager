@@ -203,7 +203,7 @@ public class TaskController {
 	{
 		JSONObject responseBody = new JSONObject();
 		Task task = taskRepository.getById(taskID);
-		task.setTaskDescription(request.toString());
+		task.setTaskDescription(request.getAsString("description"));
 
 		taskRepository.save(task);
 		responseBody.put("status", 200);
