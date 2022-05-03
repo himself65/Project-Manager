@@ -18,32 +18,13 @@ import com.coms3091mc3.projectmanager.R;
 import com.coms3091mc3.projectmanager.data.Task;
 import com.coms3091mc3.projectmanager.data.Team;
 
-/**
- * The type Add task dialog fragment.
- */
 public class AddTaskDialogFragment extends DialogFragment {
-    /**
-     * The interface Add task dialog listener.
-     */
     public interface AddTaskDialogListener {
-        /**
-         * On dialog positive click.
-         *
-         * @param task the task
-         */
         public void onDialogPositiveClick(Task task);
     }
 
-    /**
-     * The Listener.
-     */
     AddTaskDialogFragment.AddTaskDialogListener listener;
 
-    /**
-     * Instantiates a new Add task dialog fragment.
-     *
-     * @param listener the listener
-     */
     public AddTaskDialogFragment(AddTaskDialogFragment.AddTaskDialogListener listener) {
         this.listener = listener;
     }

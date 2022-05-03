@@ -4,6 +4,7 @@ package com.splask.Models;
 //Class imports
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 //Function imports
 import com.sun.istack.NotNull;
 
@@ -79,17 +80,8 @@ public class User{
 	@JsonIgnore
 	private List<Task> tasks = new ArrayList<>();
 
-//	TODO (DEMO 4) Set relationship with Roles
-
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(
-			name = "user_role",
-			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id")
-	)
-	@JsonIgnore
-	private List<Role> roles = new ArrayList<>();
-	
+	@Column(nullable = true)
+	private String imagePath;
 
 
 
@@ -206,22 +198,6 @@ public void user(String username, String password) {
 
 
 
-	/**
-	 *
-	 * @return user list of Roles
-	 */
-	public List<Role> getRoles() {return roles;}
-	/**
-	 *
-	 * @param roles
-	 * new list of Roles given to User
-	 */
-	public void setRoles(List<Role> roles) {this.roles = roles;}
-
-
-
-
-
 
 
 	/**
@@ -258,13 +234,16 @@ public void user(String username, String password) {
 	 */
 	public void addTaskToUser(Task task) {tasks.add(task);}
 
-	/**
-	 * Assigns a new Role to the User
-	 * @param role
-	 * Task to be assigned
-	 */
-	public void addRoleToUser(Role role) {roles.add(role);}
 
+	public String getImagePath()
+	{
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath)
+	{
+		this.imagePath = imagePath;
+	}
 
 //	to compare an object passed to the program with an object from our database.
     @Override

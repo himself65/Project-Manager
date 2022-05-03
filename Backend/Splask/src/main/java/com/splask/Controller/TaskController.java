@@ -35,21 +35,18 @@ public class TaskController {
 
 	//	returns task by id from the database
 	@GetMapping("/task/{id}")
-	JSONObject getTask(@PathVariable Integer id) {
+	 JSONObject getTask(@PathVariable Integer id) {
 		JSONObject responseBody = new JSONObject();
-
 		if (!taskRepository.existsById(id))
 		{
 			responseBody.put("status", 400);
 			responseBody.put("message", "Task does not exist");
 		}
-		Task task = new Task();
-//		Task task = taskRepository.getById(id);
-//		int teamInTask = task.getTaskTeam().getTeamID();
-//		String teamNameInTask = task.getTaskTeam().getTeamName();
 
-		responseBody.put("status", 200);
-		responseBody.put("message", task.getTask() + " Successfully retrieved!");
+		responseBody.put("teamId", taskRepository.getById(id).getTaskTeam());
+		responseBody.put("projectId",taskRepository.getById(id).getTaskProject());
+		responseBody.put("status",200);
+		responseBody.put("message", "Successfully retrieved task");
 
 		return responseBody;
 	}
@@ -195,7 +192,8 @@ public class TaskController {
 		return responseBody;
 	}
 
-	@PutMapping("task/{task_id}/description")
+
+	@PutMapping("task/{taskID}/description")
 	JSONObject setDescription(
 			@PathVariable Integer taskID,
 			@RequestBody JSONObject request
@@ -203,7 +201,8 @@ public class TaskController {
 	{
 		JSONObject responseBody = new JSONObject();
 		Task task = taskRepository.getById(taskID);
-		task.setTaskDescription(request.toString());
+
+		task.setTaskDescription(request.getAsString("description"));
 
 		taskRepository.save(task);
 		responseBody.put("status", 200);

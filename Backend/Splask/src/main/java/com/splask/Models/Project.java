@@ -42,13 +42,10 @@ public class Project {
     private List<Task> tasks = new ArrayList<>();
 
     @Column
-    String deadline;
+    Integer adminId;
 
     @Column
     Integer status;
-
-    @Column
-    String completedBy;
 
     @Column
     LocalDateTime dateCreated;
@@ -66,35 +63,15 @@ public class Project {
     public String getProjectName(){return projectName;}
     public void setProjectName(String newName){projectName = newName;}
 
-//  TODO What does this is suppose to be @Chad
-    public void setDeadline()
-    {
-
-    }
-    public String getDeadline(){return deadline;}
+    public Integer getAdmin(){return adminId;}
+    public void setAdmin(Integer id){this.adminId = id;}
 
     public Integer getStatus() {return status;}
 
-    //TODO
-    /*
-    public void setComplete() {
-        status = true;
-        //setCompletedBy();
-    }
-
-    //public String getCompletedBy()
+    public void completeProject()
     {
-        //return completedBy;
+        status = 1;
     }
-
-    /* public void setCompletedBy() {
-
-        if (status)
-        {
-            completedBy = t;
-        }
-    }
-*/
 
     /**
      * formats the date that was made on instantiated
@@ -109,7 +86,7 @@ public class Project {
 
     /**
      * Adds new user to Project
-     * @param user
+     * @param user user to be added to project
      *
      */
 
