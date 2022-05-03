@@ -99,13 +99,13 @@ public class Task {
 	 * 
 	 * @return Integer status of the task, 1 is completed / 0 is incomplete
 	 */
-	public Integer getComplete() {return status;}
+	public Integer getStatus() {return status;}
 	/**
 	 * 
 	 * @param user
 	 * Sets the task to complete
 	 */
-	public void setComplete(User user) {
+	public void setStatus(User user) {
 		this.status = 1;
 		completedBy = user;
 	}
