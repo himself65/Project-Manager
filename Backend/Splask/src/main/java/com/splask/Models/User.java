@@ -4,6 +4,7 @@ package com.splask.Models;
 //Class imports
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 //Function imports
 import com.sun.istack.NotNull;
 
@@ -81,9 +82,6 @@ public class User{
 
 	@Column(nullable = true)
 	private String imagePath;
-
-
-
 
 
 

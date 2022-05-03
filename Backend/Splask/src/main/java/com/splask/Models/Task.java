@@ -34,10 +34,7 @@ public class Task {
 	@Column
 	private final LocalDateTime dateCreated;
 	
-	@NotNull
-	@Column (name = "deadLine")
-	private String deadLine;
-	
+
 	@NotNull
 	@Column (name = "dateCompleted")
 	private String dateCompleted;
@@ -121,18 +118,6 @@ public class Task {
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		return dateCreated.format(format);
 	}
-
-	/**
-	 * 
-	 * @return Deadline of the task
-	 */
-	public String getDeadLine() {return deadLine;}
-	/**
-	 * 
-	 * @param deadLine
-	 * Sets the deadline of the task
-	 */
-	public void setDeadLine(String deadLine) {this.deadLine = deadLine;}
 
 	/**
 	 * 

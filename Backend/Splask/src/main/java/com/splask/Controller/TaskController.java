@@ -193,7 +193,7 @@ public class TaskController {
 		return responseBody;
 	}
 
-	@PutMapping("task/{task_id}/description")
+	@PutMapping("task/{taskID}/description")
 	JSONObject setDescription(
 			@PathVariable Integer taskID,
 			@RequestBody JSONObject request
