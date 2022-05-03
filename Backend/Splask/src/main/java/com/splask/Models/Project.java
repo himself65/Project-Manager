@@ -42,7 +42,7 @@ public class Project {
     private List<Task> tasks = new ArrayList<>();
 
     @Column
-    User admin;
+    Integer adminId;
 
     @Column
     Integer status;
@@ -63,8 +63,8 @@ public class Project {
     public String getProjectName(){return projectName;}
     public void setProjectName(String newName){projectName = newName;}
 
-    public User getAdmin(){return admin;}
-    public void setAdmin(User user){this.admin = user;}
+    public Integer getAdmin(){return adminId;}
+    public void setAdmin(Integer id){this.adminId = id;}
 
     public Integer getStatus() {return status;}
 

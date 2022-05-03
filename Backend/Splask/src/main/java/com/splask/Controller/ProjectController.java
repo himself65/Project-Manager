@@ -52,7 +52,7 @@ public class ProjectController {
         }
 
         responseBody.put("project",projectRepository.findById(id));
-        responseBody.put("adminId",projectRepository.getById(id).getAdmin().getUserId());
+        responseBody.put("adminId",projectRepository.getById(id).getAdmin());
         responseBody.put("status", 200);
         responseBody.put("message", "Projects successfully retrieved");
 
@@ -110,7 +110,7 @@ public class ProjectController {
         }
         newProject.enrollUserToProject(userRepository.findByUsername(object.getAsString("username")).get(0));
         user.addProjectToUser(newProject);
-        newProject.setAdmin(user);
+        newProject.setAdmin(user.getUserId());
         projectRepository.save(newProject);
         userRepository.save(user);
 
