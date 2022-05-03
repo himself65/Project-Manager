@@ -34,9 +34,9 @@ public class ChatSocket {
      * easiest.
      */
     @Autowired
-    public void setMessageRepository(MessageRepository repo) {
-        msgRepo = repo;  // we are setting the static variable
-    }
+//    public void setMessageRepository(MessageRepository repo) {
+//        msgRepo = repo;  // we are setting the static variable
+//    }
 
     // Store all socket session and their corresponding username.
     private static Map<Session, String> sessionUsernameMap = new Hashtable<>();
