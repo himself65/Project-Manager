@@ -79,7 +79,10 @@ public class User{
 	@JsonIgnore
 	private List<Task> tasks = new ArrayList<>();
 
-//	TODO (DEMO 4) Set relationship with Roles
+	@Column(nullable = true)
+	private String imagePath;
+
+
 
 
 
@@ -234,6 +237,15 @@ public void user(String username, String password) {
 	public void addTaskToUser(Task task) {tasks.add(task);}
 
 
+	public String getImagePath()
+	{
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath)
+	{
+		this.imagePath = imagePath;
+	}
 
 //	to compare an object passed to the program with an object from our database.
     @Override
