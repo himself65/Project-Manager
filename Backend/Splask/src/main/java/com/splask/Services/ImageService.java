@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class ImageService {
 
-    private static String directory = "C:";
+    private static final String directory = "/home/splask_files/";
 
     @Autowired
     UserDB userRepo;
