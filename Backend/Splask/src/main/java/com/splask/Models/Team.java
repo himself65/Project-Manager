@@ -29,9 +29,8 @@ class Team {
     @JoinColumn(name = "project_id")
     @JsonIgnore
 	private Project teamProject;
-//    
-//    
-//    
+
+
 //  Many Users to many Teams
     @ManyToMany(mappedBy = "teams")
     @JsonIgnore
@@ -42,7 +41,7 @@ class Team {
 //  One Team to many Tasks
     @OneToMany(mappedBy = "taskTeam")
     @NotNull
-    @JsonIgnore
+//    @JsonIgnore
     private List<Task> tasks;
 
 
