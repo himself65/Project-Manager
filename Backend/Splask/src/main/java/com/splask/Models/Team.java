@@ -41,7 +41,7 @@ class Team {
 //  One Team to many Tasks
     @OneToMany(mappedBy = "taskTeam")
     @NotNull
-//    @JsonIgnore
+    @JsonIgnore
     private List<Task> tasks;
 
 

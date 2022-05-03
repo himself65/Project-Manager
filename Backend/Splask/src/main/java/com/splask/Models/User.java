@@ -82,6 +82,8 @@ public class User{
 
 	@Column(nullable = true)
 	private String imagePath;
+	
+	
 
 
 
