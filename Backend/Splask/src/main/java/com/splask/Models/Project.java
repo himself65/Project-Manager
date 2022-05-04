@@ -168,11 +168,11 @@ public class Project {
 	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
 
 
-    public List<Announcements> getAnnouncements() {
+    public List<Announcements> getAdminMessages() {
         return adminMessages;
     }
 
-    public void addAnnouncement(Announcements newMessage)
+    public void addAdminMessages(Announcements newMessage)
     {
 
         adminMessages.add(newMessage);

@@ -1,6 +1,8 @@
 package com.splask.Models;
 
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,7 +13,8 @@ import java.time.format.DateTimeFormatter;
 public class Announcements {
 
     @Id
-    @Column(name = "announcement_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "announcement_id")
     private Integer id;
 
     @Column
@@ -39,11 +42,11 @@ public class Announcements {
     }
 
 
-    public String getAnnouncement() {
+    public String getMessage() {
         return message;
     }
 
-    public void setAnnouncement(String announcement) {
+    public void setMessage(String announcement) {
         this.message = announcement;
     }
 
@@ -51,5 +54,14 @@ public class Announcements {
     {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return dateCreated.format(format);
+    }
+    public Project getProject()
+    {
+        return project;
+    }
+
+    public void setProject(Project project)
+    {
+        this.project = project;
     }
 }

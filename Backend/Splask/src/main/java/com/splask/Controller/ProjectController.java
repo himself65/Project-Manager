@@ -3,12 +3,9 @@ package com.splask.Controller;
 import com.splask.Models.Project;
 import com.splask.Models.Task;
 import com.splask.Models.Team;
-import com.splask.Repositories.projectDB;
-import com.splask.Repositories.teamDB;
+import com.splask.Repositories.*;
 import com.splask.Models.User;
-import com.splask.Repositories.UserDB;
 
-import com.splask.Repositories.TaskDB;
 import com.splask.Models.Announcements;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -34,6 +31,9 @@ public class ProjectController {
 
     @Autowired
     TaskDB taskRepository;
+
+    @Autowired
+    AnnouncementDB announcementRepo;
 
 
     /**
@@ -369,16 +369,32 @@ public class ProjectController {
     }
 
 
+    @GetMapping("project/{id}/announcements")
+    JSONObject getAnnouncements(@PathVariable Integer id)
+    {
+        JSONObject responseBody = new JSONObject();
+        Project project = projectRepository.getById(id);
+
+        responseBody.put("status",200);
+        responseBody.put("message","Successfully retrieved all Announcements");
+        responseBody.put("announcements", project.getAdminMessages());
+
+        return responseBody;
+    }
     @PutMapping("project/{id}/addAnnouncement")
     JSONObject addAnnouncement(@PathVariable Integer id, @RequestBody JSONObject request)
     {
         JSONObject responseBody = new JSONObject();
         Project project = projectRepository.getById(id);
         Announcements newMessage = new Announcements();
-        newMessage.setAnnouncement(request.getAsString("announcement"));
+        newMessage.setMessage(request.getAsString("announcement"));
+
+        project.addAdminMessages(newMessage);
+        newMessage.setProject(project);
 
 
         projectRepository.save(project);
+        announcementRepo.save(newMessage);
 
         responseBody.put("status",200);
         responseBody.put("message", "Successfully added Announcement");
