@@ -29,10 +29,23 @@
             android:id="@+id/projects_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numColumns="1"
+            android:layout_marginTop="24dp"
             android:adapter="@{modal.projectsAdapter}"
+            android:numColumns="1"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnProjectMenu" />
+            app:layout_constraintTop_toBottomOf="@+id/titleProjects" />
+
+        <TextView
+            android:id="@+id/titleProjects"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="32dp"
+            android:textSize="20dp"
+            android:text="Projects"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
