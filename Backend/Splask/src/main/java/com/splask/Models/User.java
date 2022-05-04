@@ -147,7 +147,7 @@ public void user(String username, String password) {
 	 * 
 	 * @return Integer loggin of the user 
 	 */
-    public Integer isLoggedIn() {return loggedIn;}
+    public Integer getLoggedIn() {return loggedIn;}
     /**
      * 
      * @param loggedIn
