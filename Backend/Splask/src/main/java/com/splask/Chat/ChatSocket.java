@@ -134,35 +134,16 @@ public class ChatSocket {
 
     private void broadcast(String message, int team_id) {
 
-        for (Map.Entry<Session, String> set : sessionUsernameMap.entrySet()) {
-
-//            Session temp = sessionUsernameMap;
-
-            try {
-                if(set.getKey() == sessionTeamMap.keySet(0))
-                    session.getBasicRemote().sendText(message);
-
-            }
-            catch (IOException e) {
-                logger.info("Exception: " + e.getMessage().toString());
-                e.printStackTrace();
-
-            }
-        }
-
-        int i=0;
         sessionUsernameMap.forEach((session, username) -> {
             try {
-                if(sessionUsernameMap.keySet().toArray()[i] == sessionTeamMap.get)
-                session.getBasicRemote().sendText(message);
-                i++;
+                if(sessionTeamMap.get(session) == team_id)
+                    session.getBasicRemote().sendText(message);
             }
             catch (IOException e) {
                 logger.info("Exception: " + e.getMessage().toString());
                 e.printStackTrace();
 
             }
-
 
         });
 
