@@ -3,6 +3,7 @@ package com.coms3091mc3.projectmanager.ui.team;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -130,6 +131,7 @@ public class TeamFragment extends Fragment {
                     try {
                         JSONArray users = response.getJSONArray("users");
                         List<String> userNameList = new ArrayList<String>();
+                        List<Integer> onlineStatusList = new ArrayList<>();
                         for (int i = 0; i < users.length(); i++) {
                             JSONObject object = (JSONObject) users.get(i);
                             User user = new User(
@@ -138,6 +140,8 @@ public class TeamFragment extends Fragment {
                                     object.getString("fullName")
                             );
                             userNameList.add(object.getString("fullName"));
+                            //TODO:
+//                            onlineStatusList.add(object.getInt("logged_in"));
 //                            binding.getModal().team.
                             Log.d("team_fragment",object.toString());
                         }
@@ -145,6 +149,13 @@ public class TeamFragment extends Fragment {
                                 android.R.layout.simple_list_item_1,
                                 userNameList);
                         lv.setAdapter(userName);
+                        //TODO:
+//                        for(int i = 0; i < lv.getCount(); i++){
+//                            if(onlineStatusList.get(i) == 0) //offline
+//                                lv.getChildAt(i).setBackgroundColor(Color.rgb(200, 0, 0));
+//                            else //online
+//                                lv.getChildAt(i).setBackgroundColor(Color.rgb(0, 200, 0));
+//                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
