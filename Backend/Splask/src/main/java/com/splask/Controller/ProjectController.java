@@ -256,6 +256,7 @@ public class ProjectController {
 
 
 
+        responseBody.put("team_id",team.getTeamID());
         responseBody.put("status",200);
         responseBody.put("message", "Team successfully created");
         return responseBody;
