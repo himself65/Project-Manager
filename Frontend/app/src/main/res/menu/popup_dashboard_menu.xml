@@ -2,4 +2,8 @@
     <item
         android:id="@+id/add_project"
         android:title="Add Project" />
+
+    <item
+        android:id="@+id/logout"
+        android:title="Logout" />
 </menu>
