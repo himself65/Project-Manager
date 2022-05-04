@@ -2,6 +2,8 @@ package com.splask.Models;
 
 import com.fasterxml.jackson.annotation.*;
 import com.sun.istack.NotNull;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -165,11 +167,16 @@ public class Project {
 	public List<Task> getTasks() {return tasks;}
 	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
 
-	
-    
-    
-    
-    
-    
+
+    public List<Announcements> getAnnouncements() {
+        return adminMessages;
+    }
+
+    public void addAnnouncement(Announcements newMessage)
+    {
+
+        adminMessages.add(newMessage);
+    }
+
 
 }

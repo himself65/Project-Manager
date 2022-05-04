@@ -9,11 +9,14 @@ import com.splask.Models.User;
 import com.splask.Repositories.UserDB;
 
 import com.splask.Repositories.TaskDB;
+import com.splask.Models.Announcements;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -363,6 +366,26 @@ public class ProjectController {
         responseBody.put("message", project.getProjectName() + " Successfully Completed!");
 
         return responseBody;
+    }
+
+
+    @PutMapping("project/{id}/addAnnouncement")
+    JSONObject addAnnouncement(@PathVariable Integer id, @RequestBody JSONObject request)
+    {
+        JSONObject responseBody = new JSONObject();
+        Project project = projectRepository.getById(id);
+        Announcements newMessage = new Announcements();
+        newMessage.setAnnouncement(request.getAsString("announcement"));
+
+
+        projectRepository.save(project);
+
+        responseBody.put("status",200);
+        responseBody.put("message", "Successfully added Announcement");
+        responseBody.put("announcement", newMessage);
+
+        return responseBody;
+
     }
 
 
