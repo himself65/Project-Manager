@@ -80,6 +80,7 @@ public class ChatSocket {
 
         }
         else { // broadcast
+
             broadcast(username + ": " + message);
         }
 
