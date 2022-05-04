@@ -2,6 +2,8 @@ package com.coms3091mc3.projectmanager.ui.settings;
 
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.coms3091mc3.projectmanager.R;
+import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.databinding.FragmentSettingsBinding;
 import com.coms3091mc3.projectmanager.store.SettingDataModal;
 import com.coms3091mc3.projectmanager.utils.Const;
@@ -53,7 +56,7 @@ public class SettingsFragment extends Fragment {
                         JSONObject data = new JSONObject();
                         data.put("image", array);
                         data.put("id", Const.user.getUserID());
-                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, "someAPI", data,
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, Const.API_SERVER + "/user/" + Const.user.getUserID() + "/image", data,
                                 response -> {
                                     // todo
                                 },
@@ -61,12 +64,36 @@ public class SettingsFragment extends Fragment {
                                     // todo
                                 }
                         );
+                        AppController.getInstance().addToRequestQueue(request);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     button.setImageURI(uri);
                 }
             });
+
+    public JsonObjectRequest fetchAvatar() {
+        return new JsonObjectRequest(Request.Method.GET, Const.API_SERVER + "/user/" + Const.user.getUserID() + "/image", null,
+                response -> {
+                    try {
+                        String message = response.getString("image");
+                        String[] stringArray = message.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\s", "").split(",");
+                        byte[] byteArray = new byte[stringArray.length];
+
+                        for (int i = 0; i < stringArray.length; i++) {
+                            byteArray[i] = (byte) Integer.parseInt(stringArray[i]);
+                        }
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                        ImageButton button = binding.getRoot().findViewById(R.id.avatar);
+                        button.setImageBitmap(bitmap);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                }
+        );
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -82,6 +109,8 @@ public class SettingsFragment extends Fragment {
                 mGetContent.launch("image/*");
             }
         });
+        JsonObjectRequest request = fetchAvatar();
+        AppController.getInstance().addToRequestQueue(request);
         return view;
     }
 
