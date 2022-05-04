@@ -2,6 +2,9 @@ package com.coms3091mc3.projectmanager.ui.inbox;
 
 import android.os.Bundle;
 import android.provider.Telephony;
+import android.text.Editable;
+import android.text.Selection;
+import android.text.SpannableString;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,7 +69,10 @@ public class ChatFragment extends Fragment {
                 public void onMessage(String message) {
                     Log.d("chatbox", "run() returned: " + message);
                     String s = conversation.getText().toString();
-                    conversation.setText(s + "\n" + message);
+//                    conversation.setText(s + "\n" + message);
+                    conversation.append("\n" + message);
+                    Editable editable = conversation.getEditableText();
+                    Selection.setSelection(editable, editable.length());
 //                    conversation.scrollBy(0,100);
 //                    conversation.scroll
                 }
@@ -114,4 +120,5 @@ public class ChatFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 }
