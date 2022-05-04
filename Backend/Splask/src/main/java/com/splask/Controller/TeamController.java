@@ -107,9 +107,10 @@ public class TeamController {
         JSONObject responseBody = new JSONObject();
 
         users.addAll(team.getUsers());
-        responseBody.put("users",users);
+
         responseBody.put("status", 200);
         responseBody.put("message", "Successfully retrieved all teams from" + team.getTeamName());
+        responseBody.put("users",users);
 
 
         return responseBody;
@@ -159,9 +160,10 @@ public class TeamController {
         user.addTeamToUser(team);
         teamRepository.save(team);
         userRepository.save(user);
-        responseBody.put("user",user);
+
         responseBody.put("status",200);
         responseBody.put("message", "User successfully added to Team");
+        responseBody.put("user",user);
 
         return  responseBody;
     }
@@ -207,9 +209,10 @@ public class TeamController {
 
         tasks.addAll(team.getTasks());
 
-        responseBody.put("tasks",tasks);
+
         responseBody.put("status", 200);
         responseBody.put("message", "Successfully retrieved all tasks from" + team.getTeamName());
+        responseBody.put("tasks",tasks);
 
 
 

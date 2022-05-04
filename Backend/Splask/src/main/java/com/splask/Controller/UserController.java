@@ -159,8 +159,10 @@ public class UserController {
         JSONObject deleteUsers () {
             JSONObject responseBody = new JSONObject();
             userRepository.deleteAll();
+
             responseBody.put("status", 200);
             responseBody.put("message", "Successfully deleted all users");
+
             return responseBody;
         }
         
@@ -178,9 +180,10 @@ public class UserController {
 
             projects.addAll(user.getProject());
 
-            responseBody.put("projects", projects);
+
             responseBody.put("status", 200);
             responseBody.put("message", "Successfully retrieved all projects from " + user.getUsername());
+            responseBody.put("projects", projects);
 
             return responseBody;
         }
@@ -199,9 +202,10 @@ public class UserController {
 
             teams.addAll(user.getTeam());
 
-            responseBody.put("teams", teams);
+
             responseBody.put("status", 200);
             responseBody.put("message", "Successfully retrieved all teams from " + user.getUsername());
+            responseBody.put("teams", teams);
 
             return responseBody;
         }
