@@ -13,7 +13,7 @@ function connect() {
 
         // display on browser
         var log = document.getElementById("log");
-        log.innerHTML += "message from server: " + event.data + "\n";
+        log.innerHTML +=  event.data + "\n";
     };
 
     ws.onopen = function(event) { // called when connection is opened

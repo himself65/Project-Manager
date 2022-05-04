@@ -32,6 +32,16 @@ public class Message {
     @Column(name = "sent")
     private Date sent = new Date();
 
+    @Column (name = "Team_ID")
+    private int teamID;
+
+    public int getTeamID() {
+        return teamID;
+    }
+
+    public void setId(int id) {
+        this.teamID = id;
+    }
 
     public Message() {};
 
