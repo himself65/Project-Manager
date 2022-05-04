@@ -66,8 +66,8 @@ public class ChatSocket {
         sendMessageToPArticularUser(username, getChatHistory(team_id));
 
         // broadcast that new user joined
-        String message = username ;
-        broadcast(message, team_id);
+//        String message = username ;
+//        broadcast(message, team_id);
     }
 
 
@@ -94,7 +94,7 @@ public class ChatSocket {
         }
 
         // Saving chat history to repository
-        msgRepo.save(new Message(username, message));
+        msgRepo.save(new Message(username, message, sessionTeamMap.get(session)));
     }
 
 
