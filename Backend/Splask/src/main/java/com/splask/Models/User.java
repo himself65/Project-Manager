@@ -90,6 +90,7 @@ public void user(String username, String password) {
 		this.username = username;
 		this.password = password;
 		this.loggedIn = 0;
+		this.imagePath = "/home/splask_files/default.jpg";
 	}
 
 	public User(){
