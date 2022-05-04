@@ -29,7 +29,7 @@ autoDeploy:
   tags:
     - springboot_tag
   only:
-    -main
+    - main
   script:
     - cd Backend/Splask
     - mvn package
