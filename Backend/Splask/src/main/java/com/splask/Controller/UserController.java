@@ -1,12 +1,9 @@
 package com.splask.Controller;
 
 
-import java.awt.*;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import com.splask.Models.User;
@@ -14,7 +11,6 @@ import com.splask.Repositories.UserDB;
 import com.splask.Services.ImageService;
 import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 //import com.sun.org.apache.xerces.internal.util.URI;
 
@@ -163,8 +159,10 @@ public class UserController {
         JSONObject deleteUsers () {
             JSONObject responseBody = new JSONObject();
             userRepository.deleteAll();
+
             responseBody.put("status", 200);
             responseBody.put("message", "Successfully deleted all users");
+
             return responseBody;
         }
         
@@ -182,9 +180,10 @@ public class UserController {
 
             projects.addAll(user.getProject());
 
-            responseBody.put("projects", projects);
+
             responseBody.put("status", 200);
             responseBody.put("message", "Successfully retrieved all projects from " + user.getUsername());
+            responseBody.put("projects", projects);
 
             return responseBody;
         }
@@ -203,9 +202,10 @@ public class UserController {
 
             teams.addAll(user.getTeam());
 
-            responseBody.put("teams", teams);
+
             responseBody.put("status", 200);
             responseBody.put("message", "Successfully retrieved all teams from " + user.getUsername());
+            responseBody.put("teams", teams);
 
             return responseBody;
         }
