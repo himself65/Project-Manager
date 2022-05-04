@@ -159,6 +159,7 @@ public class TeamController {
         user.addTeamToUser(team);
         teamRepository.save(team);
         userRepository.save(user);
+        responseBody.put("user",user);
         responseBody.put("status",200);
         responseBody.put("message", "User successfully added to Team");
 
