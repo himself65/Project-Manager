@@ -19,11 +19,11 @@ public class ImageService {
     UserDB userRepo;
 
     public byte[] getUserImageById(Integer id) throws IOException{
-        Optional<User> optionalUser = userRepo.findById(id);
-        User user = optionalUser.get();
-        String file = user.getImagePath();
-
-        return FileUtil.loadFile(file);
+        User user = userRepo.getById(id);
+        String filePath = user.getImagePath();
+        File file = new File(filePath);
+        byte[] bytes = Files.readAllBytes(file.toPath());
+        return bytes;
     }
 
 

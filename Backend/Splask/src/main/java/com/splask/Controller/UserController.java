@@ -252,7 +252,7 @@ public class UserController {
     @PutMapping("user/{id}/image")
     public JSONObject uploadImage(@PathVariable Integer id, @RequestBody JSONObject request) throws IOException {
         JSONObject responseBody = new JSONObject();
-        JSONArray imageTemp = (JSONArray) request.get("image");
+        ArrayList<Integer> imageTemp = (ArrayList<Integer>) request.get("image");
 
         byte[] image = new byte[imageTemp.size()];
         for (int i = 0; i < imageTemp.size(); i++)
