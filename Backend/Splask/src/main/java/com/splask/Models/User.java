@@ -4,6 +4,7 @@ package com.splask.Models;
 //Class imports
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 //Function imports
 import com.sun.istack.NotNull;
 
@@ -79,8 +80,8 @@ public class User{
 	@JsonIgnore
 	private List<Task> tasks = new ArrayList<>();
 
-//	TODO (DEMO 4) Set relationship with Roles
-
+	@Column(nullable = true)
+	private String imagePath;
 
 
 
@@ -146,7 +147,7 @@ public void user(String username, String password) {
 	 * 
 	 * @return Integer loggin of the user 
 	 */
-    public Integer isLoggedIn() {return loggedIn;}
+    public Integer getLoggedIn() {return loggedIn;}
     /**
      * 
      * @param loggedIn
@@ -234,6 +235,15 @@ public void user(String username, String password) {
 	public void addTaskToUser(Task task) {tasks.add(task);}
 
 
+	public String getImagePath()
+	{
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath)
+	{
+		this.imagePath = imagePath;
+	}
 
 //	to compare an object passed to the program with an object from our database.
     @Override

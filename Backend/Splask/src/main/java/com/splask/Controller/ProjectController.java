@@ -52,6 +52,7 @@ public class ProjectController {
         }
 
         responseBody.put("project",projectRepository.findById(id));
+        responseBody.put("adminId",projectRepository.getById(id).getAdmin());
         responseBody.put("status", 200);
         responseBody.put("message", "Projects successfully retrieved");
 
@@ -109,6 +110,7 @@ public class ProjectController {
         }
         newProject.enrollUserToProject(userRepository.findByUsername(object.getAsString("username")).get(0));
         user.addProjectToUser(newProject);
+        newProject.setAdmin(user.getUserId());
         projectRepository.save(newProject);
         userRepository.save(user);
 
@@ -274,7 +276,7 @@ public class ProjectController {
 
         responseBody.put("tasks",tasks);
         responseBody.put("status", 200);
-        responseBody.put("message", "Successfully retrieved all tasks from" + project.getProjectName());
+        responseBody.put("message", "Successfully retrieved all tasks from " + project.getProjectName());
 
 
 
@@ -336,6 +338,20 @@ public class ProjectController {
 
         responseBody.put("status",200);
         responseBody.put("message", "Task successfully created");
+
+        return responseBody;
+    }
+
+    @PutMapping("project/{id}/complete")
+    JSONObject setComplete(@PathVariable Integer id, @RequestBody JSONObject request)
+    {
+        JSONObject responseBody = new JSONObject();
+        Project project = projectRepository.getById(id);
+        project.completeProject();
+
+        projectRepository.save(project);
+        responseBody.put("status", 200);
+        responseBody.put("message", project.getProjectName() + " Successfully Completed!");
 
         return responseBody;
     }

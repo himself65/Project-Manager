@@ -34,10 +34,7 @@ public class Task {
 	@Column
 	private final LocalDateTime dateCreated;
 	
-	@NotNull
-	@Column (name = "deadLine")
-	private String deadLine;
-	
+
 	@NotNull
 	@Column (name = "dateCompleted")
 	private String dateCompleted;
@@ -62,13 +59,16 @@ public class Task {
 //  Many tasks to one Project
 	@ManyToOne
 	@JoinColumn(name = "project_id", nullable = false)
-	@JsonIgnore
 	private Project taskProject;
+
+	@Column
+	private String taskDescription;
 
 	
 	public Task(){
 		dateCreated = LocalDateTime.now();
 		status = 0;
+		taskDescription = "";
 
 	}
 
@@ -100,13 +100,13 @@ public class Task {
 	 * 
 	 * @return Integer status of the task, 1 is completed / 0 is incomplete
 	 */
-	public Integer getComplete() {return status;}
+	public Integer getStatus() {return status;}
 	/**
 	 * 
 	 * @param user
 	 * Sets the task to complete
 	 */
-	public void setComplete(User user) {
+	public void setStatus(User user) {
 		this.status = 1;
 		completedBy = user;
 	}
@@ -119,18 +119,6 @@ public class Task {
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		return dateCreated.format(format);
 	}
-
-	/**
-	 * 
-	 * @return Deadline of the task
-	 */
-	public String getDeadLine() {return deadLine;}
-	/**
-	 * 
-	 * @param deadLine
-	 * Sets the deadline of the task
-	 */
-	public void setDeadLine(String deadLine) {this.deadLine = deadLine;}
 
 	/**
 	 * 
@@ -179,6 +167,13 @@ public class Task {
 	 * @param team sets the Task to the Team
 	 */
 	public void setTaskTeam(Team team) {taskTeam = team;}
+
+	public String getTaskDescription(){return taskDescription;}
+
+	public void setTaskDescription(String description)
+	{
+		this.taskDescription= description;
+	}
 
 	
 	
