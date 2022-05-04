@@ -56,7 +56,7 @@ public class ChatFragment extends Fragment {
                 new Draft_6455()
         };
 
-        String w = "ws://10.0.2.2:8080/websocket/" + Const.user.getUsername();
+        String w = "ws://10.0.2.2:8080/chat/" + Const.user.getUsername();
 //        String w = "localhost:8080/websocket/" + Const.user.getUsername();
 
         try {

@@ -141,8 +141,7 @@ public class TeamFragment extends Fragment {
                             );
                             userNameList.add(object.getString("fullName"));
                             //TODO:
-//                            onlineStatusList.add(object.getInt("logged_in"));
-//                            binding.getModal().team.
+                            onlineStatusList.add(object.getInt("loggedIn"));
                             Log.d("team_fragment",object.toString());
                         }
                         ArrayAdapter<String> userName = new ArrayAdapter<String>(getContext(),
@@ -150,12 +149,12 @@ public class TeamFragment extends Fragment {
                                 userNameList);
                         lv.setAdapter(userName);
                         //TODO:
-//                        for(int i = 0; i < lv.getCount(); i++){
-//                            if(onlineStatusList.get(i) == 0) //offline
-//                                lv.getChildAt(i).setBackgroundColor(Color.rgb(200, 0, 0));
-//                            else //online
-//                                lv.getChildAt(i).setBackgroundColor(Color.rgb(0, 200, 0));
-//                        }
+                        for(int i = 0; i < lv.getCount(); i++){
+                            if(onlineStatusList.get(i) == 0) //offline
+                                lv.getChildAt(i).setBackgroundColor(Color.rgb(200, 0, 0));
+                            else //online
+                                lv.getChildAt(i).setBackgroundColor(Color.rgb(0, 200, 0));
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
