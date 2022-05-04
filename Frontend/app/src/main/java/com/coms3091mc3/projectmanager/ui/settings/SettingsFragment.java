@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -100,6 +101,12 @@ public class SettingsFragment extends Fragment {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         binding.setModal(new SettingDataModal());
         View view = binding.getRoot();
+
+        TextView textView = view.findViewById(R.id.username);
+        textView.setText(Const.user.getUsername());
+
+        TextView fullName = view.findViewById(R.id.fullname);
+        fullName.setText(Const.user.getFullname());
 
         ImageButton imageButton = view.findViewById(R.id.avatar);
         imageButton.setOnClickListener(new View.OnClickListener() {
