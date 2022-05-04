@@ -6,6 +6,7 @@ public class Task {
     int status;
     String teamName;
     String description;
+    int projectID;
 
     public Task(int taskID, String taskName) {
         this.taskID = taskID;
@@ -51,5 +52,13 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getProjectID() {
+        return projectID;
+    }
+
+    public void setProjectID(int projectID) {
+        this.projectID = projectID;
     }
 }

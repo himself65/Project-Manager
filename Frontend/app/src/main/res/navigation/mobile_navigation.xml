@@ -37,6 +37,16 @@
                 android:name="projectID"
                 app:argType="integer" />
         </action>
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_task"
+            app:destination="@id/navigation_task">
+            <argument
+                android:name="taskID"
+                app:argType="integer" />
+            <argument
+                android:name="projectID"
+                app:argType="integer" />
+        </action>
     </fragment>
 
     <fragment

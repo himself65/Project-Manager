@@ -24,6 +24,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -65,7 +66,7 @@ public class ProjectFragment extends Fragment {
         binding.setModal(new ProjectDataModel(getContext()));
         View view = binding.getRoot();
         projectID = (Integer) getArguments().get("projectID");
-        Log.d("project_debug","Entered project with id : " + projectID + " and admin " + binding.getModal().project.get().getAdmin());
+        Log.d("project_debug","Entered project with id : " + projectID);
         String url = Const.API_SERVER + "/project/" + projectID;
         String tasksUrl = Const.API_SERVER + "/user/" + Const.user.getUserID() + "/tasks";
         getTeams();
@@ -125,6 +126,7 @@ public class ProjectFragment extends Fragment {
                                 )
                         );
                         binding.getModal().project.get().setAdmin(projectDetails.getInt("admin"));
+                        setOverviewText(projectDetails.getInt("admin"));
                         Log.d("PROJECT_FRAGMENT","PROJECT DEBUG: ADMIN - " + binding.getModal().project.get().getAdmin());
                     } catch (JSONException e) {
                         Log.d("project_debug", "get project error: " +e.getMessage());
@@ -470,6 +472,25 @@ public class ProjectFragment extends Fragment {
                     }
                 },
                 error -> {
+                }
+        );
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    void setOverviewText(int adminID){
+        TextView overviewText = binding.getRoot().findViewById(R.id.overviewText);
+        String url = Const.API_SERVER + "/user/" + adminID;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url,null,
+                response -> {
+                    try {
+                        overviewText.setText("Group Admin: " + response.getString("fullName"));
+                    } catch (JSONException e) {
+                        Log.d("project_fragment","Error setting overview text: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    Log.d("project_fragment","Error setting overview text: " + error.getMessage());
                 }
         );
         AppController.getInstance().addToRequestQueue(request);

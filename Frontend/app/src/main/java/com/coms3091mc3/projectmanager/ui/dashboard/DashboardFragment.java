@@ -114,14 +114,18 @@ public class DashboardFragment extends Fragment {
                                     object.getInt("id"),
                                     object.getString("task")
                             );
+                            JSONObject project = object.getJSONObject("taskProject");
                             task.setStatus(object.getInt("status"));
+                            task.setProjectID(project.getInt("projectID"));
                             binding.getModal().tasksAdapter.add(task);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 },
-                error -> Logger.getLogger("json").log(Level.INFO, error.toString())
+                error -> {
+                    Log.d("dashboard_fragment","Error getting user tasks: " + error.getMessage());
+                }
         );
         AppController.getInstance().addToRequestQueue(userRequest, "DashboardFragment");
         View view = binding.getRoot();
@@ -142,21 +146,22 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-//        GridView taskView = view.findViewById(R.id.tasksGridView);
-//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Task task = binding.getModal().tasksAdapter.getItem(i);
-//                DashboardFragmentDirections.ActionNavigationDashboardToNavigationProject action = DashboardFragmentDirections.actionNavigationDashboardToNavigationProject(project.getId());
-//                Navigation.findNavController(view).navigate(action);
-//            }
-//        });
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showMenu(view);
-//            }
-//        });
+        GridView taskView = view.findViewById(R.id.tasksGridView);
+        taskView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Task task = binding.getModal().tasksAdapter.getItem(i);
+                DashboardFragmentDirections.ActionNavigationDashboardToNavigationTask action = DashboardFragmentDirections.actionNavigationDashboardToNavigationTask(task.getTaskID(),task.getProjectID());
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMenu(view);
+            }
+        });
         return view;
     }
 
