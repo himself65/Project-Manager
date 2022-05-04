@@ -34,9 +34,9 @@ public class ChatSocket {
      * easiest.
      */
     @Autowired
-//    public void setMessageRepository(MessageRepository repo) {
-//        msgRepo = repo;  // we are setting the static variable
-//    }
+    public void setMessageRepository(MessageRepository repo) {
+        msgRepo = repo;  // we are setting the static variable
+    }
 
     // Store all socket session and their corresponding username.
     private static Map<Session, String> sessionUsernameMap = new Hashtable<>();
@@ -122,7 +122,7 @@ public class ChatSocket {
     }
 
 
-    private void broadcast(String message) { //sends message to all the users connected to the chat
+    private void broadcast(String message) {
         sessionUsernameMap.forEach((session, username) -> {
             try {
                 session.getBasicRemote().sendText(message);
