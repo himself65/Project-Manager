@@ -23,6 +23,10 @@ public class Project {
     @Column
     private String projectName;
 
+    @OneToMany(mappedBy = "project")
+    @NotNull
+    @JsonIgnore
+    private List<Announcements> adminMessages = new ArrayList<>();
 
 
     @ManyToMany(mappedBy = "projects")
@@ -54,7 +58,6 @@ public class Project {
 
 
     public Project() {
-
         dateCreated = LocalDateTime.now();
         status = 0;
     }
