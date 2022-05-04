@@ -2,6 +2,9 @@ package com.coms3091mc3.projectmanager.ui.inbox;
 
 import android.os.Bundle;
 import android.provider.Telephony;
+import android.text.Editable;
+import android.text.Selection;
+import android.text.SpannableString;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,7 +49,7 @@ public class ChatFragment extends Fragment {
 
         TextView teamName = root.findViewById(R.id.teamName);
         Button btnMsg = root.findViewById(R.id.btnMsgSend);
-        teamName.setText("Team Name");
+        teamName.setText(getArguments().getString("teamName"));
         msg = root.findViewById(R.id.etMsg);
 
         TextView conversation = root.findViewById(R.id.txtConvo);
@@ -56,9 +59,9 @@ public class ChatFragment extends Fragment {
                 new Draft_6455()
         };
 
-        String w = "ws://10.0.2.2:8080/websocket/" + Const.user.getUsername();
+//        String w = "ws://10.0.2.2:8080/chat/" + Const.user.getUsername();
 //        String w = "localhost:8080/websocket/" + Const.user.getUsername();
-
+        String w = Const.CHAT_SERVER + Const.user.getUsername() + "/" + getArguments().getInt("teamID");
         try {
             Log.d("Socket:", "Trying socket");
             cc = new WebSocketClient(new URI(w), (Draft) drafts[0]) {
@@ -66,7 +69,10 @@ public class ChatFragment extends Fragment {
                 public void onMessage(String message) {
                     Log.d("chatbox", "run() returned: " + message);
                     String s = conversation.getText().toString();
-                    conversation.setText(s + "\n" + message);
+//                    conversation.setText(s + "\n" + message);
+                    conversation.append("\n" + message);
+                    Editable editable = conversation.getEditableText();
+                    Selection.setSelection(editable, editable.length());
 //                    conversation.scrollBy(0,100);
 //                    conversation.scroll
                 }
@@ -114,4 +120,5 @@ public class ChatFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 }

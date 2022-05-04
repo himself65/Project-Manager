@@ -47,8 +47,8 @@ public class InboxFragment extends Fragment {
 //        final TextView textView = binding.textInbox;
 //        inboxViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
-//        String url = Const.API_SERVER + "/user/" + Const.user.getUserID() + "/teams";
-        String url = "https://bd9f22ed-10c9-4c41-a415-b951634333f6.mock.pstmn.io/user/3/teams";
+        String url = Const.API_SERVER + "/user/" + Const.user.getUserID() + "/teams";
+//        String url = "https://bd9f22ed-10c9-4c41-a415-b951634333f6.mock.pstmn.io/user/3/teams";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
@@ -78,7 +78,7 @@ public class InboxFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Team team = binding.getModal().teamsAdapter.getItem(i);
-                InboxFragmentDirections.ActionNavigationInboxToNavigationChat action = InboxFragmentDirections.actionNavigationInboxToNavigationChat(team.getTeamID());
+                InboxFragmentDirections.ActionNavigationInboxToNavigationChat action = InboxFragmentDirections.actionNavigationInboxToNavigationChat(team.getTeamID(),team.getTeamName());
                 Navigation.findNavController(view).navigate(action);
             }
         });

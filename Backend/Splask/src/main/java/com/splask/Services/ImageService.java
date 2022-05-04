@@ -7,7 +7,9 @@ import com.splask.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Optional;
 
 @Service
@@ -19,11 +21,11 @@ public class ImageService {
     UserDB userRepo;
 
     public byte[] getUserImageById(Integer id) throws IOException{
-        Optional<User> optionalUser = userRepo.findById(id);
-        User user = optionalUser.get();
-        String file = user.getImagePath();
-
-        return FileUtil.loadFile(file);
+        User user = userRepo.getById(id);
+        String filePath = user.getImagePath();
+        File file = new File(filePath);
+        byte[] bytes = Files.readAllBytes(file.toPath());
+        return bytes;
     }
 
 
@@ -33,7 +35,6 @@ public class ImageService {
         FileUtil.saveFile(imgBytes,directory,fName);
         user.setImagePath(directory+fName);
         userRepo.save(user);
-
     }
 
 

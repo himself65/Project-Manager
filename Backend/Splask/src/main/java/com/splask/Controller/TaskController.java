@@ -31,9 +31,9 @@ public class TaskController {
 
 	@Autowired
 	projectDB projectRepository;
-	
-	
-//	returns task by id from the database
+
+
+	//	returns task by id from the database
 	@GetMapping("/task/{id}")
 	 JSONObject getTask(@PathVariable Integer id) {
 		JSONObject responseBody = new JSONObject();
@@ -47,7 +47,6 @@ public class TaskController {
 		responseBody.put("team", taskRepository.getById(id).getTaskTeam());
 		responseBody.put("status",200);
 		responseBody.put("message", "Successfully retrieved task");
-
 
 		return responseBody;
 	}
@@ -193,6 +192,7 @@ public class TaskController {
 		return responseBody;
 	}
 
+
 	@PutMapping("task/{taskID}/description")
 	JSONObject setDescription(
 			@PathVariable Integer taskID,
@@ -201,6 +201,7 @@ public class TaskController {
 	{
 		JSONObject responseBody = new JSONObject();
 		Task task = taskRepository.getById(taskID);
+
 		task.setTaskDescription(request.getAsString("description"));
 
 		taskRepository.save(task);
@@ -209,11 +210,6 @@ public class TaskController {
 
 		return responseBody;
 	}
-
-
-
-
-
 
 
 }

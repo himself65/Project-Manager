@@ -114,8 +114,10 @@ public class ProjectController {
         projectRepository.save(newProject);
         userRepository.save(user);
 
+
         responseBody.put("status", 200);
         responseBody.put("message", "Project successfully created!");
+        responseBody.put("project_id", newProject.getProjectID());
         return responseBody;
     }
 
@@ -130,6 +132,7 @@ public class ProjectController {
     {
         JSONObject responseBody = new JSONObject();
         projectRepository.deleteById(id);
+
         responseBody.put("status", 200);
         responseBody.put("message", "Successfully Removed Project");
 
@@ -153,9 +156,10 @@ public class ProjectController {
 
         users.addAll(project.getUsers());
 
-        responseBody.put("users",users);
+
         responseBody.put("status", 200);
         responseBody.put("message", "Successfully retrieved all users from" + project.getProjectName());
+        responseBody.put("users",users);
 
         return responseBody;
     }
@@ -216,9 +220,10 @@ public class ProjectController {
 
         teams.addAll(project.getTeams());
 
-        responseBody.put("teams",teams);
+
         responseBody.put("status", 200);
         responseBody.put("message", "Successfully retrieved all teams from " + project.getProjectName());
+        responseBody.put("teams",teams);
 
         return responseBody;
     }
@@ -254,8 +259,10 @@ public class ProjectController {
 
 
 
+
         responseBody.put("status",200);
         responseBody.put("message", "Team successfully created");
+        responseBody.put("team_id",team.getTeamID());
         return responseBody;
     }
 
@@ -274,9 +281,9 @@ public class ProjectController {
 
         tasks.addAll(project.getTasks());
 
-        responseBody.put("tasks",tasks);
         responseBody.put("status", 200);
         responseBody.put("message", "Successfully retrieved all tasks from " + project.getProjectName());
+        responseBody.put("tasks",tasks);
 
 
 
@@ -336,8 +343,10 @@ public class ProjectController {
         projectRepository.save(project);
         teamRepository.save(assignedTeam);
 
+
         responseBody.put("status",200);
         responseBody.put("message", "Task successfully created");
+        responseBody.put("task_id",task.getId());
 
         return responseBody;
     }

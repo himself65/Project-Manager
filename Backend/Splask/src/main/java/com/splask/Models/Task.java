@@ -53,7 +53,7 @@ public class Task {
 //	Many tasks to one Team
 	@ManyToOne
 	@JoinColumn(name = "team_id")
-	@JsonIgnore
+//	@JsonIgnore
 	private Team taskTeam;
 
 //  Many tasks to one Project

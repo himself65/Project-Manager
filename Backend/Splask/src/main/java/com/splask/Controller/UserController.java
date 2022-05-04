@@ -4,6 +4,9 @@ package com.splask.Controller;
 import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.splask.Models.User;
@@ -160,8 +163,10 @@ public class UserController {
         JSONObject deleteUsers () {
             JSONObject responseBody = new JSONObject();
             userRepository.deleteAll();
+
             responseBody.put("status", 200);
             responseBody.put("message", "Successfully deleted all users");
+
             return responseBody;
         }
         
@@ -179,9 +184,10 @@ public class UserController {
 
             projects.addAll(user.getProject());
 
-            responseBody.put("projects", projects);
+
             responseBody.put("status", 200);
             responseBody.put("message", "Successfully retrieved all projects from " + user.getUsername());
+            responseBody.put("projects", projects);
 
             return responseBody;
         }
@@ -200,9 +206,10 @@ public class UserController {
 
             teams.addAll(user.getTeam());
 
-            responseBody.put("teams", teams);
+
             responseBody.put("status", 200);
             responseBody.put("message", "Successfully retrieved all teams from " + user.getUsername());
+            responseBody.put("teams", teams);
 
             return responseBody;
         }
@@ -236,12 +243,10 @@ public class UserController {
     @GetMapping("user/{id}/image")
     public JSONObject getImageById(@PathVariable Integer id) throws IOException {
         JSONObject responseBody = new JSONObject();
-        JSONArray image = new JSONArray();
-
-        image.add(service.getUserImageById(id));
+        byte[] bytes = service.getUserImageById(id);
 
 
-        responseBody.put("image",image);
+        responseBody.put("image", Arrays.toString(bytes));
         responseBody.put("status",200);
         responseBody.put("message","Successfully retrieved image");
 
@@ -252,7 +257,7 @@ public class UserController {
     @PutMapping("user/{id}/image")
     public JSONObject uploadImage(@PathVariable Integer id, @RequestBody JSONObject request) throws IOException {
         JSONObject responseBody = new JSONObject();
-        JSONArray imageTemp = (JSONArray) request.get("image");
+        ArrayList<Integer> imageTemp = (ArrayList<Integer>) request.get("image");
 
         byte[] image = new byte[imageTemp.size()];
         for (int i = 0; i < imageTemp.size(); i++)
