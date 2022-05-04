@@ -92,6 +92,7 @@ public void user(String username, String password) {
 		this.username = username;
 		this.password = password;
 		this.loggedIn = 0;
+		this.imagePath = "/home/splask_files/default.jpg";
 	}
 
 	public User(){
@@ -149,7 +150,7 @@ public void user(String username, String password) {
 	 * 
 	 * @return Integer loggin of the user 
 	 */
-    public Integer isLoggedIn() {return loggedIn;}
+    public Integer getLoggedIn() {return loggedIn;}
     /**
      * 
      * @param loggedIn

@@ -68,6 +68,7 @@ public class Task {
 	public Task(){
 		dateCreated = LocalDateTime.now();
 		status = 0;
+		taskDescription = "";
 
 	}
 
