@@ -139,7 +139,7 @@ public class TeamFragment extends Fragment {
                             );
                             userNameList.add(object.getString("fullName"));
 //                            binding.getModal().team.
-                            Log.d("project_debug",object.toString());
+                            Log.d("team_fragment",object.toString());
                         }
                         ArrayAdapter<String> userName = new ArrayAdapter<String>(getContext(),
                                 android.R.layout.simple_list_item_1,
@@ -149,8 +149,9 @@ public class TeamFragment extends Fragment {
                         e.printStackTrace();
                     }
                 },
-                error -> Logger.getLogger("json").log(Level.INFO, error.toString())
-        );
+                error -> {
+                    Log.d("team_fragment","Error getting members: " + error.getMessage());
+                });
 
         AppController.getInstance().addToRequestQueue(request);
     }

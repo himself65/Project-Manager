@@ -47,7 +47,8 @@ public class InboxFragment extends Fragment {
 //        final TextView textView = binding.textInbox;
 //        inboxViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
-        String url = Const.API_SERVER + "/user/" + Const.user.getUserID() + "/teams";
+//        String url = Const.API_SERVER + "/user/" + Const.user.getUserID() + "/teams";
+        String url = "https://bd9f22ed-10c9-4c41-a415-b951634333f6.mock.pstmn.io/user/3/teams";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {

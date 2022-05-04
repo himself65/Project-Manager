@@ -2,11 +2,13 @@ package com.coms3091mc3.projectmanager.ui.inbox;
 
 import android.os.Bundle;
 import android.provider.Telephony;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,7 +31,7 @@ public class ChatFragment extends Fragment {
 
     private FragmentChatBinding binding;
     private WebSocketClient cc;
-
+    EditText msg;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         InboxViewModel inboxViewModel =
@@ -42,62 +44,67 @@ public class ChatFragment extends Fragment {
 //        final TextView textView = binding.textInbox;
 //        inboxViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
-//        String url = Const.API_SERVER + "/user/" + Const.user.getUserID() + "/teams";
         TextView teamName = root.findViewById(R.id.teamName);
         Button btnMsg = root.findViewById(R.id.btnMsgSend);
         teamName.setText("Team Name");
+        msg = root.findViewById(R.id.etMsg);
 
         TextView conversation = root.findViewById(R.id.txtConvo);
+        conversation.setMovementMethod(new ScrollingMovementMethod());
 
-        btnMsg.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Draft[] drafts = {
-                        new Draft_6455()
-                };
+        Draft[] drafts = {
+                new Draft_6455()
+        };
 
-                /**
-                 * If running this on an android device, make sure it is on the same network as your
-                 * computer, and change the ip address to that of your computer.
-                 * If running on the emulator, you can use localhost.
-                 */
-                String w = "ws://10.0.2.2:8080/websocket/" + Const.user.getUsername();
+        String w = "ws://10.0.2.2:8080/websocket/" + Const.user.getUsername();
+//        String w = "localhost:8080/websocket/" + Const.user.getUsername();
 
-                try {
-                    Log.d("Socket:", "Trying socket");
-                    cc = new WebSocketClient(new URI(w), (Draft) drafts[0]) {
-                        @Override
-                        public void onMessage(String message) {
-                            Log.d("", "run() returned: " + message);
-//                            String s = t1.getText().toString();
-//                            t1.setText(s + "\nServer:" + message);
-                        }
-
-                        @Override
-                        public void onOpen(ServerHandshake handshake) {
-                            Log.d("OPEN", "run() returned: " + "is connecting");
-                        }
-
-                        @Override
-                        public void onClose(int code, String reason, boolean remote) {
-                            Log.d("CLOSE", "onClose() returned: " + reason);
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-                            Log.d("Exception:", e.toString());
-                        }
-                    };
-                } catch (URISyntaxException e) {
-                    Log.d("Exception:", e.getMessage().toString());
-                    e.printStackTrace();
+        try {
+            Log.d("Socket:", "Trying socket");
+            cc = new WebSocketClient(new URI(w), (Draft) drafts[0]) {
+                @Override
+                public void onMessage(String message) {
+                    Log.d("chatbox", "run() returned: " + message);
+                    String s = conversation.getText().toString();
+                    conversation.setText(s + "\n" + message);
+//                    conversation.scrollBy(0,100);
+//                    conversation.scroll
                 }
-                cc.connect();
 
+                @Override
+                public void onOpen(ServerHandshake handshake) {
+                    Log.d("chat_fragment", "run() returned: " + "is connecting");
+                }
+
+                @Override
+                public void onClose(int code, String reason, boolean remote) {
+                    Log.d("chat_fragment", "onClose() returned: " + reason);
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Log.d("Exception:", e.toString());
+                }
+            };
+        } catch (URISyntaxException e) {
+            Log.d("Exception:", e.getMessage().toString());
+            e.printStackTrace();
+        }
+        cc.connect();
+
+        btnMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    if(msg.getText().length() > 0){
+                        cc.send(msg.getText().toString());
+                        msg.setText("");
+                    }
+                } catch (Exception e) {
+                    Log.d("ExceptionSendMessage:", e.getMessage());
+                }
             }
         });
-        String url = "ws://10.0.2.2:8080/websocket/" + Const.user.getUsername();
-
 
         return root;
     }

@@ -1,6 +1,7 @@
 package com.coms3091mc3.projectmanager.ui.projects;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class ProjectsFragment extends Fragment {
                         JSONArray projects = response.getJSONArray("projects");
                         for (int i = 0; i < projects.length(); i++) {
                             JSONObject object = (JSONObject) projects.get(i);
+                            Log.d("project_adapter","PROJECT DETAIL " + object.toString());
                             Project project = new Project(
                                     object.getInt("projectID"),
                                     object.getString("projectName"),
@@ -54,6 +56,7 @@ public class ProjectsFragment extends Fragment {
                             );
                             ProjectsDataModel modal = binding.getModal();
                             if (modal != null) {
+                                project.setAdmin(object.getInt("admin"));
                                 modal.projectsAdapter.add(project);
                             }
                         }

@@ -101,7 +101,7 @@
                 android:layout_height="62dp"
                 android:layout_marginTop="10dp"
                 android:paddingHorizontal="10dp"
-                android:text="task_description"
+                android:text="@{modal.task.description}"
                 android:textColor="@color/black"
                 android:textSize="15dp" />
         </LinearLayout>

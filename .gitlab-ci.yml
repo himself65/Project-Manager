@@ -28,6 +28,8 @@ autoDeploy:
   stage: autodeploy
   tags:
     - springboot_tag
+  only:
+    - main
   script:
     - cd Backend/Splask
     - mvn package
