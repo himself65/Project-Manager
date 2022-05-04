@@ -150,10 +150,11 @@ public class TeamFragment extends Fragment {
                         lv.setAdapter(userName);
                         //TODO:
                         for(int i = 0; i < lv.getCount(); i++){
-                            if(onlineStatusList.get(i) == 0) //offline
-                                lv.getChildAt(i).setBackgroundColor(Color.rgb(200, 0, 0));
-                            else //online
-                                lv.getChildAt(i).setBackgroundColor(Color.rgb(0, 200, 0));
+                            Log.d("team_fragment","adapter: " + onlineStatusList.get(i));
+//                            if(onlineStatusList.get(i) == 0) //offline
+//                                lv.getChildAt(i).setBackgroundColor(Color.rgb(200, 0, 0));
+//                            else //online
+//                                lv.getChildAt(i).setBackgroundColor(Color.rgb(0, 200, 0));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

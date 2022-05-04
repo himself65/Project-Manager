@@ -16,6 +16,9 @@
             <argument
                 android:name="teamID"
                 app:argType="integer" />
+            <argument
+                android:name="teamName"
+                app:argType="string" />
         </action>
     </fragment>
 

@@ -78,7 +78,7 @@ public class InboxFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Team team = binding.getModal().teamsAdapter.getItem(i);
-                InboxFragmentDirections.ActionNavigationInboxToNavigationChat action = InboxFragmentDirections.actionNavigationInboxToNavigationChat(team.getTeamID());
+                InboxFragmentDirections.ActionNavigationInboxToNavigationChat action = InboxFragmentDirections.actionNavigationInboxToNavigationChat(team.getTeamID(),team.getTeamName());
                 Navigation.findNavController(view).navigate(action);
             }
         });
