@@ -80,7 +80,7 @@ public class User{
 	@JsonIgnore
 	private List<Task> tasks = new ArrayList<>();
 
-	@Column(nullable = true)
+	@Column
 	private String imagePath;
 	
 	

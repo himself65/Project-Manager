@@ -114,6 +114,8 @@ public class ProjectController {
         projectRepository.save(newProject);
         userRepository.save(user);
 
+
+        responseBody.put("project_id", newProject.getProjectID());
         responseBody.put("status", 200);
         responseBody.put("message", "Project successfully created!");
         return responseBody;
@@ -336,6 +338,7 @@ public class ProjectController {
         projectRepository.save(project);
         teamRepository.save(assignedTeam);
 
+        responseBody.put("task_id",task.getId());
         responseBody.put("status",200);
         responseBody.put("message", "Task successfully created");
 
