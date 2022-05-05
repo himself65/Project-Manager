@@ -23,7 +23,7 @@ public class TestMainActivity {
             new ActivityScenarioRule<MainActivity>(MainActivity.class);
 
     @Test
-    public void test() {
+    public void testClickAllNavigation() {
         onView(withId(R.id.navigation_dashboard))
                 .perform(click());
         onView(withId(R.id.navigation_projects))
