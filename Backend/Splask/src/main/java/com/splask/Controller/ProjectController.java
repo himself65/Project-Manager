@@ -307,6 +307,8 @@ public class ProjectController {
     JSONObject addTaskToProject(@PathVariable Integer project_id, @RequestBody JSONObject object)
     {
         JSONObject responseBody = new JSONObject();
+        JSONArray team_users = new JSONArray();
+
 
 
 
@@ -317,6 +319,13 @@ public class ProjectController {
         task.setTask(object.getAsString("task"));
 
         Team assignedTeam = teamRepository.getById((Integer) object.getAsNumber("team_id"));
+
+        for (User i : assignedTeam.getUsers())
+        {
+            JSONObject temp = new JSONObject();
+            temp.put("username",i.getUsername());
+            team_users.add(temp);
+        }
 
         if (!project.getTeams().contains(assignedTeam))
         {
@@ -350,6 +359,7 @@ public class ProjectController {
         responseBody.put("status",200);
         responseBody.put("message", "Task successfully created");
         responseBody.put("task_id",task.getId());
+        responseBody.put("team_users", team_users);
 
         return responseBody;
     }
