@@ -2,6 +2,8 @@ package com.splask.Models;
 
 import com.fasterxml.jackson.annotation.*;
 import com.sun.istack.NotNull;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,6 +23,10 @@ public class Project {
     @Column
     private String projectName;
 
+    @OneToMany(mappedBy = "project")
+    @NotNull
+    @JsonIgnore
+    private List<Announcements> adminMessages = new ArrayList<>();
 
 
     @ManyToMany(mappedBy = "projects")
@@ -52,7 +58,6 @@ public class Project {
 
 
     public Project() {
-
         dateCreated = LocalDateTime.now();
         status = 0;
     }
@@ -165,11 +170,16 @@ public class Project {
 	public List<Task> getTasks() {return tasks;}
 	public void setTasks(List<Task> tasks) {this.tasks = tasks;}
 
-	
-    
-    
-    
-    
-    
+
+    public List<Announcements> getAdminMessages() {
+        return adminMessages;
+    }
+
+    public void addAdminMessages(Announcements newMessage)
+    {
+
+        adminMessages.add(newMessage);
+    }
+
 
 }
