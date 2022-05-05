@@ -32,22 +32,16 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.coms3091mc3.projectmanager.MainActivity;
 import com.coms3091mc3.projectmanager.R;
-import com.coms3091mc3.projectmanager.TasksAdapter;
-import com.coms3091mc3.projectmanager.TeamActivity;
 import com.coms3091mc3.projectmanager.TeamsAdapter;
 import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.data.Project;
 import com.coms3091mc3.projectmanager.data.Task;
 import com.coms3091mc3.projectmanager.data.Team;
-import com.coms3091mc3.projectmanager.data.User;
 import com.coms3091mc3.projectmanager.databinding.FragmentProjectBinding;
 import com.coms3091mc3.projectmanager.store.ProjectDataModel;
 import com.coms3091mc3.projectmanager.utils.Const;
-import com.coms3091mc3.projectmanager.view.AddTeamDialogFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
