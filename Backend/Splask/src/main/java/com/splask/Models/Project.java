@@ -125,7 +125,7 @@ public class Project {
     }
 
     /**
-     * Adds new Task to a project while also checking if the task is already in the prject
+     * Adds new Task to a project while also checking if the task is already in the project
      * @param task
      * @return true if task is in project, false if it is not in project as well as adding the task to the project
      */
