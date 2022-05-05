@@ -54,6 +54,7 @@
             android:scrollbars="vertical"
             android:text=""
             android:textSize="20dp"
+            android:lineSpacingExtra="4sp"
             android:gravity="bottom"
             app:layout_constraintBottom_toTopOf="@+id/linearLayoutCompat"
             app:layout_constraintEnd_toEndOf="parent"
