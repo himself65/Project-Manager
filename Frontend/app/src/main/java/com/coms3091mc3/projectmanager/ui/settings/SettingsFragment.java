@@ -47,6 +47,9 @@ public class SettingsFragment extends Fragment {
             new ActivityResultCallback<Uri>() {
                 @Override
                 public void onActivityResult(Uri uri) {
+                    if (uri == null) {
+                        return;
+                    }
                     ImageButton button = binding.getRoot().findViewById(R.id.avatar);
                     byte[] bytes = getBytesArrayFromURI(uri);
                     JSONArray array = new JSONArray();
