@@ -43,6 +43,7 @@ import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.data.Project;
 import com.coms3091mc3.projectmanager.data.Task;
 import com.coms3091mc3.projectmanager.data.Team;
+import com.coms3091mc3.projectmanager.data.User;
 import com.coms3091mc3.projectmanager.databinding.FragmentProjectBinding;
 import com.coms3091mc3.projectmanager.store.ProjectDataModel;
 import com.coms3091mc3.projectmanager.utils.Const;
@@ -73,9 +74,6 @@ public class ProjectFragment extends Fragment {
         binding.setModal(new ProjectDataModel(getContext()));
         View view = binding.getRoot();
         projectID = (Integer) getArguments().get("projectID");
-
-        if(binding.getModal().project.get().getAdmin() != Const.user.getUserID())
-            binding.getRoot().findViewById(R.id.btnProjectDescription).setVisibility(View.GONE);
         descriptionView = view.findViewById(R.id.descriptionTextView);
         descriptionView.setMovementMethod(new ScrollingMovementMethod());
         setAnnouncements();
@@ -148,6 +146,9 @@ public class ProjectFragment extends Fragment {
                                 )
                         );
                         binding.getModal().project.get().setAdmin(projectDetails.getInt("admin"));
+                        Log.d("project_fragment", binding.getModal().project.get().getAdmin() + " - " + Const.user.getUserID());
+                        if(binding.getModal().project.get().getAdmin() != Const.user.getUserID())
+                            binding.getRoot().findViewById(R.id.btnProjectDescription).setVisibility(View.GONE);
                         setOverviewText(projectDetails.getInt("admin"));
 //                        appendDescriptionText(projectDetails.getJSONObject("announcement").get);
                         Log.d("PROJECT_FRAGMENT","PROJECT DEBUG: ADMIN - " + binding.getModal().project.get().getAdmin());
@@ -321,32 +322,44 @@ public class ProjectFragment extends Fragment {
                     JSONArray users = null;
                     try {
                         users = response.getJSONArray("users");
+
+                        alertBuilder.setTitle("List of Members")
+                                .setPositiveButton("BACK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        return;
+                                    }
+                                });
+
+                        String[] memberList = new String[users.length()];
+                        for (int i = 0; i < memberList.length; i++) {
+                            try {
+                                memberList[i] = users.getJSONObject(i).getString("username");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        alertBuilder.setItems(memberList, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Log.d("project_fragment","Clicking user: " + i);
+//                                try{
+////                                    viewMemberProfile(response.getJSONArray("users").getJSONObject(i).getInt("userId"));
+//                                    JSONObject userObject = response.getJSONArray("users").getJSONObject(i);
+//                                    User user = new User(userObject.getInt("userId"),userObject.getString("username"),userObject.getString("fullName"));
+//                                    ProjectFragmentDirections.ActionNavigationProjectToNavigationProfile action = ProjectFragmentDirections.actionNavigationProjectToNavigationProfile(user.getUserID(),user.getUsername(),user.getFullname());
+//                                    Navigation.findNavController(getView()).navigate(action);
+//                                }
+//                                catch(JSONException e){
+//                                    Log.d("project_fragment","Error setting on click listener: " + e.getMessage());
+//                                }
+                            }
+                        });
+                        alertBuilder.create().show();
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    alertBuilder.setTitle("List of Members")
-                            .setPositiveButton("BACK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    return;
-                                }
-                            });
-
-                    String[] memberList = new String[users.length()];
-                    for (int i = 0; i < memberList.length; i++) {
-                        try {
-                            memberList[i] = users.getJSONObject(i).getString("username");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    alertBuilder.setItems(memberList, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Log.d("project_fragment","Clicking user: " + i);
-                        }
-                    });
-                    alertBuilder.create().show();
                 },
                 error -> {
                     Log.d("project_fragment", "Error: " + error.getMessage());
@@ -504,15 +517,19 @@ public class ProjectFragment extends Fragment {
                         Task task = new Task(response.getInt("task_id"), params1.get("task"));
                         JSONArray users = response.getJSONArray("team_users");
                         Log.d("project_fragment","Add task: " + users.toString() + "\n" + users.length());
+                        binding.getModal().tasksAdapter.add(task);
+                        boolean partOfTeam = false;
                         for(int i = 0; i < users.length(); i++){
                             Log.d("project_fragment","Add task 2: " + users.getJSONObject(i).getString("username") + " - " + Const.user.getUsername());
                             //if user is in the team that the task was assigned to, update tasksAdapter
                             if(users.getJSONObject(i).getString("username").equals(Const.user.getUsername())){
                                 Log.d("project_fragment","Add task 3: updating task adapter");
-                                binding.getModal().tasksAdapter.add(task);
+                                partOfTeam = true;
                                 break;
                             }
                         }
+                        if(!partOfTeam)
+                            binding.getModal().tasksAdapter.remove(task);
                         Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -631,4 +648,5 @@ public class ProjectFragment extends Fragment {
         );
         AppController.getInstance().addToRequestQueue(request);
     }
+
 }
