@@ -16,7 +16,7 @@ package com.coms3091mc3.projectmanager;
 // * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
 // */
 //@RunWith(AndroidJUnit4.class)
-//public class ExampleInstrumentedTest {
+//public class Test {
 //    @Test
 //    public void useAppContext() {
 //        // Context of the app under test.
@@ -27,9 +27,7 @@ package com.coms3091mc3.projectmanager;
 
 //package testing;
 
-import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
@@ -40,33 +38,23 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.StringEndsWith.endsWith;
-import android.util.Log;
+
 import android.view.View;
 
-import com.coms3091mc3.projectmanager.LoginActivity;
-import com.coms3091mc3.projectmanager.R;
-
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.filters.LargeTest;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
-import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.rule.ActivityTestRule;
-
-import com.coms3091mc3.projectmanager.MainActivity;
-import com.coms3091mc3.projectmanager.ui.team.TeamFragment;
 
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 // Mock the RequestServerForService class
 @RunWith(AndroidJUnit4ClassRunner.class)
 @LargeTest   // large execution time
-public class ExampleInstrumentedTest {
+public class ProjectTest {
 
     private static final int SIMULATED_DELAY_MS = 500;
     private View decorView;
@@ -75,7 +63,8 @@ public class ExampleInstrumentedTest {
 
     @Rule public ActivityScenarioRule<LoginActivity> loginRule = new ActivityScenarioRule<>(LoginActivity.class);
 
-    @Test public void addMemberTest() {
+    @org.junit.Test
+    public void addMemberTest() {
         ActivityScenario<LoginActivity> scenario = loginRule.getScenario();
 
         // Your test code goes here.
@@ -117,7 +106,8 @@ public class ExampleInstrumentedTest {
 //        onView(ViewMatchers.withText("Logout")).perform(click());
     }
 
-    @Test public void groupChatTest() {
+    @org.junit.Test
+    public void groupChatTest() {
 //        ActivityScenario<LoginActivity> scenario = loginRule.getScenario();
 
         // Your test code goes here.
@@ -164,7 +154,8 @@ public class ExampleInstrumentedTest {
         onView(ViewMatchers.withText("Logout")).perform(click());
     }
 
-    @Test public void randomTests() {
+    @org.junit.Test
+    public void randomTests() {
 //        ActivityScenario<LoginActivity> scenario = loginRule.getScenario();
 
         // Your test code goes here.
@@ -233,7 +224,8 @@ public class ExampleInstrumentedTest {
 //        onView(withText("Logout")).perform(click());
     }
 
-    @Test public void randomTests2() {
+    @org.junit.Test
+    public void randomTests2() {
 //        ActivityScenario<LoginActivity> scenario = loginRule.getScenario();
 
         // Your test code goes here.
