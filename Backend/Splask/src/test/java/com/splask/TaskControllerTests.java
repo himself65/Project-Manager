@@ -87,22 +87,22 @@ public class TaskControllerTests {
     }
 
 
-    @Test
-    public void assignTaskToProject(){ //TODO assign the task to project
-
-        JSONObject request = new JSONObject();
-
-//        request.put();
-        int task_id = 1;
-//        int project_id = 1;
-
-        given().contentType(ContentType.JSON).accept(ContentType.JSON)
-                .body(request.toJSONString())
-                .when()
-                .put("/task/" + task_id + "/project/" +  project_id)
-                .then()
-                .statusCode(200).log().all();
-    }
+//    @Test
+//    public void assignTaskToProject(){ //TODO assign the task to project
+//
+//        JSONObject request = new JSONObject();
+//
+////        request.put();
+//        int task_id = 1;
+////        int project_id = 1;
+//
+//        given().contentType(ContentType.JSON).accept(ContentType.JSON)
+//                .body(request.toJSONString())
+//                .when()
+//                .put("/task/" + task_id + "/project/" +  project_id)
+//                .then()
+//                .statusCode(200).log().all();
+//    }
 
 
     @Test
