@@ -88,7 +88,7 @@ public class TeamFragment extends Fragment {
                     }
                 },
                 error -> {
-
+                    Log.d("team_fragment","Error getting team: " + error.getMessage());
                 }
         );
         AppController.getInstance().addToRequestQueue(request);
@@ -103,6 +103,7 @@ public class TeamFragment extends Fragment {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
         final EditText dialogInput = new EditText(context);
+        Log.d("team_fragment","Dialog input " + dialogInput.getId());
         dialogInput.setLayoutParams(lp);
         alertBuilder.setView(dialogInput);
 
@@ -185,13 +186,15 @@ public class TeamFragment extends Fragment {
                 response -> {
                     try {
                         Log.d("team_fragment","Add Member: " + response.toString());
-                        userList.add(response.getJSONObject("user").getString("fullName"));
-                        onlineStatusList.add(response.getJSONObject("user").getInt("loggedIn"));
-                        usersAdapter = new ArrayAdapter<String>(getContext(),
-                                android.R.layout.simple_list_item_1,
-                                userList);
-                        lv.setAdapter(usersAdapter);
-                        Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                        if(response.getInt("status") == 200){
+                            userList.add(response.getJSONObject("user").getString("fullName"));
+                            onlineStatusList.add(response.getJSONObject("user").getInt("loggedIn"));
+                            usersAdapter = new ArrayAdapter<String>(getContext(),
+                                    android.R.layout.simple_list_item_1,
+                                    userList);
+                            lv.setAdapter(usersAdapter);
+                        }
+                        Toast.makeText(getActivity(), response.getString("message"), Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

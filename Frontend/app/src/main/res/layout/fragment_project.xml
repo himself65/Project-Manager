@@ -61,8 +61,10 @@
         <GridView
             android:id="@+id/projectTasks"
             android:layout_width="match_parent"
+            android:layout_height="185dp"
             android:adapter="@{modal.tasksAdapter}"
-            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/scrollView2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -72,13 +74,11 @@
             android:id="@+id/scrollView2"
             android:layout_width="316dp"
             android:layout_height="187dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginBottom="76dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.197"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/projectTasks"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintHorizontal_bias="0.21"
+            app:layout_constraintStart_toStartOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
