@@ -1,6 +1,7 @@
 package com.coms3091mc3.projectmanager.ui.projects;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.data.Project;
 import com.coms3091mc3.projectmanager.databinding.FragmentProjectsBinding;
+import com.coms3091mc3.projectmanager.store.ProjectDataModel;
 import com.coms3091mc3.projectmanager.store.ProjectsDataModel;
 import com.coms3091mc3.projectmanager.utils.Const;
 
@@ -28,6 +30,12 @@ public class ProjectsFragment extends Fragment {
 
     private FragmentProjectsBinding binding;
 
+    @Override
+    public void onDestroy() {
+        AppController.getInstance().cancelPendingRequests("ProjectsFragment");
+        super.onDestroy();
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentProjectsBinding.inflate(inflater, container, false);
@@ -40,12 +48,17 @@ public class ProjectsFragment extends Fragment {
                         JSONArray projects = response.getJSONArray("projects");
                         for (int i = 0; i < projects.length(); i++) {
                             JSONObject object = (JSONObject) projects.get(i);
+                            Log.d("project_adapter","PROJECT DETAIL " + object.toString());
                             Project project = new Project(
                                     object.getInt("projectID"),
                                     object.getString("projectName"),
                                     object.getString("dateCreated")
                             );
-                            binding.getModal().projectsAdapter.add(project);
+                            ProjectsDataModel modal = binding.getModal();
+                            if (modal != null) {
+                                project.setAdmin(object.getInt("admin"));
+                                modal.projectsAdapter.add(project);
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -54,7 +67,7 @@ public class ProjectsFragment extends Fragment {
                 error -> Logger.getLogger("projects_fragment_debug").log(Level.INFO, error.toString())
         );
 
-        AppController.getInstance().addToRequestQueue(request);
+        AppController.getInstance().addToRequestQueue(request, "ProjectsFragment");
         return root;
     }
 

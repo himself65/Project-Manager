@@ -41,17 +41,18 @@
             android:id="@+id/btnAddUser"
             android:layout_width="71dp"
             android:layout_height="41dp"
-            android:layout_marginStart="92dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="12dp"
             android:drawableTop="@drawable/ic_baseline_person_add_24"
-            app:layout_constraintStart_toEndOf="@+id/teamName"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
         <ListView
             android:id="@+id/user_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="88dp"
             android:paddingHorizontal="10dp"
             android:paddingBottom="40dp"
             app:layout_constraintStart_toStartOf="parent"
