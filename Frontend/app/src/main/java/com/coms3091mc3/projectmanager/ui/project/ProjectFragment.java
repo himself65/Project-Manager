@@ -601,7 +601,7 @@ public class ProjectFragment extends Fragment {
                         projectAnnouncements = s;
                         Log.d("project_fragment","Set announcements: " + response.toString());
                         setDescriptionText(s);
-                        Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
