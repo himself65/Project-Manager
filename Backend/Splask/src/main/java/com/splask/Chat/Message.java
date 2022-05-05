@@ -32,7 +32,7 @@ public class Message {
     @Column(name = "sent")
     private Date sent = new Date();
 
-    @Column (name = "Team_ID")
+    @Column (name = "team_id")
     private int teamID;
 
     public int getTeamID() {
@@ -45,9 +45,10 @@ public class Message {
 
     public Message() {};
 
-    public Message(String userName, String content) {
+    public Message(String userName, String content, int teamID) {
         this.userName = userName;
         this.content = content;
+        this.teamID = teamID;
     }
 
     public Long getId() {
@@ -81,6 +82,7 @@ public class Message {
     public void setSent(Date sent) {
         this.sent = sent;
     }
+    
 
 
 }
