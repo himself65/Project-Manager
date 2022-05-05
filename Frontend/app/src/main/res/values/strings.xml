@@ -1,10 +1,11 @@
 <resources>
     <!--    <string name="app_name">Project Manager</string>-->
     <string name="app_name"></string>
-    <string name="title_home">Home</string>
+    <string name="title_home">Inbox</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_projects">Projects</string>
     <string name="title_settings">Settings</string>
+    <string name="title_chat">Chat</string>
     <string name="welcome">Welcome</string>
     <string name="add_project">Add Project</string>
     <string name="input_project_name">Input project name</string>

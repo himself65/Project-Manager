@@ -6,6 +6,7 @@ public class Project implements Serializable {
     private int id;
     private String name;
     private String createdDate;
+    private int admin;
 
     public Project(int id, String name, String createdDate) {
         this.id = id;
@@ -35,5 +36,13 @@ public class Project implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public void setAdmin(int admin) {
+        this.admin = admin;
+    }
+
+    public int getAdmin() {
+        return admin;
     }
 }
