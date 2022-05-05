@@ -321,7 +321,7 @@ public class ProjectController {
         if (!project.getTeams().contains(assignedTeam))
         {
             responseBody.put("status", 400);
-            responseBody.put("message", "Task does not exist");
+            responseBody.put("message", "Team does not exist");
             return responseBody;
         }
 
