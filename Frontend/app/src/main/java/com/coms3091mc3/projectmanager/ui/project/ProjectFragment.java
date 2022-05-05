@@ -192,6 +192,7 @@ public class ProjectFragment extends Fragment {
             menu.findItem(R.id.addMembers).setVisible(false);
             menu.findItem(R.id.addTeam).setVisible(false);
             menu.findItem(R.id.addTask).setVisible(false);
+            binding.getRoot().findViewById(R.id.btnProjectDescription).setVisibility(View.GONE);
         }
 
         popup.show();
@@ -203,6 +204,8 @@ public class ProjectFragment extends Fragment {
                 response -> {
 //                    teamsArray = teams;
                     JSONArray teams = null;
+                    teamsArray = new JSONArray();
+
                     try {
                         teams = response.getJSONArray("teams");
                     } catch (JSONException e) {
@@ -372,7 +375,7 @@ public class ProjectFragment extends Fragment {
                             return;
                         }
                         params.put("teamName", dialogInput.getText().toString());
-                        addTeamRequest(params);
+                        addTeamRequest(params, dialogInput.getText().toString());
                     }
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -437,11 +440,12 @@ public class ProjectFragment extends Fragment {
             // Create the AlertDialog object and return it
             alertBuilder.create().show();
         } else {
-            Toast.makeText(getContext(), "No teams exists in the project yet", Toast.LENGTH_LONG);
+            Log.d("project_fragment","Error adding task: No teams exists");
+            Toast.makeText(getContext(), "No teams exists in the project yet", Toast.LENGTH_LONG).show();
         }
     }
 
-    void addTeamRequest(Map<String, String> query) {
+    void addTeamRequest(Map<String, String> query, String teamName) {
         //NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
 //        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/addTeam/";
         String url = Const.API_SERVER + "/project/" + projectID + "/addTeam/";
@@ -451,6 +455,10 @@ public class ProjectFragment extends Fragment {
                     try {
                         Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                         Log.d("project_debug","Team added : "+ response.getString("message"));
+                        JSONObject tmp = new JSONObject();
+                        tmp.put("teamID",response.getInt("team_id"));
+                        tmp.put("teamName",teamName);
+                        teamsArray.put(tmp);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -493,7 +501,14 @@ public class ProjectFragment extends Fragment {
                     try {
                         Log.d("project_debug", response.getString("message"));
                         Task task = new Task(response.getInt("task_id"), params1.get("task"));
-                        binding.getModal().tasksAdapter.add(task);
+                        JSONArray users = response.getJSONArray("team_users");
+                        for(int i = 0; i < users.length(); i++){
+                            //if user is in the team that the task was assigned to, update tasksAdapter
+                            if(users.getJSONObject(i).getString("username") == Const.user.getUsername()){
+                                binding.getModal().tasksAdapter.add(task);
+                                break;
+                            }
+                        }
                         Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
                         e.printStackTrace();

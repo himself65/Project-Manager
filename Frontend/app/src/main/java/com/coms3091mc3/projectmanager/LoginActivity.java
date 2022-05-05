@@ -104,9 +104,11 @@ public class LoginActivity extends AppCompatActivity {
                                 pBar.setVisibility(View.INVISIBLE);
                                 return;
                             }
-                            //insert input as full name parameter for register function
-                            params.put("full_name", dialogInput.getText().toString());
-                            registerRequest(params);
+                            else{
+                                //insert input as full name parameter for register function
+                                params.put("full_name", dialogInput.getText().toString());
+                                registerRequest(params);
+                            }
                         }
                     })
                     .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {

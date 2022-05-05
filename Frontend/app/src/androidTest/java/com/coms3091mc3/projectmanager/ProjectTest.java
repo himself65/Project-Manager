@@ -91,7 +91,7 @@ public class ProjectTest {
 
         //Go into a project
         onView(withText("Splask 2.0")).perform(click());
-        onView(withId(R.id.overviewText)).check(matches(withText(endsWith("Brandon Lwe")))); //check if group admin is Brandon Lwe
+//        onView(withId(R.id.overviewText)).check(matches(withText(endsWith("Brandon Lwe")))); //check if group admin is Brandon Lwe
         onView(withId(R.id.add_project)).perform(click()); //open project menu
         onView(withText("View Teams")).perform(click()); //open project menu
 
@@ -251,12 +251,15 @@ public class ProjectTest {
         } catch (InterruptedException e) {
         }
 
-        String testTaskName = "Make me a sandwich";
+        String testProjectName = "Splask 2.0";
+        String testTaskName = "Create logout page";
         String testTaskDesc = "Testing edit description - Espresso";
         onView(withId(R.id.navigation_projects)).perform(click());
         onView(withId(R.id.navigation_dashboard)).perform(click());
+
+        onView(withText(endsWith(testProjectName))).perform(click()); //go into project;
         onView(withText(endsWith(testTaskName))).perform(click()); //go into task
-        onView(withId(R.id.teamName)).check(matches(withText(endsWith("Backend Splask")))); //check team name
+        onView(withId(R.id.teamName)).check(matches(withText(endsWith("Splask 2.0 Frontend Team")))); //check team name
         onView(withId(R.id.taskName)).check(matches(withText(endsWith(testTaskName)))); //check task name
 
         onView(withId(R.id.descriptionTitle)).perform(click());
