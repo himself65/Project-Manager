@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,36 +17,22 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.Navigation;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.coms3091mc3.projectmanager.R;
-import com.coms3091mc3.projectmanager.TaskActivity;
 import com.coms3091mc3.projectmanager.app.AppController;
-import com.coms3091mc3.projectmanager.data.Project;
 import com.coms3091mc3.projectmanager.data.Task;
-import com.coms3091mc3.projectmanager.databinding.FragmentProjectBinding;
 import com.coms3091mc3.projectmanager.databinding.FragmentTaskBinding;
-import com.coms3091mc3.projectmanager.store.ProjectDataModel;
 import com.coms3091mc3.projectmanager.store.TaskDataModel;
-import com.coms3091mc3.projectmanager.ui.project.ProjectFragmentDirections;
 import com.coms3091mc3.projectmanager.utils.Const;
-import com.coms3091mc3.projectmanager.view.AddProjectDialogFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class TaskFragment extends Fragment {
     private FragmentTaskBinding binding;
