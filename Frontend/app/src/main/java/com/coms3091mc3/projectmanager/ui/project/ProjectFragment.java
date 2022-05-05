@@ -74,6 +74,8 @@ public class ProjectFragment extends Fragment {
         View view = binding.getRoot();
         projectID = (Integer) getArguments().get("projectID");
 
+        if(binding.getModal().project.get().getAdmin() != Const.user.getUserID())
+            binding.getRoot().findViewById(R.id.btnProjectDescription).setVisibility(View.GONE);
         descriptionView = view.findViewById(R.id.descriptionTextView);
         descriptionView.setMovementMethod(new ScrollingMovementMethod());
         setAnnouncements();
@@ -192,7 +194,6 @@ public class ProjectFragment extends Fragment {
             menu.findItem(R.id.addMembers).setVisible(false);
             menu.findItem(R.id.addTeam).setVisible(false);
             menu.findItem(R.id.addTask).setVisible(false);
-            binding.getRoot().findViewById(R.id.btnProjectDescription).setVisibility(View.GONE);
         }
 
         popup.show();
@@ -499,12 +500,15 @@ public class ProjectFragment extends Fragment {
                 query,
                 response -> {
                     try {
-                        Log.d("project_debug", response.getString("message"));
+//                        Log.d("project_debug", response.getString("message"));
                         Task task = new Task(response.getInt("task_id"), params1.get("task"));
                         JSONArray users = response.getJSONArray("team_users");
+                        Log.d("project_fragment","Add task: " + users.toString() + "\n" + users.length());
                         for(int i = 0; i < users.length(); i++){
+                            Log.d("project_fragment","Add task 2: " + users.getJSONObject(i).getString("username") + " - " + Const.user.getUsername());
                             //if user is in the team that the task was assigned to, update tasksAdapter
-                            if(users.getJSONObject(i).getString("username") == Const.user.getUsername()){
+                            if(users.getJSONObject(i).getString("username").equals(Const.user.getUsername())){
+                                Log.d("project_fragment","Add task 3: updating task adapter");
                                 binding.getModal().tasksAdapter.add(task);
                                 break;
                             }
