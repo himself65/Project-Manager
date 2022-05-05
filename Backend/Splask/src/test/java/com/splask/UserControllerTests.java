@@ -2,7 +2,6 @@ package com.splask;
 
 import io.restassured.http.ContentType;
 import net.minidev.json.JSONObject;
-import org.codehaus.jettison.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,22 +10,21 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static io.restassured.RestAssured.*;
-import io.restassured.response.Response;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 
-//@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@RunWith(SpringRunner.class)
+public class UserControllerTests {
 
-public class SystemTests {
+    @LocalServerPort
+    int port;
 
     @Before
     public void setUp() {
-        baseURI = "http://coms-309-007.class.las.iastate.edu:8080";
+//        baseURI = "http://coms-309-007.class.las.iastate.edu:8080";
+        port = port;
+        baseURI = "http://localhost";
     }
 
     @Test
@@ -67,9 +65,9 @@ public class SystemTests {
 //        request.put("userPassword", "andrew111");
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON)
-                .body(request.toJSONString()) //parameters that we are testing, eg. name, id,
+                .body(request.toJSONString())
                 .when()
-                .put("/login") //endpoint
+                .put("/login")
                 .then()
                 .statusCode(200).log().all();
     }
@@ -84,9 +82,9 @@ public class SystemTests {
 //        request.put("userPassword", "12345");
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON)
-                .body(request.toJSONString()) //parameters that we are testing, eg. name, id,
+                .body(request.toJSONString())
                 .when()
-                .put("/logout") //endpoint
+                .put("/logout")
                 .then()
                 .statusCode(200).log().all();
     }
@@ -95,23 +93,74 @@ public class SystemTests {
     @Test
     public void getUserProjects(){
 
-        JSONObject request = new JSONObject();
-
-        request.put("username", "andrew");
-        request.put("userPassword", "12345");
+        int user_id = 8;
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON)
-                .body(request.toJSONString()) //parameters that we are testing, eg. name, id,
+                .body("")
                 .when()
-                .put("/user/{user_id}/projects") //endpoint
+                .get("/user/" + user_id + "/projects")
                 .then()
                 .statusCode(200).log().all();
 
     }
 
 
+    @Test
+    public void getUserTeams(){
+
+        int user_id = 3;
+
+        given().contentType(ContentType.JSON).accept(ContentType.JSON)
+                .body("") //parameters that we are testing, eg. name, id,
+                .when()
+                .get("/user/" + user_id + "/teams")
+                .then()
+                .statusCode(200).log().all();
+
+    }
 
 
+    @Test
+    public void getUserTasks(){
+
+        int user_id = 8;
+
+        given().contentType(ContentType.JSON).accept(ContentType.JSON)
+                .body("")
+                .when()
+                .get("/user/" + user_id + "/tasks")
+                .then()
+                .statusCode(200).log().all();
+
+    }
+
+
+    @Test
+    public void getImageById(){
+
+        int user_id = 8;
+
+        given().contentType(ContentType.JSON).accept(ContentType.JSON)
+                .body("")
+                .when()
+                .get("/user/" + user_id + "/image")
+                .then()
+                .statusCode(200).log().all();
+    }
+
+
+    @Test
+    public void uploadImageToUser(){
+
+        int user_id = 8;
+
+        given().contentType(ContentType.JSON).accept(ContentType.JSON)
+                .body("")
+                .when()
+                .put("/user/" + user_id + "/image")
+                .then()
+                .statusCode(200).log().all();
+    }
 
 
 
