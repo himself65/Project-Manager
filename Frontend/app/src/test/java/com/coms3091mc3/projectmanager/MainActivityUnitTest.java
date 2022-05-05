@@ -1,5 +1,9 @@
 package com.coms3091mc3.projectmanager;
 
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
 import org.junit.Before;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -19,6 +23,14 @@ public class MainActivityUnitTest {
     @Test
     public void test() {
         LoginActivity activity = Robolectric.buildActivity(LoginActivity.class)
-                .create().resume().get();
+                .setup().get();
+        Button button = activity.findViewById(R.id.btnLogin);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        button.performClick();
     }
 }
