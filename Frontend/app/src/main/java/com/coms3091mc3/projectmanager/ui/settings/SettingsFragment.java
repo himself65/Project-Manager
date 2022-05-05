@@ -23,6 +23,7 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.coms3091mc3.projectmanager.R;
 import com.coms3091mc3.projectmanager.app.AppController;
+import com.coms3091mc3.projectmanager.data.User;
 import com.coms3091mc3.projectmanager.databinding.FragmentSettingsBinding;
 import com.coms3091mc3.projectmanager.store.SettingDataModal;
 import com.coms3091mc3.projectmanager.utils.Const;
@@ -77,7 +78,20 @@ public class SettingsFragment extends Fragment {
             });
 
     public JsonObjectRequest fetchAvatar() {
-        return new JsonObjectRequest(Request.Method.GET, Const.API_SERVER + "/user/" + Const.user.getUserID() + "/image", null,
+        User profile = new User(Const.user.getUserID(), Const.user.getUsername(), Const.user.getFullname());
+        if(getArguments() != null) { //being called from project fragment
+            profile = new User(getArguments().getInt("userID"),
+                    getArguments().getString("username"),
+                    getArguments().getString("fullname"));
+            //Reset name & fullname
+            TextView textView = binding.getRoot().findViewById(R.id.username);
+            textView.setText(profile.getUsername());
+
+            TextView fullName = binding.getRoot().findViewById(R.id.fullname);
+            fullName.setText(profile.getFullname());
+        }
+
+        return new JsonObjectRequest(Request.Method.GET, Const.API_SERVER + "/user/" + profile.getUserID() + "/image", null,
                 response -> {
                     try {
                         String message = response.getString("image");

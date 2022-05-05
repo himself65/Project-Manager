@@ -177,22 +177,22 @@ public class TeamController {
      * A JSONObject holding the id of a Project
      * @return responseBody with a success code
      */
-    @PutMapping("/team/{team_id}/project/addProject")
-    JSONObject assignTaskToTeam(
-    		@PathVariable Integer teamID,
-    		@RequestBody JSONObject object
-
-    ) {
-
-        JSONObject responseBody = new JSONObject();
-    	Project project = projectRepository.getById((Integer) object.getAsNumber("projectID"));
-    	Team team= teamRepository.getById(teamID);
-    	team.assignTeamToProject(project);
-
-        responseBody.put("status", 200);
-        responseBody.put("message", "Successfully assigned a Project to a Team");
-    	return responseBody;
-    }
+//    @PutMapping("/team/{team_id}/project/addProject")
+//    JSONObject assignTaskToTeam(
+//    		@PathVariable Integer teamID,
+//    		@RequestBody JSONObject object
+//
+//    ) {
+//
+//        JSONObject responseBody = new JSONObject();
+//    	Project project = projectRepository.getById((Integer) object.getAsNumber("projectID"));
+//    	Team team= teamRepository.getById(teamID);
+//    	team.assignTeamToProject(project);
+//
+//        responseBody.put("status", 200);
+//        responseBody.put("message", "Successfully assigned a Project to a Team");
+//    	return responseBody;
+//    }
 
     /**
      * retrieves all tasks that are assigned in a team

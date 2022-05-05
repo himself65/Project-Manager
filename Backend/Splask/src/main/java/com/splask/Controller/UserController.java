@@ -12,6 +12,7 @@ import java.util.List;
 import com.splask.Models.User;
 import com.splask.Repositories.UserDB;
 import com.splask.Services.ImageService;
+import io.swagger.v3.core.util.Json;
 import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +38,18 @@ public class UserController {
 
 //  Get all the users from the database
     @RequestMapping("/user")
-    List<User> getAllUsers() {
-        return userRepository.findAll();
+    JSONObject getAllUsers() {
+
+        JSONObject responseBody = new JSONObject();
+        JSONArray allUsers = new JSONArray();
+
+        allUsers.addAll(userRepository.findAll());
+
+        responseBody.put("status",200);
+        responseBody.put("message","Successfully received all Users from database");
+        responseBody.put("users",allUsers);
+
+        return responseBody;
     }
 
     /**
@@ -271,7 +282,6 @@ public class UserController {
 
 
         return responseBody;
-
 
     }
 

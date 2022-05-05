@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
+import android.text.Editable;
+import android.text.Selection;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -40,6 +43,7 @@ import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.data.Project;
 import com.coms3091mc3.projectmanager.data.Task;
 import com.coms3091mc3.projectmanager.data.Team;
+import com.coms3091mc3.projectmanager.data.User;
 import com.coms3091mc3.projectmanager.databinding.FragmentProjectBinding;
 import com.coms3091mc3.projectmanager.store.ProjectDataModel;
 import com.coms3091mc3.projectmanager.utils.Const;
@@ -49,6 +53,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -58,6 +64,8 @@ public class ProjectFragment extends Fragment {
     private FragmentProjectBinding binding;
     private JSONArray teamsArray = new JSONArray();
     private int projectID;
+    TextView descriptionView;
+    private String projectAnnouncements;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,6 +74,18 @@ public class ProjectFragment extends Fragment {
         binding.setModal(new ProjectDataModel(getContext()));
         View view = binding.getRoot();
         projectID = (Integer) getArguments().get("projectID");
+        descriptionView = view.findViewById(R.id.descriptionTextView);
+        descriptionView.setMovementMethod(new ScrollingMovementMethod());
+        setAnnouncements();
+
+        Button btnDesc = view.findViewById(R.id.btnProjectDescription);
+        btnDesc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addProjectDesc();
+            }
+        });
+
         Log.d("project_debug","Entered project with id : " + projectID);
         String url = Const.API_SERVER + "/project/" + projectID;
         String tasksUrl = Const.API_SERVER + "/user/" + Const.user.getUserID() + "/tasks";
@@ -126,7 +146,11 @@ public class ProjectFragment extends Fragment {
                                 )
                         );
                         binding.getModal().project.get().setAdmin(projectDetails.getInt("admin"));
+                        Log.d("project_fragment", binding.getModal().project.get().getAdmin() + " - " + Const.user.getUserID());
+                        if(binding.getModal().project.get().getAdmin() != Const.user.getUserID())
+                            binding.getRoot().findViewById(R.id.btnProjectDescription).setVisibility(View.GONE);
                         setOverviewText(projectDetails.getInt("admin"));
+//                        appendDescriptionText(projectDetails.getJSONObject("announcement").get);
                         Log.d("PROJECT_FRAGMENT","PROJECT DEBUG: ADMIN - " + binding.getModal().project.get().getAdmin());
                     } catch (JSONException e) {
                         Log.d("project_debug", "get project error: " +e.getMessage());
@@ -182,6 +206,8 @@ public class ProjectFragment extends Fragment {
                 response -> {
 //                    teamsArray = teams;
                     JSONArray teams = null;
+                    teamsArray = new JSONArray();
+
                     try {
                         teams = response.getJSONArray("teams");
                     } catch (JSONException e) {
@@ -296,32 +322,49 @@ public class ProjectFragment extends Fragment {
                     JSONArray users = null;
                     try {
                         users = response.getJSONArray("users");
+
+                        alertBuilder.setTitle("List of Members")
+                                .setPositiveButton("BACK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        return;
+                                    }
+                                });
+
+                        String[] memberList = new String[users.length()];
+                        for (int i = 0; i < memberList.length; i++) {
+                            try {
+                                memberList[i] = users.getJSONObject(i).getString("username");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        alertBuilder.setItems(memberList, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Log.d("project_fragment","Clicking user: " + i);
+//                                try{
+////                                    viewMemberProfile(response.getJSONArray("users").getJSONObject(i).getInt("userId"));
+//                                    JSONObject userObject = response.getJSONArray("users").getJSONObject(i);
+//                                    User user = new User(userObject.getInt("userId"),userObject.getString("username"),userObject.getString("fullName"));
+//                                    ProjectFragmentDirections.ActionNavigationProjectToNavigationProfile action = ProjectFragmentDirections.actionNavigationProjectToNavigationProfile(user.getUserID(),user.getUsername(),user.getFullname());
+//                                    Navigation.findNavController(getView()).navigate(action);
+//                                }
+//                                catch(JSONException e){
+//                                    Log.d("project_fragment","Error setting on click listener: " + e.getMessage());
+//                                }
+                            }
+                        });
+                        alertBuilder.create().show();
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    alertBuilder.setTitle("List of Members")
-                            .setPositiveButton("BACK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    return;
-                                }
-                            });
-
-                    String[] memberList = new String[users.length()];
-                    for (int i = 0; i < memberList.length; i++) {
-                        try {
-                            memberList[i] = users.getJSONObject(i).getString("username");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    alertBuilder.setItems(memberList, null);
-                    alertBuilder.create().show();
                 },
                 error -> {
-                    VolleyLog.d("project_debug", "Error: " + error.toString());
+                    Log.d("project_fragment", "Error: " + error.getMessage());
                     error.printStackTrace();
-                    Toast.makeText(getContext(), "Unknown Error", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Listing member error: " + error.getMessage(), Toast.LENGTH_LONG).show();
                 }
         );
         AppController.getInstance().addToRequestQueue(usersRequest);
@@ -346,7 +389,7 @@ public class ProjectFragment extends Fragment {
                             return;
                         }
                         params.put("teamName", dialogInput.getText().toString());
-                        addTeamRequest(params);
+                        addTeamRequest(params, dialogInput.getText().toString());
                     }
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -411,11 +454,12 @@ public class ProjectFragment extends Fragment {
             // Create the AlertDialog object and return it
             alertBuilder.create().show();
         } else {
-            Toast.makeText(getContext(), "No teams exists in the project yet", Toast.LENGTH_LONG);
+            Log.d("project_fragment","Error adding task: No teams exists");
+            Toast.makeText(getContext(), "No teams exists in the project yet", Toast.LENGTH_LONG).show();
         }
     }
 
-    void addTeamRequest(Map<String, String> query) {
+    void addTeamRequest(Map<String, String> query, String teamName) {
         //NOTE: Must Add trailing '/' at end of URL for PUT requests (Android Volley)
 //        String url = Const.API_SERVER + "/project/" + binding.getModal().project.get().getId() + "/addTeam/";
         String url = Const.API_SERVER + "/project/" + projectID + "/addTeam/";
@@ -425,6 +469,10 @@ public class ProjectFragment extends Fragment {
                     try {
                         Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                         Log.d("project_debug","Team added : "+ response.getString("message"));
+                        JSONObject tmp = new JSONObject();
+                        tmp.put("teamID",response.getInt("team_id"));
+                        tmp.put("teamName",teamName);
+                        teamsArray.put(tmp);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -465,7 +513,23 @@ public class ProjectFragment extends Fragment {
                 query,
                 response -> {
                     try {
-                        Log.d("project_debug", response.getString("message"));
+//                        Log.d("project_debug", response.getString("message"));
+                        Task task = new Task(response.getInt("task_id"), params1.get("task"));
+                        JSONArray users = response.getJSONArray("team_users");
+                        Log.d("project_fragment","Add task: " + users.toString() + "\n" + users.length());
+                        binding.getModal().tasksAdapter.add(task);
+                        boolean partOfTeam = false;
+                        for(int i = 0; i < users.length(); i++){
+                            Log.d("project_fragment","Add task 2: " + users.getJSONObject(i).getString("username") + " - " + Const.user.getUsername());
+                            //if user is in the team that the task was assigned to, update tasksAdapter
+                            if(users.getJSONObject(i).getString("username").equals(Const.user.getUsername())){
+                                Log.d("project_fragment","Add task 3: updating task adapter");
+                                partOfTeam = true;
+                                break;
+                            }
+                        }
+                        if(!partOfTeam)
+                            binding.getModal().tasksAdapter.remove(task);
                         Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -495,4 +559,94 @@ public class ProjectFragment extends Fragment {
         );
         AppController.getInstance().addToRequestQueue(request);
     }
+
+    void setDescriptionText(String s){
+        try{
+            descriptionView.setText("Announcements" + "\n\n" + s);
+        }
+        catch(Exception e){
+            Log.d("project_fragment", "Error setting description text: " + e.getMessage());
+            Toast.makeText(getContext(),"Error setting description text: " + e.getMessage(),Toast.LENGTH_SHORT);
+        }
+
+    }
+
+    void addProjectDesc(){
+        String url = Const.API_SERVER + "/project/" + projectID + "/addAnnouncement/";
+
+        Context context = getContext();
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        final EditText dialogInput = new EditText(context);
+        dialogInput.setLayoutParams(lp);
+        alertBuilder.setView(dialogInput);
+
+        alertBuilder.setMessage("Enter Announcement")
+                .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (dialogInput.getText().toString().length() < 4) { //at least 4 characters
+                            Toast.makeText(context, "Text must be at least 4 characters", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("announcement", dialogInput.getText().toString());
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url,
+                                new JSONObject(params),
+                                response -> {
+                                    try {
+//                                        descriptionView.append("\n" + dialogInput.getText().toString() + "\n\t" + LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
+                                        descriptionView.setText("Announcements\n\n" + dialogInput.getText().toString() + "\n\t" + LocalDateTime.now().format(DateTimeFormatter.ISO_DATE) + "\n" + projectAnnouncements);
+                                    } catch (Exception e) {
+                                        Log.d("project_fragment","Error adding description: " + e.getMessage());
+                                        e.printStackTrace();
+                                    }
+                                },
+                                error -> {
+                                    Log.d("project_fragment","Error adding description: " + error.getMessage());
+                                }
+                        );
+                        AppController.getInstance().addToRequestQueue(request);
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        return;
+                    }
+                });
+        // Create the AlertDialog object and return it
+        alertBuilder.create().show();
+
+    }
+
+    void setAnnouncements(){
+        String url = Const.API_SERVER + "/project/" + projectID + "/announcements";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url,
+                null,
+                response -> {
+                    try {
+                        JSONArray announcements = response.getJSONArray("announcements");
+                        String s = "";
+                        for(int i = announcements.length() - 1; i >= 0; i--){
+                            s += announcements.getJSONObject(i).getString("message")+ "\n\t" +
+                                    announcements.getJSONObject(i).getString("dateCreated");
+                            s += "\n";
+                        }
+                        projectAnnouncements = s;
+                        Log.d("project_fragment","Set announcements: " + response.toString());
+                        setDescriptionText(s);
+//                        Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    Log.d("project_fragment", "Error setting announcements: " + error.getMessage());
+                }
+        );
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
 }

@@ -70,6 +70,19 @@
         android:label="Project"
         tools:layout="@layout/fragment_project">
         <action
+            android:id="@+id/action_navigation_project_to_navigation_profile"
+            app:destination="@id/navigation_settings">
+            <argument
+                android:name="userID"
+                app:argType="integer" />
+            <argument
+                android:name="username"
+                app:argType="string" />
+            <argument
+                android:name="fullname"
+                app:argType="string" />
+        </action>
+        <action
             android:id="@+id/action_navigation_project_to_navigation_task"
             app:destination="@id/navigation_task">
             <argument

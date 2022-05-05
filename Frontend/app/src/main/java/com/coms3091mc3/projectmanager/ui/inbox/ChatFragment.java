@@ -68,13 +68,11 @@ public class ChatFragment extends Fragment {
                 @Override
                 public void onMessage(String message) {
                     Log.d("chatbox", "run() returned: " + message);
-                    String s = conversation.getText().toString();
+//                    String s = conversation.getText().toString();
 //                    conversation.setText(s + "\n" + message);
                     conversation.append("\n" + message);
                     Editable editable = conversation.getEditableText();
                     Selection.setSelection(editable, editable.length());
-//                    conversation.scrollBy(0,100);
-//                    conversation.scroll
                 }
 
                 @Override
