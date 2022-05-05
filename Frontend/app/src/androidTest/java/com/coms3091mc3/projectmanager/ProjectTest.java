@@ -271,7 +271,7 @@ public class ProjectTest {
     }
 
     @org.junit.Test
-    public void randomTest3s() {
+    public void randomTests3() {
 
         String testUsername = "brandon";
         String testPassword = "test";
@@ -303,6 +303,34 @@ public class ProjectTest {
         onView(withText(endsWith(testProjectName))).perform(click()); //go into project;
         onView(withId(R.id.add_project)).perform(click());
         onView(withText("Members")).perform(click());
+    }
+
+    @org.junit.Test
+    public void randomTests4() {
+
+        String testUsername = "brandon";
+        String testPassword = "test";
+        String testFullname = "Brandon Lwe";
+        String testTeamName = "Splask 2.0 Frontend Team";
+
+        // Type in username and password then click login button
+        onView(withId(R.id.username))
+                .perform(typeText(testUsername), closeSoftKeyboard());
+        onView(withId(R.id.password))
+                .perform(typeText(testPassword), closeSoftKeyboard());
+        onView(withId(R.id.btnRegister)).perform(click());
+        onView(withClassName(endsWith("EditText"))).perform(typeText(testFullname), closeSoftKeyboard());
+        onView(withText("OK")).perform(click());
+        onView(withId(R.id.btnLogin)).perform(click());
+
+        // Put thread to sleep to allow volley to handle the request
+        try {
+            Thread.sleep(SIMULATED_DELAY_MS);
+        } catch (InterruptedException e) {
+        }
+
+        onView(withId(R.id.add_project)).perform(click());
+        onView(withText("Add Project")).perform(click());
     }
     /**
      * Start the server and run this test
