@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
+import android.text.Editable;
+import android.text.Selection;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,6 +52,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -58,6 +63,8 @@ public class ProjectFragment extends Fragment {
     private FragmentProjectBinding binding;
     private JSONArray teamsArray = new JSONArray();
     private int projectID;
+    TextView descriptionView;
+    private String projectAnnouncements;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,6 +73,19 @@ public class ProjectFragment extends Fragment {
         binding.setModal(new ProjectDataModel(getContext()));
         View view = binding.getRoot();
         projectID = (Integer) getArguments().get("projectID");
+
+        descriptionView = view.findViewById(R.id.descriptionTextView);
+        descriptionView.setMovementMethod(new ScrollingMovementMethod());
+        setAnnouncements();
+
+        Button btnDesc = view.findViewById(R.id.btnProjectDescription);
+        btnDesc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addProjectDesc();
+            }
+        });
+
         Log.d("project_debug","Entered project with id : " + projectID);
         String url = Const.API_SERVER + "/project/" + projectID;
         String tasksUrl = Const.API_SERVER + "/user/" + Const.user.getUserID() + "/tasks";
@@ -127,6 +147,7 @@ public class ProjectFragment extends Fragment {
                         );
                         binding.getModal().project.get().setAdmin(projectDetails.getInt("admin"));
                         setOverviewText(projectDetails.getInt("admin"));
+//                        appendDescriptionText(projectDetails.getJSONObject("announcement").get);
                         Log.d("PROJECT_FRAGMENT","PROJECT DEBUG: ADMIN - " + binding.getModal().project.get().getAdmin());
                     } catch (JSONException e) {
                         Log.d("project_debug", "get project error: " +e.getMessage());
@@ -466,6 +487,8 @@ public class ProjectFragment extends Fragment {
                 response -> {
                     try {
                         Log.d("project_debug", response.getString("message"));
+                        Task task = new Task(response.getInt("task_id"), params1.get("task"));
+                        binding.getModal().tasksAdapter.add(task);
                         Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -491,6 +514,95 @@ public class ProjectFragment extends Fragment {
                 },
                 error -> {
                     Log.d("project_fragment","Error setting overview text: " + error.getMessage());
+                }
+        );
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    void setDescriptionText(String s){
+        try{
+            descriptionView.setText("Announcements" + "\n\n" + s);
+        }
+        catch(Exception e){
+            Log.d("project_fragment", "Error setting description text: " + e.getMessage());
+            Toast.makeText(getContext(),"Error setting description text: " + e.getMessage(),Toast.LENGTH_SHORT);
+        }
+
+    }
+
+    void addProjectDesc(){
+        String url = Const.API_SERVER + "/project/" + projectID + "/addAnnouncement/";
+
+        Context context = getContext();
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        final EditText dialogInput = new EditText(context);
+        dialogInput.setLayoutParams(lp);
+        alertBuilder.setView(dialogInput);
+
+        alertBuilder.setMessage("Enter Announcement")
+                .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (dialogInput.getText().toString().length() < 4) { //at least 4 characters
+                            Toast.makeText(context, "Text must be at least 4 characters", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("announcement", dialogInput.getText().toString());
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url,
+                                new JSONObject(params),
+                                response -> {
+                                    try {
+//                                        descriptionView.append("\n" + dialogInput.getText().toString() + "\n\t" + LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
+                                        descriptionView.setText("Announcements\n\n" + dialogInput.getText().toString() + "\n\t" + LocalDateTime.now().format(DateTimeFormatter.ISO_DATE) + "\n" + projectAnnouncements);
+                                    } catch (Exception e) {
+                                        Log.d("project_fragment","Error adding description: " + e.getMessage());
+                                        e.printStackTrace();
+                                    }
+                                },
+                                error -> {
+                                    Log.d("project_fragment","Error adding description: " + error.getMessage());
+                                }
+                        );
+                        AppController.getInstance().addToRequestQueue(request);
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        return;
+                    }
+                });
+        // Create the AlertDialog object and return it
+        alertBuilder.create().show();
+
+    }
+
+    void setAnnouncements(){
+        String url = Const.API_SERVER + "/project/" + projectID + "/announcements";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url,
+                null,
+                response -> {
+                    try {
+                        JSONArray announcements = response.getJSONArray("announcements");
+                        String s = "";
+                        for(int i = announcements.length() - 1; i >= 0; i--){
+                            s += announcements.getJSONObject(i).getString("message")+ "\n\t" +
+                                    announcements.getJSONObject(i).getString("dateCreated");
+                            s += "\n";
+                        }
+                        projectAnnouncements = s;
+                        Log.d("project_fragment","Set announcements: " + response.toString());
+                        setDescriptionText(s);
+                        Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    Log.d("project_fragment", "Error setting announcements: " + error.getMessage());
                 }
         );
         AppController.getInstance().addToRequestQueue(request);

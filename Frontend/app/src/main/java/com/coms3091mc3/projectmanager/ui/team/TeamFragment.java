@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,6 +49,9 @@ public class TeamFragment extends Fragment {
     FragmentTeamBinding binding;
 
     ListView lv;
+    List<String> userList = new ArrayList<String>();
+    List<Integer> onlineStatusList = new ArrayList<Integer>();
+    ArrayAdapter<String> usersAdapter;
 
     @Nullable
     @Override
@@ -130,8 +134,6 @@ public class TeamFragment extends Fragment {
                 response -> {
                     try {
                         JSONArray users = response.getJSONArray("users");
-                        List<String> userNameList = new ArrayList<String>();
-                        List<Integer> onlineStatusList = new ArrayList<>();
                         for (int i = 0; i < users.length(); i++) {
                             JSONObject object = (JSONObject) users.get(i);
                             User user = new User(
@@ -139,22 +141,30 @@ public class TeamFragment extends Fragment {
                                     object.getString("username"),
                                     object.getString("fullName")
                             );
-                            userNameList.add(object.getString("fullName"));
+                            userList.add(object.getString("fullName"));
                             //TODO:
                             onlineStatusList.add(object.getInt("loggedIn"));
-                            Log.d("team_fragment",object.toString());
+//                            Log.d("team_fragment",object.toString());
                         }
-                        ArrayAdapter<String> userName = new ArrayAdapter<String>(getContext(),
+                        usersAdapter = new ArrayAdapter<String>(getContext(),
                                 android.R.layout.simple_list_item_1,
-                                userNameList);
-                        lv.setAdapter(userName);
+                                userList);
+                        lv.setAdapter(usersAdapter);
+                        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                if(onlineStatusList.get(i) == 1){
+                                    view.setBackgroundColor(Color.rgb(0,200,0));
+                                }
+                                else {
+                                    view.setBackgroundColor(Color.rgb(200, 0, 0));
+                                }
+                            }
+                        });
                         //TODO:
                         for(int i = 0; i < lv.getCount(); i++){
-                            Log.d("team_fragment","adapter: " + onlineStatusList.get(i));
-//                            if(onlineStatusList.get(i) == 0) //offline
-//                                lv.getChildAt(i).setBackgroundColor(Color.rgb(200, 0, 0));
-//                            else //online
-//                                lv.getChildAt(i).setBackgroundColor(Color.rgb(0, 200, 0));
+                            lv.performItemClick(lv.getAdapter().getView(i,null,null),
+                                    i, lv.getAdapter().getItemId(i));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -174,14 +184,20 @@ public class TeamFragment extends Fragment {
                 new JSONObject(params),
                 response -> {
                     try {
-                        Log.d("project_debug",response.getString("message"));
+                        Log.d("team_fragment","Add Member: " + response.toString());
+                        userList.add(response.getJSONObject("user").getString("fullName"));
+                        onlineStatusList.add(response.getJSONObject("user").getInt("loggedIn"));
+                        usersAdapter = new ArrayAdapter<String>(getContext(),
+                                android.R.layout.simple_list_item_1,
+                                userList);
+                        lv.setAdapter(usersAdapter);
                         Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 },
                 error -> {
-
+                    Log.d("team_fragment","Error eddign member: " + error.getMessage());
                 }
         );
         AppController.getInstance().addToRequestQueue(request);
