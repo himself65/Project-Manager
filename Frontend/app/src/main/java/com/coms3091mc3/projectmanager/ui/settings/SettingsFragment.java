@@ -1,7 +1,6 @@
 package com.coms3091mc3.projectmanager.ui.settings;
 
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -25,7 +24,6 @@ import com.coms3091mc3.projectmanager.R;
 import com.coms3091mc3.projectmanager.app.AppController;
 import com.coms3091mc3.projectmanager.data.User;
 import com.coms3091mc3.projectmanager.databinding.FragmentSettingsBinding;
-import com.coms3091mc3.projectmanager.store.SettingDataModal;
 import com.coms3091mc3.projectmanager.utils.Const;
 
 import org.json.JSONArray;
@@ -116,7 +114,6 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
-        binding.setModal(new SettingDataModal());
         View view = binding.getRoot();
 
         TextView textView = view.findViewById(R.id.username);
