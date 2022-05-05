@@ -1,17 +1,14 @@
 package com.coms3091mc3.projectmanager;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import org.junit.Before;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
 public class MainActivityUnitTest {
