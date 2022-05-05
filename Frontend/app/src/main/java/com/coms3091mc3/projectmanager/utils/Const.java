@@ -24,5 +24,5 @@ public class Const {
     /**
      * The constant user.
      */
-    public static User user;
+    public static User user = new User(-1, "username", "fullname");
 }
