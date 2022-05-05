@@ -336,13 +336,18 @@ public class ProjectFragment extends Fragment {
                         }
                     }
 
-                    alertBuilder.setItems(memberList, null);
+                    alertBuilder.setItems(memberList, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Log.d("project_fragment","Clicking user: " + i);
+                        }
+                    });
                     alertBuilder.create().show();
                 },
                 error -> {
-                    VolleyLog.d("project_debug", "Error: " + error.toString());
+                    Log.d("project_fragment", "Error: " + error.getMessage());
                     error.printStackTrace();
-                    Toast.makeText(getContext(), "Unknown Error", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Listing member error: " + error.getMessage(), Toast.LENGTH_LONG).show();
                 }
         );
         AppController.getInstance().addToRequestQueue(usersRequest);
