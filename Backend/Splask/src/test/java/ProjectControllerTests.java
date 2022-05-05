@@ -1,19 +1,18 @@
-package com.splask;
-
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import net.minidev.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@RunWith(SpringRunner.class)
+@SpringBootTest(classes = Splask.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@RunWith(SpringRunner.class)
 public class ProjectControllerTests {
 
     @LocalServerPort
@@ -21,15 +20,16 @@ public class ProjectControllerTests {
 
     @Before
     public void setUp() throws Exception {
-//        RestAssured.port = port;
-//        RestAssured.baseURI = "http://localhost";
-        baseURI = "http://coms-309-007.class.las.iastate.edu:8080";
+        RestAssured.port = port;
+        RestAssured.baseURI = "http://localhost";
+//        RestAssured.port = 8080;
+//        RestAssured.baseURI = "http://coms-309-007.class.las.iastate.edu";
 
     }
 
 
     @Test
-    public void getALlProjects()
+    public void getAllProjects()
     {
         given().get("/project").then().statusCode(200).log().all();
     }
@@ -206,24 +206,24 @@ public class ProjectControllerTests {
 
     }
 
-    @Test
-    public void addTasksToProject()
-    {
-        int projectId = 1;
-        JSONObject request = new JSONObject();
-
-        request.put("task","Make a pizza");
-        request.put("team_id",2);
-
-        given()
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
-                .body(request.toJSONString())
-                .when()
-                .put("/project/" + projectId + "/addTask")
-                .then()
-                .statusCode(200).log().all();
-    }
+//    @Test
+//    public void addTasksToProject()
+//    {
+//        Integer projectId = 1;
+//        JSONObject request = new JSONObject();
+//
+//        request.put("task","Make a pizza");
+//        request.put("team_id",2);
+//
+//        given()
+//                .contentType(ContentType.JSON)
+//                .accept(ContentType.JSON)
+//                .body(request.toJSONString())
+//                .when()
+//                .put("/project/" + projectId + "/addTask")
+//                .then()
+//                .statusCode(200).log().all();
+//    }
 
     @Test
     public void addTasksToProjectTeamFail()

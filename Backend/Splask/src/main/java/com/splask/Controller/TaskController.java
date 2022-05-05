@@ -57,34 +57,34 @@ public class TaskController {
 		return taskRepository.findAll();
 	}
 
-//	Creates a new task in the database
-	@PostMapping("/task")
-	JSONObject createTask(@RequestBody Task newTask) {
-		JSONObject responseBody = new JSONObject();
-		List<Task> tasks = taskRepository.findAll();
-
-//		Checks if task name already exists
-		for (Task t : tasks) {
-			if (newTask.getTask().equals(t.getTask())){
-				responseBody.put("status", 400);
-				responseBody.put("message", "Task Already Exists!");
-				return responseBody;
-			}
-		}
-
-//      Checks length of Task name
-		if(newTask.getTask().length() < 1) {
-			responseBody.put("status", 400);
-			responseBody.put("message", "Task Name Too Short!");
-			return responseBody;
-		}
-
-//		saves the new task
-		taskRepository.save(newTask);
-		responseBody.put("status", 200);
-		responseBody.put("message", "Task Successfully Created!");
-		return responseBody;
-	}
+////	Creates a new task in the database without assigning it to a team or project
+//	@PostMapping("/task")
+//	JSONObject createTask(@RequestBody Task newTask) {
+//		JSONObject responseBody = new JSONObject();
+//		List<Task> tasks = taskRepository.findAll();
+//
+////		Checks if task name already exists
+//		for (Task t : tasks) {
+//			if (newTask.getTask().equals(t.getTask())){
+//				responseBody.put("status", 400);
+//				responseBody.put("message", "Task Already Exists!");
+//				return responseBody;
+//			}
+//		}
+//
+////      Checks length of Task name
+//		if(newTask.getTask().length() < 1) {
+//			responseBody.put("status", 400);
+//			responseBody.put("message", "Task Name Too Short!");
+//			return responseBody;
+//		}
+//
+////		saves the new task
+//		taskRepository.save(newTask);
+//		responseBody.put("status", 200);
+//		responseBody.put("message", "Task Successfully Created!");
+//		return responseBody;
+//	}
 
 //	Delete Task by id from the database
 	@DeleteMapping("/task/{id}")
@@ -107,7 +107,7 @@ public class TaskController {
 		return responseBody;
 	}
 
-	
+
 	/**
 	 * Sets the task to the assigned user
 	 * @param taskID
@@ -115,62 +115,62 @@ public class TaskController {
 	 * @return JSON Object that hold success or fail statuses and messages
 	 */
 	@PutMapping("/{task_id}/users/{user_id}")
-	Task enrollUserToTask( 
+	Task enrollUserToTask(
 						   @PathVariable Integer taskID,
 						   @PathVariable Integer userID
 	) {
 		Task task = taskRepository.findById(taskID).get();
 		User user = userRepository.findById(userID).get();
 		task.assignUser(user);
-		return taskRepository.save(task); //saves the new task to assigned user;  
+		return taskRepository.save(task); //saves the new task to assigned user;
 	}
 
-	/**
-	 * Sets the task to the assigned team
-	 * @param taskID
-	 * @param teamID
-	 * @return JSON Object that hold success or fail statuses and messages
-	 */
-    @PutMapping("/task/{task_id}/add")
-    JSONObject assignTaskToTeam(
-    		@PathVariable Integer taskID,
-    		@PathVariable Integer teamID
-    ) {
-		JSONObject responseBody = new JSONObject();
+//	/**
+//	 * Sets the task to the assigned team
+//	 * @param taskID
+//	 * @param teamID
+//	 * @return JSON Object that hold success or fail statuses and messages
+//	 */
+//    @PutMapping("/task/{task_id}/add")
+//    JSONObject assignTaskToTeam(
+//    		@PathVariable Integer taskID,
+//    		@PathVariable Integer teamID
+//    ) {
+//		JSONObject responseBody = new JSONObject();
+//
+//		Task task = taskRepository.getById(taskID);
+//		Team team = teamRepository.getById(teamID);
+//		if(team.getTasks().contains(task))
+//		{
+//			responseBody.put("status", 400);
+//			responseBody.put("message", "task is already assigned to this team");
+//
+//			return responseBody;
+//		}
+//
+//    	task.assignTaskToTeam(team);
+//		taskRepository.save(task);
+//		responseBody.put("status",200);
+//		responseBody.put("message", "task successfully added to" + team.getTeamName());
+//    	return responseBody;
+//    }
 
-		Task task = taskRepository.getById(taskID);
-		Team team = teamRepository.getById(teamID);
-		if(team.getTasks().contains(task))
-		{
-			responseBody.put("status", 400);
-			responseBody.put("message", "task is already assigned to this team");
-
-			return responseBody;
-		}
-
-    	task.assignTaskToTeam(team);
-		taskRepository.save(task);
-		responseBody.put("status",200);
-		responseBody.put("message", "task successfully added to" + team.getTeamName());
-    	return responseBody;
-    }
-
-    /**
-     * Sets the task to the assigned project
-     * @param taskID
-     * @param projectID
-     * @return  
-     */
-    @PutMapping("/task/{task_id}/project/{project_id}")
-    Task assignTaskToProject(
-    		@PathVariable Integer taskID,
-    		@PathVariable Integer projectID
-    ) {
-    	Task task= taskRepository.getById(taskID);
-    	Project project = projectRepository.getById(projectID);
-    	task.assignTaskToProject(project);
-    	return taskRepository.save(task);
-    }
+//    /**
+//     * Sets the task to the assigned project
+//     * @param taskID
+//     * @param projectID
+//     * @return
+//     */
+//    @PutMapping("/task/{task_id}/project/{project_id}")
+//    Task assignTaskToProject(
+//    		@PathVariable Integer taskID,
+//    		@PathVariable Integer projectID
+//    ) {
+//    	Task task= taskRepository.getById(taskID);
+//    	Project project = projectRepository.getById(projectID);
+//    	task.assignTaskToProject(project);
+//    	return taskRepository.save(task);
+//    }
 
     /**
      * Sets the task to completed 
