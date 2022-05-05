@@ -9,7 +9,7 @@ import org.junit.Test;
 
 public class DataUnitTest {
     @Test
-    public void should_pass() {
+    public void UserDataTest() {
         Const.user = new User(1, "zeyu", "Zeyu Yang");
         assertEquals(Const.user.getUsername(), "zeyu");
         assertEquals(Const.user.getFullname(), "Zeyu Yang");
