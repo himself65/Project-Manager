@@ -198,10 +198,18 @@ public class DashboardFragment extends Fragment {
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
                         new JSONObject(params),
                         response -> {
-                            Logger.getLogger("json").log(Level.INFO, response.toString());
-                            binding.getModal().projectsAdapter.add(project);
+                            try{
+                                Logger.getLogger("json").log(Level.INFO, response.toString());
+                                project.setId(response.getInt("project_id"));
+                                binding.getModal().projectsAdapter.add(project);
+                            }
+                            catch(JSONException e){
+                                Log.d("dashboard_fragment","Create project error: " + e.getMessage());
+                            }
                         },
-                        error -> Logger.getLogger("json").log(Level.INFO, error.toString()));
+                        error -> {
+                            Log.d("dasboard_fragment","Create project error: " + error.getMessage());
+                        });
                 AppController.getInstance().addToRequestQueue(request);
             }
         });
